@@ -28,12 +28,10 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
             throw NSError(domain: "MockDatabaseServiceError", code: 0)
         }
     }
-    
-    init() { }
-    
+        
     init(
-        withExpectation expectation: DatabaseServiceExpectation?,
-        didAddToDatabaseSuccessfully: Bool) {
+        withExpectation expectation: DatabaseServiceExpectation? = nil,
+        didAddToDatabaseSuccessfully: Bool = true) {
             self.didAddToDatabaseSuccessfully = didAddToDatabaseSuccessfully
             self.expectation = expectation?.expectation
         }
