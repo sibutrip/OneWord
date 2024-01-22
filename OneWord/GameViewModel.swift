@@ -5,11 +5,11 @@
 //  Created by Cory Tripathy on 1/22/24.
 //
 
-class GameViewModel<DatabaseService: DatabaseServiceProtocol> {
-    private let databaseService: DatabaseService
+class GameViewModel {
+    private let databaseService: DatabaseServiceProtocol
     let localUser: User
     
-    init(withUser user: User, database: DatabaseService) {
+    init(withUser user: User, database: DatabaseServiceProtocol) {
         localUser = user
         databaseService = database
     }

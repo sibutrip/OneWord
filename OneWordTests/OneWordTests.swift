@@ -9,27 +9,24 @@ import XCTest
 @testable import OneWord
 
 final class GameViewModelTests: XCTestCase {
-    typealias DatabaseService = DatabaseServiceProtocol
-    typealias GameViewModel = OneWord.GameViewModel<MockDatabaseService>
     
     func test_init_setsUserToLocalUser() {
         let localUser = User(name: "Cory")
-        let database = MockDatabaseService()
+        let database = DatabaseServiceSpy()
         
         let sut = GameViewModel(withUser: localUser, database: database)
         
         XCTAssertEqual(sut.localUser, localUser)
     }
     
-    // Q for tom: how do i test that my sut calls a particular method in its database service? do i pass a copy of it to the SUT from `makeSut()`?
     func test_createGame_addsNewGameToDatabaseWithUserAsParent() async throws {
         let (sut, databaseService) = makeSUT(withExpectation: .didAddGameWithParent)
         
         try await sut.createGame()
         
         await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
-        let didAddGameWithParent = await databaseService.didAddGameWithParent
-        XCTAssertTrue(didAddGameWithParent)
+        let receivedMessages = await databaseService.receivedMessages
+        XCTAssertEqual(receivedMessages, [.add])
     }
     
     func test_createGame_throwsIfCannotAddGameToDatabase() async throws {
@@ -44,9 +41,9 @@ final class GameViewModelTests: XCTestCase {
     
     private func makeSUT(
         withExpectation expectation: DatabaseServiceExpectation? = nil,
-        databaseDidAddSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: MockDatabaseService) {
+        databaseDidAddSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
             let localUser = User(name: "Cory")
-            let database = MockDatabaseService(withExpectation: expectation, didAddToDatabaseSuccessfully: databaseDidAddSuccessfully)
+            let database = DatabaseServiceSpy(withExpectation: expectation, didAddToDatabaseSuccessfully: databaseDidAddSuccessfully)
             return (GameViewModel(withUser: localUser, database: database), database)
         }
     

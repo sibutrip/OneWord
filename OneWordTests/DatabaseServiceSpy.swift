@@ -8,16 +8,21 @@
 import XCTest
 @testable import OneWord
 
-actor MockDatabaseService: DatabaseServiceProtocol {
+actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
     var didAddToDatabaseSuccessfully = true
     
     var expectation: XCTestExpectation?
-    var didAddGameWithParent = false
+    
+    var receivedMessages: [Message] = []
+    
+    enum Message {
+        case add
+    }
     
     func add(_ game: GameModel, withParent parent: User) async throws {
         if didAddToDatabaseSuccessfully {
-            didAddGameWithParent = true
+            receivedMessages.append(.add)
             expectation?.fulfill()
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 0)
