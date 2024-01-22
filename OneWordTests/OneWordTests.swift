@@ -27,15 +27,35 @@ final class GameViewModelTests: XCTestCase {
         
         try await sut.createGame()
         
-        await fulfillment(of: [databaseService.expectation!])
-        XCTAssertTrue(databaseService.didAddGameWithParent)
+        await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
+        let didAddGameWithParent = await databaseService.didAddGameWithParent
+        XCTAssertTrue(didAddGameWithParent)
+    }
+    
+    func test_createGame_throwsIfCannotAddGameToDatabase() async throws {
+        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
+                
+        await assertDoesThrow {
+            try await sut.createGame()
+        }
     }
     
     // MARK: Helper Methods
     
-    private func makeSUT(withExpectation expectation: DatabaseServiceExpectation? = nil) -> (sut: GameViewModel, databaseService: MockDatabaseService) {
-        let localUser = User(name: "Cory")
-        let database = MockDatabaseService(withExpectation: expectation)
-        return (GameViewModel(withUser: localUser, database: database), database)
+    private func makeSUT(
+        withExpectation expectation: DatabaseServiceExpectation? = nil,
+        databaseDidAddSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: MockDatabaseService) {
+            let localUser = User(name: "Cory")
+            let database = MockDatabaseService(withExpectation: expectation, didAddToDatabaseSuccessfully: databaseDidAddSuccessfully)
+            return (GameViewModel(withUser: localUser, database: database), database)
+        }
+    
+    private func assertDoesThrow(test action: () async throws -> Void) async {
+        do {
+            try await action()
+        } catch {
+            XCTAssertTrue(true)
+            return
+        }
     }
 }

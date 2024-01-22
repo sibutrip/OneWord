@@ -8,27 +8,30 @@
 import XCTest
 @testable import OneWord
 
-class MockDatabaseService: DatabaseServiceProtocol {
+actor MockDatabaseService: DatabaseServiceProtocol {
+    
+    var didAddToDatabaseSuccessfully = true
     
     var expectation: XCTestExpectation?
-    
     var didAddGameWithParent = false
-    var didAddGameWithParentCallback: (() -> Void)?
-    func add(_ game: GameModel, withParent parent: User) async {
-        didAddGameWithParent = true
-        didAddGameWithParentCallback?()
-    }
-    required init() { }
     
-    convenience init(withExpectation expectation: DatabaseServiceExpectation?) {
-        self.init()
-        guard let expectation else { return }
-        self.expectation = expectation.expectation
-        switch expectation {
-        case .didAddGameWithParent:
-            self.didAddGameWithParentCallback = expectation.expectation.fulfill
+    func add(_ game: GameModel, withParent parent: User) async throws {
+        if didAddToDatabaseSuccessfully {
+            didAddGameWithParent = true
+            expectation?.fulfill()
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 0)
         }
     }
+    
+    init() { }
+    
+    init(
+        withExpectation expectation: DatabaseServiceExpectation?,
+        didAddToDatabaseSuccessfully: Bool) {
+            self.didAddToDatabaseSuccessfully = didAddToDatabaseSuccessfully
+            self.expectation = expectation?.expectation
+        }
 }
 
 enum DatabaseServiceExpectation {

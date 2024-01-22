@@ -11,7 +11,7 @@ class GameViewModel<DatabaseService: DatabaseServiceProtocol> {
     
     init(withUser user: User, database: DatabaseService) {
         localUser = user
-        databaseService = DatabaseService()
+        databaseService = database
     }
     
     func createGame() async throws {
