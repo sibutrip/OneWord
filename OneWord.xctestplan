@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "7A916A20-9794-441A-B01C-02DAFD1EC02E",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:OneWord.xcodeproj",
+      "identifier" : "7454A36F2B5968D7006357C8",
+      "name" : "OneWord"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:OneWord.xcodeproj",
+        "identifier" : "7454A37F2B5968D8006357C8",
+        "name" : "OneWordTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -5,8 +5,6 @@
 //  Created by Cory Tripathy on 1/22/24.
 //
 
-import Foundation
-
-struct User {
+struct User: Equatable {
     let name: String
 }

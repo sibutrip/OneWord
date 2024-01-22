@@ -5,13 +5,17 @@
 //  Created by Cory Tripathy on 1/22/24.
 //
 
-import Foundation
-
-class GameViewModel {
+class GameViewModel<DatabaseService: DatabaseServiceProtocol> {
+    private let databaseService: DatabaseService
     let localUser: User
-    var users: [User] = []
     
-    init(withUser user: User) {
+    init(withUser user: User, database: DatabaseService) {
         localUser = user
+        databaseService = DatabaseService()
+    }
+    
+    func createGame() async throws {
+        let newGame = GameModel()
+        try await databaseService.add(newGame, withParent: localUser)
     }
 }
