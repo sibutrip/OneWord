@@ -12,6 +12,8 @@
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
 		7454A37B2B5968D8006357C8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A37A2B5968D8006357C8 /* Preview Assets.xcassets */; };
 		7454A3852B5968D8006357C8 /* OneWordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3842B5968D8006357C8 /* OneWordTests.swift */; };
+		7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */; };
+		7454A3A02B5EF9D7006357C8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A39F2B5EF9D7006357C8 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +34,8 @@
 		7454A37A2B5968D8006357C8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7454A3802B5968D8006357C8 /* OneWordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OneWordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3842B5968D8006357C8 /* OneWordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordTests.swift; sourceTree = "<group>"; };
+		7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
+		7454A39F2B5EF9D7006357C8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,8 @@
 			children = (
 				7454A3732B5968D7006357C8 /* OneWordApp.swift */,
 				7454A3752B5968D7006357C8 /* ContentView.swift */,
+				7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */,
+				7454A39F2B5EF9D7006357C8 /* User.swift */,
 				7454A3772B5968D8006357C8 /* Assets.xcassets */,
 				7454A3792B5968D8006357C8 /* Preview Content */,
 			);
@@ -197,7 +203,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7454A3A02B5EF9D7006357C8 /* User.swift in Sources */,
 				7454A3762B5968D7006357C8 /* ContentView.swift in Sources */,
+				7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */,
 				7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
