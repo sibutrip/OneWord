@@ -9,6 +9,7 @@ import XCTest
 @testable import OneWord
 
 final class GameViewModelTests: XCTestCase {
+    typealias GameViewModelError = GameViewModel.GameViewModelError
     
     func test_init_setsUserToLocalUser() {
         let localUser = User(name: "Cory")
@@ -35,15 +36,15 @@ final class GameViewModelTests: XCTestCase {
         try await sut.createGame()
         
         await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
-        XCTAssertNotNil(sut.game)
+        XCTAssertNotNil(sut.currentGame)
     }
     
     func test_createGame_throwsIfCannotAddGameToDatabase() async throws {
         let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
-                
-        await assertDoesThrow {
+        
+        await assertDoesThrow(test: {
             try await sut.createGame()
-        }
+        }, throws: .couldNotCreateGame)
     }
     
     // MARK: Helper Methods
@@ -56,12 +57,17 @@ final class GameViewModelTests: XCTestCase {
             return (GameViewModel(withUser: localUser, database: database), database)
         }
     
-    private func assertDoesThrow(test action: () async throws -> Void) async {
+    /// `GameViewModel` methods that throw should always throw a `GameViewModelError` error.
+    private func assertDoesThrow(test action: () async throws -> Void, throws expectedError: GameViewModelError) async {
         do {
             try await action()
+        } catch let error as GameViewModelError where error == expectedError {
+            XCTAssert(true)
+            return
         } catch {
-            XCTAssertTrue(true)
+            XCTFail("expected \(expectedError.localizedDescription) error and got \(error.localizedDescription)")
             return
         }
+        XCTFail("expected \(expectedError.localizedDescription) error but did not throw error")
     }
 }
