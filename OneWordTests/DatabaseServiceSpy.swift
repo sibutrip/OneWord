@@ -10,6 +10,11 @@ import CloudKit
 @testable import OneWord
 
 actor DatabaseServiceSpy: DatabaseService {
+    
+    enum Message {
+        case add, fetch, update, fetchChildRecords
+    }
+
     var recordFromDatabase: CKRecord = {
         let ckRecord = CKRecord(recordType: "TestRecord")
         ckRecord["systemUserID"] = "test id"
@@ -26,7 +31,7 @@ actor DatabaseServiceSpy: DatabaseService {
         return [ckRecord, ckRecord]
     }()
     
-    func add<Child, SomeRecord>(_ record: Child, withParent parent: SomeRecord) async throws where Child : OneWord.ChildRecord, SomeRecord : OneWord.Record {
+    func add<Child, SomeRecord>(_ record: Child, withParent parent: SomeRecord) async throws where Child : ChildRecord, SomeRecord : Record {
         if didAddSuccessfully {
             receivedMessages.append(.add)
         } else {
@@ -34,7 +39,7 @@ actor DatabaseServiceSpy: DatabaseService {
         }
     }
     
-    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : OneWord.Record {
+    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : Record {
         if didFetchSuccessfully {
             receivedMessages.append(.fetch)
             return SomeRecord(from: recordFromDatabase)!
@@ -43,7 +48,7 @@ actor DatabaseServiceSpy: DatabaseService {
         }
     }
     
-    func update<Child, SomeRecord>(_ record: Child, addingParent parent: SomeRecord) async throws where Child : OneWord.ChildRecord, SomeRecord : OneWord.Record {
+    func update<Child, SomeRecord>(_ record: Child, addingParent parent: SomeRecord) async throws where Child : ChildRecord, SomeRecord : Record {
         if didUpdateSuccessfully {
             receivedMessages.append(.update)
         } else {
@@ -51,7 +56,7 @@ actor DatabaseServiceSpy: DatabaseService {
         }
     }
     
-    func childRecords<Child, ParentRecord>(of parent: ParentRecord) async throws -> [Child] where Child : OneWord.ChildRecord, ParentRecord : OneWord.Record {
+    func childRecords<Child, ParentRecord>(of parent: ParentRecord) async throws -> [Child] where Child : ChildRecord, ParentRecord : Record {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)
             return childRecordsFromDatabase.map { Child(from: $0)! }
@@ -67,10 +72,6 @@ actor DatabaseServiceSpy: DatabaseService {
     let didFetchChildRecordsSuccessfully: Bool
         
     var receivedMessages: [Message] = []
-    
-    enum Message {
-        case add, fetch, update, fetchChildRecords
-    }
         
     init(
         didAddSuccessfully: Bool = true,
