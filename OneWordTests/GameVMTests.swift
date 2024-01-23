@@ -50,10 +50,11 @@ final class GameViewModelTests: XCTestCase {
         let (sut, _) = makeSUT()
         let game = GameModel(withName: "Test Group")
         sut.currentGame = game
+        let userIDToAdd = "Some Unique ID"
         
-        try await sut.addUser(withId: "Some Unique ID")
+        try await sut.addUser(withId: userIDToAdd)
         
-        XCTAssertTrue(true)
+        XCTAssertEqual(sut.users.count, 2)
     }
     
     func test_addUser_throwsIfCurrentGameIsNil() async throws {
