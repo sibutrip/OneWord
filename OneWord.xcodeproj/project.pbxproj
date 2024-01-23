@@ -18,6 +18,8 @@
 		7454A3A52B5F0887006357C8 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A42B5F0887006357C8 /* GameModel.swift */; };
 		7454A3A72B5F089E006357C8 /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A62B5F089E006357C8 /* CloudKitService.swift */; };
 		7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */; };
+		74A6B1642B60158D00ED0901 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1632B60158D00ED0901 /* Record.swift */; };
+		74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1652B60162900ED0901 /* ChildRecord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		7454A3A42B5F0887006357C8 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		7454A3A62B5F089E006357C8 /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
 		7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
+		74A6B1632B60158D00ED0901 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		74A6B1652B60162900ED0901 /* ChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,8 +130,8 @@
 			isa = PBXGroup;
 			children = (
 				7454A39F2B5EF9D7006357C8 /* User.swift */,
-				7454A3A62B5F089E006357C8 /* CloudKitService.swift */,
 				7454A3A42B5F0887006357C8 /* GameModel.swift */,
+				7454A3A62B5F089E006357C8 /* CloudKitService.swift */,
 				7454A3AC2B5F0998006357C8 /* Protocols */,
 			);
 			path = Models;
@@ -137,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */,
+				74A6B1632B60158D00ED0901 /* Record.swift */,
+				74A6B1652B60162900ED0901 /* ChildRecord.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -245,8 +251,10 @@
 				7454A3A02B5EF9D7006357C8 /* User.swift in Sources */,
 				7454A3762B5968D7006357C8 /* ContentView.swift in Sources */,
 				7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */,
+				74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */,
 				7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */,
 				7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */,
+				74A6B1642B60158D00ED0901 /* Record.swift in Sources */,
 				7454A3A52B5F0887006357C8 /* GameModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

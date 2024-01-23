@@ -11,19 +11,20 @@ import XCTest
 final class GameViewModelTests: XCTestCase {
     typealias GameViewModelError = GameViewModel.GameViewModelError
     
-    func test_init_setsUserToLocalUser() {
-        let localUser = User(name: "Cory")
+    func test_init_setsUserToLocalUserAndAddsToUsersArray() {
+        let localUser = User(withName: "Cory")
         let database = DatabaseServiceSpy()
         
         let sut = GameViewModel(withUser: localUser, database: database)
         
         XCTAssertEqual(sut.localUser, localUser)
+        XCTAssertEqual(sut.users, [localUser])
     }
     
     func test_createGame_addsNewGameToDatabaseWithUserAsParent() async throws {
         let (sut, databaseService) = makeSUT(withDatabaseExpectation: .didAddGameWithParent)
         
-        try await sut.createGame()
+        try await sut.createGame(withGroupName: "Test Group")
         
         await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
         let receivedMessages = await databaseService.receivedMessages
@@ -33,7 +34,7 @@ final class GameViewModelTests: XCTestCase {
     func test_createGame_assignsGameToViewModelIfCreatedSuccessfully() async throws {
         let (sut, databaseService) = makeSUT(withDatabaseExpectation: .didAddGameWithParent)
         
-        try await sut.createGame()
+        try await sut.createGame(withGroupName: "Test Group")
         
         await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
         XCTAssertNotNil(sut.currentGame)
@@ -43,7 +44,7 @@ final class GameViewModelTests: XCTestCase {
         let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
         
         await assertDoesThrow(test: {
-            try await sut.createGame()
+            try await sut.createGame(withGroupName: "Test Group")
         }, throws: .couldNotCreateGame)
     }
     
@@ -52,7 +53,7 @@ final class GameViewModelTests: XCTestCase {
     private func makeSUT(
         withDatabaseExpectation expectation: DatabaseServiceExpectation? = nil,
         databaseDidAddSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
-            let localUser = User(name: "Cory")
+            let localUser = User(withName: "Cory")
             let database = DatabaseServiceSpy(withExpectation: expectation, didAddToDatabaseSuccessfully: databaseDidAddSuccessfully)
             return (GameViewModel(withUser: localUser, database: database), database)
         }

@@ -10,6 +10,24 @@ import XCTest
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
+    func add<Child, SomeRecord>(_ record: Child, withParent parent: SomeRecord) async throws where Child : OneWord.ChildRecord, SomeRecord : OneWord.Record {
+        if didAddToDatabaseSuccessfully {
+            receivedMessages.append(.add)
+            expectation?.fulfill()
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 0)
+        }
+    }
+    
+    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : OneWord.Record {
+        fatalError("not implemented")
+    }
+    
+    func update<Child, SomeRecord>(_ record: Child, addingParent parent: SomeRecord) async throws where Child : OneWord.ChildRecord, SomeRecord : OneWord.Record {
+        fatalError("not implemented")
+    }
+    
+    
     var didAddToDatabaseSuccessfully = true
     
     var expectation: XCTestExpectation?
@@ -18,15 +36,6 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
     enum Message {
         case add
-    }
-    
-    func add(_ game: GameModel, withParent parent: User) async throws {
-        if didAddToDatabaseSuccessfully {
-            receivedMessages.append(.add)
-            expectation?.fulfill()
-        } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 0)
-        }
     }
         
     init(

@@ -6,5 +6,7 @@
 //
 
 protocol DatabaseServiceProtocol: Actor {
-    func add(_ game: GameModel, withParent parent: User) async throws
+    func add<Child: ChildRecord, SomeRecord: Record>(_ record: Child, withParent parent: SomeRecord) async throws
+    func fetch<SomeRecord: Record>(withID recordID: String) async throws -> SomeRecord
+    func update<Child: ChildRecord, SomeRecord: Record>(_ record: Child, addingParent parent: SomeRecord) async throws
 }
