@@ -64,6 +64,16 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .noCurrentGame)
     }
     
+    func test_addUser_throwsIfUserToAddNotInDatabase() async throws {
+        let (sut, _) = makeSUT(databaseDidFetchSuccessfully: false)
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+
+        await assertDoesThrow(test: {
+            try await sut.addUser(withId: "Some Unique ID")
+        }, throws: .userNotFound)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(
@@ -86,9 +96,9 @@ final class GameViewModelTests: XCTestCase {
             XCTAssert(true)
             return
         } catch {
-            XCTFail("expected \(expectedError.localizedDescription) error and got \(error.localizedDescription)")
+            XCTFail("expected \(expectedError) error and got \(error)")
             return
         }
-        XCTFail("expected \(expectedError.localizedDescription) error but did not throw error")
+        XCTFail("expected \(expectedError) error but did not throw error")
     }
 }

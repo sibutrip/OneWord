@@ -44,8 +44,14 @@ class GameViewModel {
     /// - Throws `GameViewModelError.couldNotAddUserToGame` if could not update `Game` and `User` records in the database.
     func addUser(withId userID: String) async throws {
         guard let currentGame else { throw GameViewModelError.noCurrentGame }
-        let userToAdd: User = try await databaseService.fetch(withID: userID)
-        try await databaseService.update(currentGame, addingParent: userToAdd)
-        self.users.append(userToAdd)
+        guard let userToAdd: User = (try? await databaseService.fetch(withID: userID)) else {
+            throw GameViewModelError.userNotFound
+        }
+        do {
+            try await databaseService.update(currentGame, addingParent: userToAdd)
+            self.users.append(userToAdd)
+        } catch {
+            throw GameViewModelError.couldNotAddUserToGame
+        }
     }
 }
