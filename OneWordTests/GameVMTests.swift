@@ -48,13 +48,29 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .couldNotCreateGame)
     }
     
+    func test_addUser_addsUserToUsersArrayIfSuccessful() async throws {
+        let (sut, _) = makeSUT()
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+        
+        try await sut.addUser(withId: "Some Unique ID")
+        
+        XCTAssertTrue(true)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(
         withDatabaseExpectation expectation: DatabaseServiceExpectation? = nil,
-        databaseDidAddSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
+        databaseDidAddSuccessfully: Bool = true,
+        databaseDidFetchSuccessfully: Bool = true,
+        databaseDidUpdateSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
             let localUser = User(withName: "Cory")
-            let database = DatabaseServiceSpy(withExpectation: expectation, didAddToDatabaseSuccessfully: databaseDidAddSuccessfully)
+            let database = DatabaseServiceSpy(
+                withExpectation: expectation,
+                didAddSuccessfully: databaseDidAddSuccessfully,
+                didFetchSuccessfully: databaseDidFetchSuccessfully,
+                didUpdateSuccessfully: databaseDidUpdateSuccessfully)
             return (GameViewModel(withUser: localUser, database: database), database)
         }
     

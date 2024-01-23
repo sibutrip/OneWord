@@ -22,23 +22,24 @@ final class User: ChildRecord {
     // MARK: Database Record Keys
     
     var systemUserID: String
-    var name: String
+    let name: String
     
     
     // MARK: Initializers
     
-    required init() {
-        self.id = UUID().uuidString
-        self.name = ""
-        self.systemUserID = ""
+    convenience init?(from record: CKRecord, with parent: GameModel?) {
+        guard let name = record["name"] as? String,
+              let systemUserID = record["systemUserID"] as? String else {
+            return nil
+        }
+        self.init(withName: name)
+        self.id = record.recordID.recordName
+        self.systemUserID = systemUserID
     }
     
-    init?(from record: CKRecord, with parent: GameModel) {
-        fatalError("not implemented yet")
-    }
-    
-    convenience init(withName name: String) {
-        self.init()
+    required init(withName name: String) {
         self.name = name
+        self.systemUserID = ""
+        self.id = UUID().uuidString
     }
 }

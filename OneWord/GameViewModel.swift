@@ -46,6 +46,6 @@ class GameViewModel {
         guard let currentGame else { throw GameViewModelError.noCurrentGame }
         let userToAdd: User = try await databaseService.fetch(withID: userID)
         try await databaseService.update(currentGame, addingParent: userToAdd)
-        
+        self.users.append(userToAdd)
     }
 }

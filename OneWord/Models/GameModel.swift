@@ -27,19 +27,13 @@ final class GameModel: ChildRecord {
     
     // MARK: Initializers
     
-    convenience init(withName name: String) {
-        self.init()
+    required init(withName name: String) {
         self.id = UUID().uuidString
         self.name = name
-    }
-    
-    init?(from record: CKRecord, with parent: User) {
-        fatalError("not implemented yet")
-    }
-    
-    required init() { 
-        self.id = UUID().uuidString
-        self.name = ""
         self.inviteCode = String((0..<6).map { _ in "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".randomElement()! })
+    }
+    
+    init?(from record: CKRecord, with parent: User?) {
+        fatalError("not implemented yet")
     }
 }

@@ -12,11 +12,11 @@ protocol ChildRecord: Record {
 
     var parent: Parent? { get set }
             
-    init?(from record: CKRecord, with parent: Parent)
+    init?(from record: CKRecord, with parent: Parent?)
 }
 
 extension ChildRecord {
     init?(from record: CKRecord) {
-        return nil
+        self.init(from: record, with: nil)
     }
 }
