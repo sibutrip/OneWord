@@ -11,12 +11,12 @@ class GameViewModel {
         case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame
     }
     
-    private let databaseService: DatabaseServiceProtocol
+    private let databaseService: DatabaseService
     let localUser: User
     var users = [User]()
     var currentGame: GameModel?
     
-    init(withUser user: User, database: DatabaseServiceProtocol) {
+    init(withUser user: User, database: DatabaseService) {
         localUser = user
         users.append(user)
         databaseService = database

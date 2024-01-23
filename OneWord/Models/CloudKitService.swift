@@ -7,7 +7,7 @@
 
 import Foundation
 
-actor CloudKitService: DatabaseServiceProtocol {
+actor CloudKitService: DatabaseService {
     func add<Child, SomeRecord>(_ record: Child, withParent parent: SomeRecord) async throws where Child : ChildRecord, SomeRecord : Record {
         fatalError("not yet implemented")
     }

@@ -9,7 +9,7 @@ import XCTest
 import CloudKit
 @testable import OneWord
 
-actor DatabaseServiceSpy: DatabaseServiceProtocol {
+actor DatabaseServiceSpy: DatabaseService {
     private var genericRecord: CKRecord {
         let ckRecord = CKRecord(recordType: "butts")
         ckRecord["systemUserID"] = "test id"
