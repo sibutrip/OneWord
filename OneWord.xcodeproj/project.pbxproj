@@ -94,7 +94,7 @@
 				7454A3732B5968D7006357C8 /* OneWordApp.swift */,
 				7454A3AA2B5F0973006357C8 /* Views */,
 				7454A3AB2B5F098B006357C8 /* Models */,
-				7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */,
+				74A6B1692B60322700ED0901 /* ViewModels */,
 				7454A3772B5968D8006357C8 /* Assets.xcassets */,
 				7454A3792B5968D8006357C8 /* Preview Content */,
 			);
@@ -145,6 +145,14 @@
 				74A6B1652B60162900ED0901 /* ChildRecord.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		74A6B1692B60322700ED0901 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
