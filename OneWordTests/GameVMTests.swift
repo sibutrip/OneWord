@@ -110,6 +110,16 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .noCurrentGame)
     }
     
+    func test_fetchUsersInGame_throwsIfCannotFetchFromDatabase() async throws {
+        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+                
+        await assertDoesThrow(test: {
+            try await sut.fetchUsersInGame()
+        }, throws: .couldNotFetchUsers)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(
