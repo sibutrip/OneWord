@@ -22,21 +22,19 @@ final class GameViewModelTests: XCTestCase {
     }
     
     func test_createGame_addsNewGameToDatabaseWithUserAsParent() async throws {
-        let (sut, databaseService) = makeSUT(withDatabaseExpectation: .didAddGameWithParent)
+        let (sut, databaseService) = makeSUT()
         
         try await sut.createGame(withGroupName: "Test Group")
         
-        await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
         let receivedMessages = await databaseService.receivedMessages
         XCTAssertEqual(receivedMessages, [.add])
     }
     
     func test_createGame_assignsGameToViewModelIfCreatedSuccessfully() async throws {
-        let (sut, databaseService) = makeSUT(withDatabaseExpectation: .didAddGameWithParent)
+        let (sut, databaseService) = makeSUT()
         
         try await sut.createGame(withGroupName: "Test Group")
         
-        await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
         XCTAssertNotNil(sut.currentGame)
     }
     
@@ -58,16 +56,22 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertTrue(true)
     }
     
+    func test_addUser_throwsIfCurrentGameIsNil() async throws {
+        let (sut, _) = makeSUT()
+        
+        await assertDoesThrow(test: {
+            try await sut.addUser(withId: "Some Unique ID")
+        }, throws: .noCurrentGame)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(
-        withDatabaseExpectation expectation: DatabaseServiceExpectation? = nil,
         databaseDidAddSuccessfully: Bool = true,
         databaseDidFetchSuccessfully: Bool = true,
         databaseDidUpdateSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
             let localUser = User(withName: "Cory")
             let database = DatabaseServiceSpy(
-                withExpectation: expectation,
                 didAddSuccessfully: databaseDidAddSuccessfully,
                 didFetchSuccessfully: databaseDidFetchSuccessfully,
                 didUpdateSuccessfully: databaseDidUpdateSuccessfully)
