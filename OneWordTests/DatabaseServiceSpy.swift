@@ -37,6 +37,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
 }
 
+/// Expectations called for asynchronous methods that should not throw when tested.
 enum DatabaseServiceExpectation {
     case didAddGameWithParent
     var expectation: XCTestExpectation {

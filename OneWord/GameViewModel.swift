@@ -8,6 +8,7 @@
 class GameViewModel {
     private let databaseService: DatabaseServiceProtocol
     let localUser: User
+    var game: GameModel?
     
     init(withUser user: User, database: DatabaseServiceProtocol) {
         localUser = user
@@ -17,5 +18,10 @@ class GameViewModel {
     func createGame() async throws {
         let newGame = GameModel()
         try await databaseService.add(newGame, withParent: localUser)
+        self.game = newGame
     }
+    
+//    func addUser(withId userID: String) async throws {
+//        let userToAdd = try await databaseService.fetch(fromID: userID)
+//    }
 }

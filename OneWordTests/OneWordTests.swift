@@ -20,13 +20,22 @@ final class GameViewModelTests: XCTestCase {
     }
     
     func test_createGame_addsNewGameToDatabaseWithUserAsParent() async throws {
-        let (sut, databaseService) = makeSUT(withExpectation: .didAddGameWithParent)
+        let (sut, databaseService) = makeSUT(withDatabaseExpectation: .didAddGameWithParent)
         
         try await sut.createGame()
         
         await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
         let receivedMessages = await databaseService.receivedMessages
         XCTAssertEqual(receivedMessages, [.add])
+    }
+    
+    func test_createGame_assignsGameToViewModelIfCreatedSuccessfully() async throws {
+        let (sut, databaseService) = makeSUT(withDatabaseExpectation: .didAddGameWithParent)
+        
+        try await sut.createGame()
+        
+        await fulfillment(of: [databaseService.expectation!], timeout: 0.5)
+        XCTAssertNotNil(sut.game)
     }
     
     func test_createGame_throwsIfCannotAddGameToDatabase() async throws {
@@ -40,7 +49,7 @@ final class GameViewModelTests: XCTestCase {
     // MARK: Helper Methods
     
     private func makeSUT(
-        withExpectation expectation: DatabaseServiceExpectation? = nil,
+        withDatabaseExpectation expectation: DatabaseServiceExpectation? = nil,
         databaseDidAddSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
             let localUser = User(name: "Cory")
             let database = DatabaseServiceSpy(withExpectation: expectation, didAddToDatabaseSuccessfully: databaseDidAddSuccessfully)
