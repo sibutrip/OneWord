@@ -47,7 +47,7 @@ final class GameViewModelTests: XCTestCase {
     }
     
     func test_addUser_addsUserToUsersArrayIfSuccessful() async throws {
-        let (sut, _) = makeSUT()
+        let (sut, database) = makeSUT()
         let game = GameModel(withName: "Test Group")
         sut.currentGame = game
         let userIDToAdd = "Some Unique ID"
@@ -55,6 +55,8 @@ final class GameViewModelTests: XCTestCase {
         try await sut.addUser(withId: userIDToAdd)
         
         XCTAssertEqual(sut.users.count, 2)
+        let receivedMessages = await database.receivedMessages
+        XCTAssertEqual(receivedMessages, [.fetch, .update])
     }
     
     func test_addUser_throwsIfCurrentGameIsNil() async throws {
