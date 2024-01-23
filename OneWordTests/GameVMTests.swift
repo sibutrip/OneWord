@@ -102,6 +102,14 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(receivedMessages, [.fetchChildRecords])
     }
     
+    func test_fetchUsersInGame_throwsIfCurrentGameIsNil() async throws {
+        let (sut, _) = makeSUT()
+                
+        await assertDoesThrow(test: {
+            try await sut.fetchUsersInGame()
+        }, throws: .noCurrentGame)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(
