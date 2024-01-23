@@ -31,7 +31,7 @@ final class GameViewModelTests: XCTestCase {
     }
     
     func test_createGame_assignsGameToViewModelIfCreatedSuccessfully() async throws {
-        let (sut, databaseService) = makeSUT()
+        let (sut, _) = makeSUT()
         
         try await sut.createGame(withGroupName: "Test Group")
         
@@ -72,6 +72,16 @@ final class GameViewModelTests: XCTestCase {
         await assertDoesThrow(test: {
             try await sut.addUser(withId: "Some Unique ID")
         }, throws: .userNotFound)
+    }
+    
+    func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async throws {
+        let (sut, _) = makeSUT(databaseDidUpdateSuccessfully: false)
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+
+        await assertDoesThrow(test: {
+            try await sut.addUser(withId: "Some Unique ID")
+        }, throws: .couldNotAddUserToGame)
     }
     
     // MARK: Helper Methods
