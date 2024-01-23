@@ -87,17 +87,32 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .couldNotAddUserToGame)
     }
     
+    func test_fetchUsersInGame_populatesUsersFromDatabase() async throws {
+        let (sut, database) = makeSUT()
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+        
+        try await sut.fetchUsersInGame()
+        
+        let expectedUsers = await database.childRecordsFromDatabase.map {
+            User(from: $0)!
+        }
+        XCTAssertEqual(sut.users, expectedUsers)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(
         databaseDidAddSuccessfully: Bool = true,
         databaseDidFetchSuccessfully: Bool = true,
-        databaseDidUpdateSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
+        databaseDidUpdateSuccessfully: Bool = true,
+        databaseDidFetchChildRecordsSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
             let localUser = User(withName: "Cory")
             let database = DatabaseServiceSpy(
                 didAddSuccessfully: databaseDidAddSuccessfully,
                 didFetchSuccessfully: databaseDidFetchSuccessfully,
-                didUpdateSuccessfully: databaseDidUpdateSuccessfully)
+                didUpdateSuccessfully: databaseDidUpdateSuccessfully,
+                didFetchChildRecordsSuccessfully: databaseDidFetchChildRecordsSuccessfully)
             return (GameViewModel(withUser: localUser, database: database), database)
         }
     

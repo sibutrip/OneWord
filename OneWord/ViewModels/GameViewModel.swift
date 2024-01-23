@@ -8,7 +8,7 @@
 class GameViewModel {
     
     enum GameViewModelError: Error {
-        case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame
+        case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers
     }
     
     private let databaseService: DatabaseService
@@ -23,7 +23,7 @@ class GameViewModel {
     }
     
     /// Creates new game and updates database with one-to-many relationship.
-    ///  
+    ///
     /// Subsequent added users should also have `Game` as a child record of their `User` record.
     /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
     func createGame(withGroupName name: String) async throws {
@@ -53,5 +53,15 @@ class GameViewModel {
         } catch {
             throw GameViewModelError.couldNotAddUserToGame
         }
+    }
+    
+    /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
+    /// - Throws `GameViewModelError.couldNotFetchUsers` if could not fetch users from database.
+    func fetchUsersInGame() async throws {
+        guard let currentGame else { throw GameViewModelError.noCurrentGame }
+        guard let users: [User] = (try? await databaseService.childRecords(of: currentGame)) else {
+            throw GameViewModelError.couldNotFetchUsers
+        }
+        self.users = users
     }
 }
