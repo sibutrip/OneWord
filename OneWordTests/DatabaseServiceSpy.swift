@@ -53,7 +53,7 @@ actor DatabaseServiceSpy: DatabaseService {
     
     func childRecords<Child, ParentRecord>(of parent: ParentRecord) async throws -> [Child] where Child : OneWord.ChildRecord, ParentRecord : OneWord.Record {
         if didFetchChildRecordsSuccessfully {
-            receivedMessages.append(.add)
+            receivedMessages.append(.fetchChildRecords)
             return childRecordsFromDatabase.map { Child(from: $0)! }
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 3)

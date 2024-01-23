@@ -98,6 +98,8 @@ final class GameViewModelTests: XCTestCase {
             User(from: $0)!
         }
         XCTAssertEqual(sut.users, expectedUsers)
+        let receivedMessages = await database.receivedMessages
+        XCTAssertEqual(receivedMessages, [.fetchChildRecords])
     }
     
     // MARK: Helper Methods
