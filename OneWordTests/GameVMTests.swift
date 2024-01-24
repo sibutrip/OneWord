@@ -150,6 +150,18 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .couldNotCreateRound)
     }
     
+    func test_fetchPreviousRounds_addsRoundsToPreviousRoundsIfSuccessful() async throws {
+        let (sut, database) = makeSUT()
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+        
+        try await sut.fetchPreviousRounds()
+
+        XCTAssertEqual(sut.previousRounds.count, 2)
+        let receivedMessages = await database.receivedMessages
+        XCTAssertEqual(receivedMessages, [.fetchChildRecords])
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(

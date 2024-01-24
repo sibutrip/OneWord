@@ -28,6 +28,7 @@ actor DatabaseServiceSpy: DatabaseService {
         ckRecord["systemUserID"] = "test id"
         ckRecord["name"] = "test name"
         ckRecord["inviteCode"] = "test invite code"
+        ckRecord["roundNumber"] = 1
         return [ckRecord, ckRecord]
     }()
     
