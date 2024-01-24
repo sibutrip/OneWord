@@ -140,6 +140,16 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .noCurrentGame)
     }
     
+    func test_startRound_throwsIfCouldNotAddGameToDatabase() async throws {
+        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+        
+        await assertDoesThrow(test: {
+            try await sut.startRound()
+        }, throws: .couldNotCreateRound)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(

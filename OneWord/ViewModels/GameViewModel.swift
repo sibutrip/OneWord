@@ -77,7 +77,7 @@ class GameViewModel {
             try await databaseService.add(newRound, withParent: currentGame)
             currentRound = newRound
         } catch {
-            throw GameViewModelError.couldNotCreateGame
+            throw GameViewModelError.couldNotCreateRound
         }
     }
     
