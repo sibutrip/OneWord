@@ -38,7 +38,7 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertNotNil(sut.currentGame)
     }
     
-    func test_createGame_throwsIfCannotAddGameToDatabase() async throws {
+    func test_createGame_throwsIfCannotAddGameToDatabase() async {
         let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
         
         await assertDoesThrow(test: {
@@ -59,7 +59,7 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(receivedMessages, [.fetch, .update])
     }
     
-    func test_addUser_throwsIfCurrentGameIsNil() async throws {
+    func test_addUser_throwsIfCurrentGameIsNil() async {
         let (sut, _) = makeSUT()
         
         await assertDoesThrow(test: {
@@ -67,7 +67,7 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .noCurrentGame)
     }
     
-    func test_addUser_throwsIfUserToAddNotInDatabase() async throws {
+    func test_addUser_throwsIfUserToAddNotInDatabase() async {
         let (sut, _) = makeSUT(databaseDidFetchSuccessfully: false)
         let game = GameModel(withName: "Test Group")
         sut.currentGame = game
@@ -77,7 +77,7 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .userNotFound)
     }
     
-    func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async throws {
+    func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async {
         let (sut, _) = makeSUT(databaseDidUpdateSuccessfully: false)
         let game = GameModel(withName: "Test Group")
         sut.currentGame = game
@@ -102,7 +102,7 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(receivedMessages, [.fetchChildRecords])
     }
     
-    func test_fetchUsersInGame_throwsIfCurrentGameIsNil() async throws {
+    func test_fetchUsersInGame_throwsIfCurrentGameIsNil() async {
         let (sut, _) = makeSUT()
                 
         await assertDoesThrow(test: {
@@ -110,7 +110,7 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .noCurrentGame)
     }
     
-    func test_fetchUsersInGame_throwsIfCannotFetchFromDatabase() async throws {
+    func test_fetchUsersInGame_throwsIfCannotFetchFromDatabase() async {
         let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
         let game = GameModel(withName: "Test Group")
         sut.currentGame = game
@@ -132,7 +132,7 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(receivedMessages, [.add])
     }
     
-    func test_startRound_throwsIfCurrentGameIsNil() async throws {
+    func test_startRound_throwsIfCurrentGameIsNil() async {
         let (sut, _) = makeSUT()
         
         await assertDoesThrow(test: {
@@ -140,7 +140,7 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .noCurrentGame)
     }
     
-    func test_startRound_throwsIfCouldNotAddGameToDatabase() async throws {
+    func test_startRound_throwsIfCouldNotAddGameToDatabase() async {
         let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
         let game = GameModel(withName: "Test Group")
         sut.currentGame = game
@@ -162,12 +162,22 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(receivedMessages, [.fetchChildRecords])
     }
     
-    func test_fetchPreviousRounds_throwsIfCurrentGameIsNil() async throws {
+    func test_fetchPreviousRounds_throwsIfCurrentGameIsNil() async {
         let (sut, _) = makeSUT()
         
         await assertDoesThrow(test: {
             try await sut.fetchPreviousRounds()
         }, throws: .noCurrentGame)
+    }
+    
+    func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
+        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+        
+        await assertDoesThrow(test: {
+            try await sut.fetchPreviousRounds()
+        }, throws: .couldNotFetchRounds)
     }
     
     // MARK: Helper Methods
