@@ -21,6 +21,8 @@
 		74A6B1642B60158D00ED0901 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1632B60158D00ED0901 /* Record.swift */; };
 		74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1652B60162900ED0901 /* ChildRecord.swift */; };
 		74F026992B61A2F400ED9B20 /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F026982B61A2F400ED9B20 /* Round.swift */; };
+		74F0269B2B61AF6D00ED9B20 /* RoundVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */; };
+		74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,8 @@
 		74A6B1632B60158D00ED0901 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		74A6B1652B60162900ED0901 /* ChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildRecord.swift; sourceTree = "<group>"; };
 		74F026982B61A2F400ED9B20 /* Round.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
+		74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundVMTests.swift; sourceTree = "<group>"; };
+		74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				7454A3842B5968D8006357C8 /* GameVMTests.swift */,
+				74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */,
 				7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */,
 			);
 			path = OneWordTests;
@@ -154,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */,
+				74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -268,6 +274,7 @@
 				74A6B1642B60158D00ED0901 /* Record.swift in Sources */,
 				74F026992B61A2F400ED9B20 /* Round.swift in Sources */,
 				7454A3A52B5F0887006357C8 /* GameModel.swift in Sources */,
+				74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +284,7 @@
 			files = (
 				7454A3A32B5F0802006357C8 /* DatabaseServiceSpy.swift in Sources */,
 				7454A3852B5968D8006357C8 /* GameVMTests.swift in Sources */,
+				74F0269B2B61AF6D00ED9B20 /* RoundVMTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
