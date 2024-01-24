@@ -20,6 +20,7 @@
 		7454A3A92B5F08AB006357C8 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A82B5F08AB006357C8 /* DatabaseService.swift */; };
 		74A6B1642B60158D00ED0901 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1632B60158D00ED0901 /* Record.swift */; };
 		74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1652B60162900ED0901 /* ChildRecord.swift */; };
+		74F026992B61A2F400ED9B20 /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F026982B61A2F400ED9B20 /* Round.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		7454A3A82B5F08AB006357C8 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		74A6B1632B60158D00ED0901 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		74A6B1652B60162900ED0901 /* ChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildRecord.swift; sourceTree = "<group>"; };
+		74F026982B61A2F400ED9B20 /* Round.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				7454A39F2B5EF9D7006357C8 /* User.swift */,
+				74F026982B61A2F400ED9B20 /* Round.swift */,
 				7454A3A42B5F0887006357C8 /* GameModel.swift */,
 				7454A3A62B5F089E006357C8 /* CloudKitService.swift */,
 				7454A3AC2B5F0998006357C8 /* Protocols */,
@@ -263,6 +266,7 @@
 				7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */,
 				7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */,
 				74A6B1642B60158D00ED0901 /* Record.swift in Sources */,
+				74F026992B61A2F400ED9B20 /* Round.swift in Sources */,
 				7454A3A52B5F0887006357C8 /* GameModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

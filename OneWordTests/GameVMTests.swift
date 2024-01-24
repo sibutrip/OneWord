@@ -120,6 +120,18 @@ final class GameViewModelTests: XCTestCase {
         }, throws: .couldNotFetchUsers)
     }
     
+    func test_startRound_addsNewRoundAndUploadsToDatabase() async throws {
+        let (sut, database) = makeSUT()
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+        
+        try await sut.startRound()
+        
+        XCTAssertNotNil(sut.currentRound)
+        let receivedMessages = await database.receivedMessages
+        XCTAssertEqual(receivedMessages, [.add])
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(
