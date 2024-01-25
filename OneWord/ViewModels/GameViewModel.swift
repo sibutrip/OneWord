@@ -31,8 +31,10 @@ class GameViewModel {
     /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
     func createGame(withGroupName name: String) async throws {
         let newGame = GameModel(withName: name)
+        #warning("update tests for usergame relationship")
+        let userGameRelationship = UserGameRelationship(user: localUser, game: newGame)
         do {
-            try await databaseService.add(newGame, withParent: localUser)
+            try await databaseService.add(userGameRelationship, withParent: localUser, andSecondParent: newGame)
             self.currentGame = newGame
         } catch {
             throw GameViewModelError.couldNotCreateGame
@@ -50,8 +52,10 @@ class GameViewModel {
         guard let userToAdd: User = (try? await databaseService.fetch(withID: userID)) else {
             throw GameViewModelError.userNotFound
         }
+#warning("update tests for usergame relationship")
+        let userGameRelationship = UserGameRelationship(user: userToAdd, game: currentGame)
         do {
-            try await databaseService.update(currentGame, addingParent: userToAdd)
+            try await databaseService.add(userGameRelationship, withParent: userToAdd, andSecondParent: currentGame)
             self.users.append(userToAdd)
         } catch {
             throw GameViewModelError.couldNotAddUserToGame
@@ -62,10 +66,10 @@ class GameViewModel {
     /// - Throws `GameViewModelError.couldNotFetchUsers` if could not fetch users from database.
     func fetchUsersInGame() async throws {
         guard let currentGame else { throw GameViewModelError.noCurrentGame }
-        guard let users: [User] = (try? await databaseService.childRecords(of: currentGame)) else {
-            throw GameViewModelError.couldNotFetchUsers
+        guard let usersInGame: [User] = (try? await databaseService.fetchManyToManyRecords(from: currentGame)) else {
+            fatalError("todo: come up with error here")
         }
-        self.users = users
+        self.users = usersInGame
     }
     
     /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.

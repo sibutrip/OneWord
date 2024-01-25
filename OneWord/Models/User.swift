@@ -7,7 +7,9 @@
 
 import CloudKit
 
-final class User: ChildRecord {
+final class User: ManyToManyRecord {
+    
+    typealias RelatedRecord = GameModel
     
     enum RecordKeys: String, CaseIterable {
         case systemUserID, name
@@ -27,7 +29,7 @@ final class User: ChildRecord {
     
     // MARK: Initializers
     
-    convenience init?(from record: CKRecord, with parent: GameModel?) {
+    convenience init?(from record: CKRecord) {
         guard let name = record["name"] as? String,
               let systemUserID = record["systemUserID"] as? String else {
             return nil

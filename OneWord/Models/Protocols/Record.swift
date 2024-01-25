@@ -24,12 +24,16 @@ extension Record {
         let propertiesMirrored = Mirror(reflecting: self)
         for recordKey in Self.RecordKeys.allCases.compactMap({ $0.rawValue as? String }) {
             if let propertyLabel = propertiesMirrored.children.first(where: { label, value in
-                guard let label = label else {
+                guard let label else {
                     return false
                 }
                 return label == recordKey
             }) {
-                record.setValue(propertyLabel.value, forKey: recordKey)
+                if let propertyAsRecord = propertyLabel.value as? any Record {
+                    record.setValue(propertyAsRecord.reference, forKey: recordKey)
+                } else {
+                    record.setValue(propertyLabel.value, forKey: recordKey)
+                }
             }
         }
         return record

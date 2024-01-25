@@ -7,7 +7,10 @@
 
 import CloudKit
 
-final class GameModel: ChildRecord {
+final class GameModel: ManyToManyRecord {
+    
+    typealias RelatedRecord = User
+
 
     enum RecordKeys: String, CaseIterable {
         case inviteCode, name
@@ -16,7 +19,6 @@ final class GameModel: ChildRecord {
     static let recordType = "Game"
     
     var id: String
-    var parent: User?
     
     
     // MARK: Database Record Keys
@@ -33,7 +35,7 @@ final class GameModel: ChildRecord {
         self.inviteCode = String((0..<6).map { _ in "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".randomElement()! })
     }
     
-    init?(from record: CKRecord, with parent: User?) {
+    init?(from record: CKRecord) {
         fatalError("not implemented yet")
     }
 }
