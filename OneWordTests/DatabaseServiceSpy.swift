@@ -10,9 +10,60 @@ import CloudKit
 @testable import OneWord
 
 actor DatabaseServiceSpy: DatabaseService {
+    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : OneWord.Record {
+        if didFetchSuccessfully {
+            receivedMessages.append(.fetch)
+            return SomeRecord(from: recordFromDatabase)!
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 3)
+        }
+    }
+    
+    func add<Child>(_ record: Child, withParent parent: Child.Parent) async throws where Child : OneWord.ChildRecord {
+        if didAddSuccessfully {
+            receivedMessages.append(.add)
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 0)
+        }
+    }
+    
+    func add<Child>(_ record: Child, withParent parent: Child.Parent, andSecondParent: Child.SecondParent) async throws where Child : OneWord.TwoParentsChildRecord {
+        if didAddSuccessfully {
+            receivedMessages.append(.add)
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 0)
+        }
+    }
+    
+    func update<Child>(_ record: Child, addingParent parent: Child.Parent) async throws where Child : OneWord.ChildRecord {
+        if didUpdateSuccessfully {
+            receivedMessages.append(.update)
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 2)
+        }
+    }
+    
+    func childRecords<Child>(of parent: Child.Parent) async throws -> [Child] where Child : OneWord.ChildRecord {
+        if didFetchChildRecordsSuccessfully {
+            receivedMessages.append(.fetchChildRecords)
+            return childRecordsFromDatabase.map { Child(from: $0)! }
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 3)
+        }
+    }
+    
+    func fetchManyToManyRecords<FromRecord>(from: FromRecord) async throws -> [FromRecord.RelatedRecord] where FromRecord : OneWord.ManyToManyRecord {
+        if didFetchChildRecordsSuccessfully {
+            receivedMessages.append(.fetchManyToMany)
+            return childRecordsFromDatabase.map { FromRecord.RelatedRecord(from: $0)! }
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 3)
+        }
+    }
+    
     
     enum Message {
-        case add, fetch, update, fetchChildRecords
+        case add, fetch, update, fetchChildRecords, fetchManyToMany
     }
 
     var recordFromDatabase: CKRecord = {
@@ -31,40 +82,6 @@ actor DatabaseServiceSpy: DatabaseService {
         ckRecord["roundNumber"] = 1
         return [ckRecord, ckRecord]
     }()
-    
-    func add<Child, SomeRecord>(_ record: Child, withParent parent: SomeRecord) async throws where Child : ChildRecord, SomeRecord : Record {
-        if didAddSuccessfully {
-            receivedMessages.append(.add)
-        } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 0)
-        }
-    }
-    
-    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : Record {
-        if didFetchSuccessfully {
-            receivedMessages.append(.fetch)
-            return SomeRecord(from: recordFromDatabase)!
-        } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 1)
-        }
-    }
-    
-    func update<Child, SomeRecord>(_ record: Child, addingParent parent: SomeRecord) async throws where Child : ChildRecord, SomeRecord : Record {
-        if didUpdateSuccessfully {
-            receivedMessages.append(.update)
-        } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 2)
-        }
-    }
-    
-    func childRecords<Child, ParentRecord>(of parent: ParentRecord) async throws -> [Child] where Child : ChildRecord, ParentRecord : Record {
-        if didFetchChildRecordsSuccessfully {
-            receivedMessages.append(.fetchChildRecords)
-            return childRecordsFromDatabase.map { Child(from: $0)! }
-        } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 3)
-        }
-    }
     
     
     let didAddSuccessfully: Bool

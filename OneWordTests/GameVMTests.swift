@@ -56,7 +56,7 @@ final class GameViewModelTests: XCTestCase {
         
         XCTAssertEqual(sut.users.count, 2)
         let receivedMessages = await database.receivedMessages
-        XCTAssertEqual(receivedMessages, [.fetch, .update])
+        XCTAssertEqual(receivedMessages, [.fetch, .add])
     }
     
     func test_addUser_throwsIfCurrentGameIsNil() async {
@@ -78,7 +78,7 @@ final class GameViewModelTests: XCTestCase {
     }
     
     func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async {
-        let (sut, _) = makeSUT(databaseDidUpdateSuccessfully: false)
+        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
         let game = GameModel(withName: "Test Group")
         sut.currentGame = game
 
@@ -99,7 +99,7 @@ final class GameViewModelTests: XCTestCase {
         }
         XCTAssertEqual(sut.users, expectedUsers)
         let receivedMessages = await database.receivedMessages
-        XCTAssertEqual(receivedMessages, [.fetchChildRecords])
+        XCTAssertEqual(receivedMessages, [.fetchManyToMany])
     }
     
     func test_fetchUsersInGame_throwsIfCurrentGameIsNil() async {

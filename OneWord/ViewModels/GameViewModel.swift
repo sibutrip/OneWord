@@ -31,7 +31,6 @@ class GameViewModel {
     /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
     func createGame(withGroupName name: String) async throws {
         let newGame = GameModel(withName: name)
-        #warning("update tests for usergame relationship")
         let userGameRelationship = UserGameRelationship(user: localUser, game: newGame)
         do {
             try await databaseService.add(userGameRelationship, withParent: localUser, andSecondParent: newGame)
@@ -52,7 +51,6 @@ class GameViewModel {
         guard let userToAdd: User = (try? await databaseService.fetch(withID: userID)) else {
             throw GameViewModelError.userNotFound
         }
-#warning("update tests for usergame relationship")
         let userGameRelationship = UserGameRelationship(user: userToAdd, game: currentGame)
         do {
             try await databaseService.add(userGameRelationship, withParent: userToAdd, andSecondParent: currentGame)
@@ -67,14 +65,14 @@ class GameViewModel {
     func fetchUsersInGame() async throws {
         guard let currentGame else { throw GameViewModelError.noCurrentGame }
         guard let usersInGame: [User] = (try? await databaseService.fetchManyToManyRecords(from: currentGame)) else {
-            fatalError("todo: come up with error here")
+            throw GameViewModelError.couldNotFetchUsers
         }
         self.users = usersInGame
     }
     
     /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotCreateRound` if `databaseService.add` throws.
-    func startRound() async throws { 
+    func startRound() async throws {
         guard let currentGame else { throw GameViewModelError.noCurrentGame }
         let newRound = Round(roundNumber: 1)
         do {
@@ -87,7 +85,7 @@ class GameViewModel {
     
     /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotFetchRounds` if could not fetch rounds from database.
-    func fetchPreviousRounds() async throws { 
+    func fetchPreviousRounds() async throws {
         guard let currentGame else { throw GameViewModelError.noCurrentGame }
         guard let previousRounds: [Round] = (try? await databaseService.childRecords(of: currentGame)) else {
             throw GameViewModelError.couldNotFetchRounds
