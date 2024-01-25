@@ -9,4 +9,5 @@ import Foundation
 
 protocol ManyToManyRecord: Record { 
     associatedtype RelatedRecord: ManyToManyRecord
+    associatedtype Child: TwoParentsChildRecord
 }

@@ -10,6 +10,7 @@ import CloudKit
 final class User: ManyToManyRecord {
     
     typealias RelatedRecord = GameModel
+    typealias Child = UserGameRelationship
     
     enum RecordKeys: String, CaseIterable {
         case systemUserID, name
