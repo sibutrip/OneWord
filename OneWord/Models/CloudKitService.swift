@@ -35,6 +35,7 @@ actor CloudKitService: DatabaseService {
         fatalError("not yet implemented")
     }
     
+    /// - Throws `CloudKitServiceError.recordNotInDatabase` if no record with given `recordID` exists.
     /// - Throws `CloudKitServiceError.incorrectlyReadingCloudKitData` if `Record` initializer fails with fetched data. Indicates programmer error.
     func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : Record {
         guard let ckRecord = try? await database.record(for: CKRecord.ID(recordName: recordID)) else {

@@ -14,19 +14,32 @@ final class CloudKitServiceTests: XCTestCase {
     private let validID = "some valid ID"
 
     func test_fetch_returnsRecordWithIDFromDatabase() async {
-        let sut = CloudKitService(withContainer: MockCloudContainer())
+        let container = MockCloudContainer()
+        let database = container.public as! MockDatabase
+        let sut = CloudKitService(withContainer: container)
         
         let mockRecord: MockRecord? = try? await sut.fetch(withID: validID)
         
         XCTAssertNotNil(mockRecord)
+        let databaseMessages = await database.messages
+        XCTAssertEqual(databaseMessages, [.record])
     }
     
-    func test_fetch_throwsIfRecordNotInDatabase() async throws {
+    func test_fetch_throwsIfRecordNotInDatabase() async {
         let container = MockCloudContainer(fetchedRecordSuccessfully: false)
         let sut = CloudKitService(withContainer: container)
         
         await assertDoesThrow(test: {
             let _: MockRecord = try await sut.fetch(withID: validID)
         }, throws: CloudKitServiceError.recordNotInDatabase)
+    }
+    
+    func test_fetch_throwsIfTriedToMakeRecordWithIncorrectCKRecord() async {
+        let container = MockCloudContainer(fetchedCorrectRecordType: false)
+        let sut = CloudKitService(withContainer: container)
+        
+        await assertDoesThrow(test: {
+            let _: MockRecord = try await sut.fetch(withID: validID)
+        }, throws: CloudKitServiceError.incorrectlyReadingCloudKitData)
     }
 }

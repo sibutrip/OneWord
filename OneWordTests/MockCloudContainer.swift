@@ -18,7 +18,11 @@ class MockCloudContainer: CloudContainer {
     }
     
     let `public`: Database
-    init(fetchedRecordSuccessfully: Bool = true) {
-        self.public = MockDatabase(fetchedRecordSuccessfully: fetchedRecordSuccessfully)
+    init(fetchedRecordSuccessfully: Bool = true,
+         fetchedCorrectRecordType: Bool = true) {
+        self.public = MockDatabase(
+            fetchedRecordSuccessfully: fetchedRecordSuccessfully,
+            fetchedCorrectRecordType: fetchedCorrectRecordType
+        )
     }
 }

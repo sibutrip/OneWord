@@ -11,6 +11,8 @@ import CloudKit
 actor MockDatabase: Database {
     
     let fetchedRecordSuccessfully: Bool
+    let fetchedCorrectRecordType: Bool
+    var messages: [Message] = []
     
     private var records: [CKRecord] = []
     
@@ -26,7 +28,12 @@ actor MockDatabase: Database {
         ckRecord["round"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
         ckRecord["game"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
         ckRecord["isHost"] = true
+        ckRecord["isWinner"] = true
         return ckRecord
+    }()
+    
+    var incorrectRecordFromDatabase: CKRecord = {
+        return CKRecord(recordType: "TestRecord")
     }()
     
     func save(_ record: CKRecord) async throws -> CKRecord {
@@ -99,13 +106,24 @@ actor MockDatabase: Database {
     
     func record(for recordID: CKRecord.ID) async throws -> CKRecord {
         if fetchedRecordSuccessfully {
-            return recordFromDatabase
+            messages.append(.record)
+            if fetchedCorrectRecordType {
+                return recordFromDatabase
+            } else {
+                return incorrectRecordFromDatabase
+            }
         } else {
             throw NSError(domain: "MockDatabase Error", code: 1)
         }
     }
     
-    init(fetchedRecordSuccessfully: Bool = true) {
+    enum Message {
+        case record
+    }
+    
+    init(fetchedRecordSuccessfully: Bool = true,
+         fetchedCorrectRecordType: Bool = true) {
         self.fetchedRecordSuccessfully = fetchedRecordSuccessfully
+        self.fetchedCorrectRecordType = fetchedCorrectRecordType
     }
 }
