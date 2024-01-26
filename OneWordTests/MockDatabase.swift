@@ -10,8 +10,9 @@ import CloudKit
 
 actor MockDatabase: Database {
     
-    let fetchedRecordSuccessfully: Bool
+    let recordInDatabase: Bool
     let fetchedCorrectRecordType: Bool
+    let connectedToDatabase: Bool
     var messages: [Message] = []
     
     private var records: [CKRecord] = []
@@ -37,11 +38,12 @@ actor MockDatabase: Database {
     }()
     
     func save(_ record: CKRecord) async throws -> CKRecord {
-        if records.contains(where: {$0.recordID == record.recordID }) {
-            throw NSError(domain: "record already in database", code: 0)
+        messages.append(.save)
+        if connectedToDatabase {
+            return record
+        } else {
+            throw NSError(domain: "MockDatabase Error", code: 0)
         }
-        records.append(record)
-        return records.first { $0.recordID == record.recordID }!
     }
     
     func records(matching query: CKQuery, inZoneWith zoneID: CKRecordZone.ID? = nil, desiredKeys: [CKRecord.FieldKey]? = nil, resultsLimit: Int = CKQueryOperation.maximumResults) async throws -> (matchResults: [(CKRecord.ID, Result<CKRecord, Error>)], queryCursor: CKQueryOperation.Cursor?) {
@@ -64,49 +66,20 @@ actor MockDatabase: Database {
     }
     
     func modifyRecords(saving recordsToSave: [CKRecord], deleting recordIDsToDelete: [CKRecord.ID]) async throws -> (saveResults: [CKRecord.ID : Result<CKRecord, Error>], deleteResults: [CKRecord.ID : Result<Void, Error>]) {
-        var savedRecords = [CKRecord]()
-        self.records = records.map { existingRecord in
-            if recordsToSave.contains(where: { $0.recordID == existingRecord.recordID }) {
-                let recordToSave = recordsToSave.first { $0.recordID == existingRecord.recordID } ?? existingRecord
-                savedRecords.append(recordToSave)
-                return recordToSave
-            } else {
-                return existingRecord
-            }
+        messages.append(.modify)
+        if connectedToDatabase {
+            let recordID = recordFromDatabase.recordID
+            let saveResult: Result<CKRecord, Error> = Result.success(recordFromDatabase)
+            let deleteResult: Result<Void,Error> = Result.success(())
+            return (saveResults: [recordID: saveResult], deleteResults: [recordID: deleteResult])
+        } else {
+            throw NSError(domain: "MockDatabase Error", code: 1)
         }
-        var deletedRecordIDs = [CKRecord.ID]()
-        self.records = records.compactMap { existingRecord in
-            if recordIDsToDelete.contains(where: { $0 == existingRecord.recordID }) {
-                let recordIDToDelete = recordIDsToDelete.first { $0 == existingRecord.recordID } ?? existingRecord.recordID
-                deletedRecordIDs.append(recordIDToDelete)
-                return nil
-            } else {
-                return existingRecord
-            }
-        }
-        if savedRecords.isEmpty && deletedRecordIDs.isEmpty {
-            throw NSError(domain: "no records modified", code: 0)
-        }
-        
-        let saveResults: [Result<CKRecord, Error>] = savedRecords.map {
-            .success($0)
-        }
-        let saveIDs = savedRecords.map { $0.recordID }
-        let zippedSavedRecords = zip(saveIDs, saveResults)
-        let saveResultsWithIDs = Dictionary(uniqueKeysWithValues: zippedSavedRecords)
-        
-        let deleteResults: [Result<Void, Error>] = deletedRecordIDs.map { _ in
-                .success({}())
-        }
-        let zippedDeletedRecords = zip(deletedRecordIDs, deleteResults)
-        let deleteResultsWithIDs = Dictionary(uniqueKeysWithValues: zippedDeletedRecords)
-        
-        return (saveResults: saveResultsWithIDs, deleteResults: deleteResultsWithIDs)
     }
     
     func record(for recordID: CKRecord.ID) async throws -> CKRecord {
-        if fetchedRecordSuccessfully {
-            messages.append(.record)
+        messages.append(.record)
+        if recordInDatabase {
             if fetchedCorrectRecordType {
                 return recordFromDatabase
             } else {
@@ -118,12 +91,14 @@ actor MockDatabase: Database {
     }
     
     enum Message {
-        case record
+        case record, save, modify
     }
     
-    init(fetchedRecordSuccessfully: Bool = true,
-         fetchedCorrectRecordType: Bool = true) {
-        self.fetchedRecordSuccessfully = fetchedRecordSuccessfully
+    init(recordInDatabase: Bool = true,
+         fetchedCorrectRecordType: Bool = true,
+         connectedToDatabase: Bool = true) {
+        self.recordInDatabase = recordInDatabase
         self.fetchedCorrectRecordType = fetchedCorrectRecordType
+        self.connectedToDatabase = connectedToDatabase
     }
 }

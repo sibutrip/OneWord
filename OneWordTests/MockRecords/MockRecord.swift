@@ -8,12 +8,12 @@
 @testable import OneWord
 import CloudKit
 
-final class MockRecord: Record {
+struct MockRecord: Record {
     enum RecordKeys: String, CaseIterable {
         case name
     }
     
-    static let recordType = "Mock Record"
+    static let recordType = "MockRecord"
     
     var id: String
     
@@ -25,7 +25,7 @@ final class MockRecord: Record {
     
     // MARK: Initializers
 
-    convenience init?(from record: CKRecord) {
+    init?(from record: CKRecord) {
         guard let name = record["name"] as? String else {
             return nil
         }
@@ -33,7 +33,7 @@ final class MockRecord: Record {
         self.id = record.recordID.recordName
     }
     
-    required init(name: String) {
+    init(name: String) {
         self.name = name
         self.id = UUID().uuidString
     }

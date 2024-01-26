@@ -26,7 +26,7 @@ final class CloudKitServiceTests: XCTestCase {
     }
     
     func test_fetch_throwsIfRecordNotInDatabase() async {
-        let container = MockCloudContainer(fetchedRecordSuccessfully: false)
+        let container = MockCloudContainer(recordInDatabase: false)
         let sut = CloudKitService(withContainer: container)
         
         await assertDoesThrow(test: {
@@ -42,4 +42,20 @@ final class CloudKitServiceTests: XCTestCase {
             let _: MockRecord = try await sut.fetch(withID: validID)
         }, throws: CloudKitServiceError.incorrectlyReadingCloudKitData)
     }
+    
+    func test_addChildWithParent_addsChildAndParentToDatabaseIfParentNotInDatabase() async throws {
+        let container = MockCloudContainer(recordInDatabase: false) // parent not in database
+        let database = container.public as! MockDatabase
+        let sut = CloudKitService(withContainer: container)
+        let childRecord = MockChildRecord(withDescription: "Test")
+        let parentRecord = MockRecord(name: "test")
+        
+        let uploadedChild: MockChildRecord = try await sut.add(childRecord, withParent: parentRecord)
+        
+        XCTAssertNotNil(uploadedChild.mockRecord)
+        let databaseMessages = await database.messages
+        XCTAssertEqual(databaseMessages, [.record, .save, .save])
+    }
+    
+    func test_addChildWithParent_addsChildToDatabaseAndUpdatesParentIfParentInDatabase() async throws { }
 }

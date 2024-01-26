@@ -19,25 +19,28 @@ actor DatabaseServiceSpy: DatabaseService {
         }
     }
     
-    func add<Child>(_ record: Child, withParent parent: Child.Parent) async throws where Child : OneWord.ChildRecord {
+    func add<Child>(_ record: Child, withParent parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)
+            return record
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 0)
         }
     }
     
-    func add<Child>(_ record: Child, withParent parent: Child.Parent, andSecondParent: Child.SecondParent) async throws where Child : OneWord.TwoParentsChildRecord {
+    func add<Child>(_ record: Child, withParent parent: Child.Parent, andSecondParent: Child.SecondParent) async throws -> Child where Child : OneWord.TwoParentsChildRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)
+            return record
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 0)
         }
     }
     
-    func update<Child>(_ record: Child, addingParent parent: Child.Parent) async throws where Child : OneWord.ChildRecord {
+    func update<Child>(_ record: Child, addingParent parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
         if didUpdateSuccessfully {
             receivedMessages.append(.update)
+            return record
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 2)
         }

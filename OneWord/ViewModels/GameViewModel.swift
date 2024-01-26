@@ -12,7 +12,7 @@ class GameViewModel {
     }
     
     private let databaseService: DatabaseService
-    let localUser: User
+    var localUser: User
     var users = [User]()
     var currentGame: GameModel?
     
@@ -33,7 +33,7 @@ class GameViewModel {
         let newGame = GameModel(withName: name)
         let userGameRelationship = UserGameRelationship(user: localUser, game: newGame)
         do {
-            try await databaseService.add(userGameRelationship, withParent: localUser, andSecondParent: newGame)
+            let _ = try await databaseService.add(userGameRelationship, withParent: localUser, andSecondParent: newGame)
             self.currentGame = newGame
         } catch {
             throw GameViewModelError.couldNotCreateGame
@@ -53,7 +53,7 @@ class GameViewModel {
         }
         let userGameRelationship = UserGameRelationship(user: userToAdd, game: currentGame)
         do {
-            try await databaseService.add(userGameRelationship, withParent: userToAdd, andSecondParent: currentGame)
+            let _ = try await databaseService.add(userGameRelationship, withParent: userToAdd, andSecondParent: currentGame)
             self.users.append(userToAdd)
         } catch {
             throw GameViewModelError.couldNotAddUserToGame
@@ -76,8 +76,8 @@ class GameViewModel {
         guard let currentGame else { throw GameViewModelError.noCurrentGame }
         let newRound = Round(roundNumber: 1)
         do {
-            try await databaseService.add(newRound, withParent: currentGame)
-            currentRound = newRound
+            let roundUpdatedInDatabase = try await databaseService.add(newRound, withParent: currentGame)
+            currentRound = roundUpdatedInDatabase
         } catch {
             throw GameViewModelError.couldNotCreateRound
         }

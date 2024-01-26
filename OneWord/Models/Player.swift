@@ -7,7 +7,7 @@
 
 import CloudKit
 
-final class Player: TwoParentsChildRecord {
+struct Player: TwoParentsChildRecord {
     
     typealias Parent = User
     typealias SecondParent = Round
@@ -30,7 +30,7 @@ final class Player: TwoParentsChildRecord {
     
     // MARK: Initializers
     
-    convenience init?(from record: CKRecord, with parent: User?) {
+    init?(from record: CKRecord, with parent: User?) {
         guard let isWinner = record["isWinner"] as? Bool,
         let isHost = record["isHost"] as? Bool else {
             return nil
@@ -42,7 +42,7 @@ final class Player: TwoParentsChildRecord {
         self.user = parent
     }
     
-    convenience init?(from record: CKRecord, with secondParent: Round?) {
+    init?(from record: CKRecord, with secondParent: Round?) {
         guard let isWinner = record["isWinner"] as? Bool,
         let isHost = record["isHost"] as? Bool else {
             return nil
@@ -54,10 +54,13 @@ final class Player: TwoParentsChildRecord {
         self.round = secondParent
     }
     
-    required init() {
+    init() {
         self.isHost = false
         self.isWinner = false
         self.id = UUID().uuidString
     }
     
+    mutating func addingParent(_ parent: User) {
+        self.user = parent
+    }
 }
