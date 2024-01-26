@@ -57,5 +57,17 @@ final class CloudKitServiceTests: XCTestCase {
         XCTAssertEqual(databaseMessages, [.record, .save, .save])
     }
     
-    func test_addChildWithParent_addsChildToDatabaseAndUpdatesParentIfParentInDatabase() async throws { }
+    func test_addChildWithParent_addsChildToDatabaseAndUpdatesParentIfParentInDatabase() async throws { 
+        let container = MockCloudContainer()
+        let database = container.public as! MockDatabase
+        let sut = CloudKitService(withContainer: container)
+        let childRecord = MockChildRecord(withDescription: "Test")
+        let parentRecord = MockRecord(name: "test")
+        
+        let uploadedChild: MockChildRecord = try await sut.add(childRecord, withParent: parentRecord)
+        
+        XCTAssertNotNil(uploadedChild.mockRecord)
+        let databaseMessages = await database.messages
+        XCTAssertEqual(databaseMessages, [.record, .modify, .save])
+    }
 }
