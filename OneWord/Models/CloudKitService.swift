@@ -31,6 +31,8 @@ actor CloudKitService: DatabaseService {
         fatalError("not yet implemented")
     }
     
+    /// `Child` and `Parent` can be existing records, or not. With update or add to database accordingly.
+    ///
     /// - Parameters:
     ///   - record: `Child` record to upload to database. Does not need to have its parent property set.
     ///   - parent: `Parent` record to upload/update in the database. sets the `parent` property of the corresponding `Child` record
@@ -42,14 +44,20 @@ actor CloudKitService: DatabaseService {
         record.addingParent(parent)
         let childCkRecord = record.ckRecord
         let parentCkRecord = parent.ckRecord
-        let receivedRecord = try? await database.record(for: parentCkRecord.recordID)
+        async let receivedParentRecordRequest = try? await database.record(for: parentCkRecord.recordID)
+        async let receivedChildRecordRequest = try? await database.record(for: childCkRecord.recordID)
+        let (receivedParentRecord, receivedChildRecord) = (await receivedParentRecordRequest, await receivedChildRecordRequest)
         do {
-            if receivedRecord == nil {
+            if receivedParentRecord == nil {
                 _ = try await database.save(parentCkRecord)
             } else {
-                _ = try await database.modifyRecords(saving: [parentCkRecord], deleting: [])
+                let _ = try await database.modifyRecords(saving: [parentCkRecord], deleting: [])
             }
-            _ = try await database.save(childCkRecord)
+            if receivedChildRecord == nil {
+                _ = try await database.save(childCkRecord)
+            } else {
+                let _ = try await database.modifyRecords(saving: [childCkRecord], deleting: [])
+            }
         } catch {
             throw CloudKitServiceError.couldNotConnectToDatabase
         }
@@ -68,9 +76,6 @@ actor CloudKitService: DatabaseService {
         return record
     }
     
-    func update<Child>(_ record: Child, addingParent parent: Child.Parent) async throws -> Child where Child : ChildRecord {
-        fatalError("not yet implemented")
-    }
     init(withContainer container: CloudContainer) {
         self.container = container
     }

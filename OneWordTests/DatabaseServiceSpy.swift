@@ -37,15 +37,6 @@ actor DatabaseServiceSpy: DatabaseService {
         }
     }
     
-    func update<Child>(_ record: Child, addingParent parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
-        if didUpdateSuccessfully {
-            receivedMessages.append(.update)
-            return record
-        } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 2)
-        }
-    }
-    
     func childRecords<Child>(of parent: Child.Parent) async throws -> [Child] where Child : OneWord.ChildRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)

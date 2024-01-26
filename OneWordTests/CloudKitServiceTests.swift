@@ -43,7 +43,7 @@ final class CloudKitServiceTests: XCTestCase {
         }, throws: CloudKitServiceError.incorrectlyReadingCloudKitData)
     }
     
-    func test_addChildWithParent_addsChildAndParentToDatabaseIfParentNotInDatabase() async throws {
+    func test_addChildWithParent_addsChildAndParentToDatabaseIfRecordsNotInDatabase() async throws {
         let container = MockCloudContainer(recordInDatabase: false) // parent not in database
         let database = container.public as! MockDatabase
         let sut = CloudKitService(withContainer: container)
@@ -54,10 +54,10 @@ final class CloudKitServiceTests: XCTestCase {
         
         XCTAssertNotNil(uploadedChild.mockRecord)
         let databaseMessages = await database.messages
-        XCTAssertEqual(databaseMessages, [.record, .save, .save])
+        XCTAssertEqual(databaseMessages, [.record, .record, .save, .save])
     }
     
-    func test_addChildWithParent_addsChildToDatabaseAndUpdatesParentIfParentInDatabase() async throws { 
+    func test_addChildWithParent_addsChildAndParentToDatabaseIfRecordsInDatabase() async throws {
         let container = MockCloudContainer()
         let database = container.public as! MockDatabase
         let sut = CloudKitService(withContainer: container)
@@ -68,7 +68,7 @@ final class CloudKitServiceTests: XCTestCase {
         
         XCTAssertNotNil(uploadedChild.mockRecord)
         let databaseMessages = await database.messages
-        XCTAssertEqual(databaseMessages, [.record, .modify, .save])
+        XCTAssertEqual(databaseMessages, [.record, .record, .modify, .modify])
     }
     
     func test_addChildWithParent_throwsIfCannotConnectToDatabase() async {
