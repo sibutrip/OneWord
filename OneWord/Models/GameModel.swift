@@ -35,7 +35,11 @@ final class GameModel: ManyToManyRecord {
         self.inviteCode = String((0..<6).map { _ in "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".randomElement()! })
     }
     
-    init?(from record: CKRecord) {
-        fatalError("not implemented yet")
+    convenience init?(from record: CKRecord) {
+        guard let name = record["name"] as? String else {
+            return nil
+        }
+        self.init(withName: name)
+        self.id = record.recordID.recordName
     }
 }

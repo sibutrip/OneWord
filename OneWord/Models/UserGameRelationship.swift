@@ -13,7 +13,7 @@ final class UserGameRelationship: TwoParentsChildRecord {
     typealias SecondParent = GameModel
     
     enum RecordKeys: String, CaseIterable {
-        case user, game, parent, secondParent
+        case user, game
     }
     
     static let recordType = "UserGameRelationship"

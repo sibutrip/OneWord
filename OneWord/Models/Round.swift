@@ -10,13 +10,13 @@ import CloudKit
 final class Round: ChildRecord {
     
     enum RecordKeys: String, CaseIterable {
-        case roundNumber
+        case roundNumber, game
     }
     
     static let recordType = "Round"
 
     var id: String
-    var parent: GameModel?
+    var gameModel: GameModel?
     
     
     // MARK: Database Record Keys
@@ -32,6 +32,7 @@ final class Round: ChildRecord {
         }
         self.init(roundNumber: roundNumber)
         self.id = record.recordID.recordName
+        self.gameModel = parent
     }
     
     required init(roundNumber: Int) {
