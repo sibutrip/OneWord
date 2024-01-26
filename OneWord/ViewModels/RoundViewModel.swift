@@ -11,12 +11,10 @@ class RoundViewModel {
     let currentRound: Round
     var question: Question?
     var players: [Player] = []
-    
+        
     init(round: Round) {
         self.currentRound = round
     }
     
-    func fetchRoundInfo() async throws {
-        
-    }
+    public func fetchRoundInfo() async throws { }
 }
