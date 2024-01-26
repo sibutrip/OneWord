@@ -15,4 +15,14 @@ final class RoundViewModelTests: XCTestCase {
         
         XCTAssertEqual(sut.currentRound, testRound)
     }
+    
+    func test_fetchRoundInfo_getsQuestionAndPlayersFromRound() async throws {
+        let testRound = Round(roundNumber: 1)
+        let sut = RoundViewModel(round: testRound)
+        
+        try await sut.fetchRoundInfo()
+        
+        XCTAssertNotNil(sut.question)
+        XCTAssertNotEqual(sut.players, [])
+    }
 }

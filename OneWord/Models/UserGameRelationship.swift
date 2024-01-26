@@ -9,35 +9,38 @@ import CloudKit
 
 final class UserGameRelationship: TwoParentsChildRecord {
     
+    typealias Parent = User
+    typealias SecondParent = GameModel
+    
     enum RecordKeys: String, CaseIterable {
-        case user, game
+        case user, game, parent, secondParent
     }
     
     static let recordType = "UserGameRelationship"
 
     var id: String
-    var parent: User?
-    var secondParent: GameModel?
+    var user: User?
+    var gameModel: GameModel?
     
     
     // MARK: Initializers
     
     convenience init(user: User, game: GameModel) {
         self.init()
-        self.parent = user
-        self.secondParent = game
+        self.user = user
+        self.gameModel = game
     }
     
     convenience init?(from record: CKRecord, with parent: User?) {
         self.init()
         self.id = record.recordID.recordName
-        self.parent = parent
+        self.user = parent
     }
     
     convenience init?(from record: CKRecord, with secondParent: GameModel?) {
         self.init()
         self.id = record.recordID.recordName
-        self.secondParent = secondParent
+        self.gameModel = secondParent
     }
     
     required init() {

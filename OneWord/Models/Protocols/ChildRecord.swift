@@ -9,8 +9,6 @@ import CloudKit
 
 protocol ChildRecord: Record {
     associatedtype Parent = Record
-
-    var parent: Parent? { get set }
             
     init?(from record: CKRecord, with parent: Parent?)
 }
