@@ -43,7 +43,7 @@ final class GameViewModelTests: XCTestCase {
         
         await assertDoesThrow(test: {
             try await sut.createGame(withGroupName: "Test Group")
-        }, throws: .couldNotCreateGame)
+        }, throws: GameViewModelError.couldNotCreateGame)
     }
     
     func test_addUser_addsUserToUsersArrayIfSuccessful() async throws {
@@ -64,7 +64,7 @@ final class GameViewModelTests: XCTestCase {
         
         await assertDoesThrow(test: {
             try await sut.addUser(withId: "Some Unique ID")
-        }, throws: .noCurrentGame)
+        }, throws: GameViewModelError.noCurrentGame)
     }
     
     func test_addUser_throwsIfUserToAddNotInDatabase() async {
@@ -74,7 +74,7 @@ final class GameViewModelTests: XCTestCase {
 
         await assertDoesThrow(test: {
             try await sut.addUser(withId: "Some Unique ID")
-        }, throws: .userNotFound)
+        }, throws: GameViewModelError.userNotFound)
     }
     
     func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async {
@@ -84,7 +84,7 @@ final class GameViewModelTests: XCTestCase {
 
         await assertDoesThrow(test: {
             try await sut.addUser(withId: "Some Unique ID")
-        }, throws: .couldNotAddUserToGame)
+        }, throws: GameViewModelError.couldNotAddUserToGame)
     }
     
     func test_fetchUsersInGame_populatesUsersFromDatabase() async throws {
@@ -107,7 +107,7 @@ final class GameViewModelTests: XCTestCase {
                 
         await assertDoesThrow(test: {
             try await sut.fetchUsersInGame()
-        }, throws: .noCurrentGame)
+        }, throws: GameViewModelError.noCurrentGame)
     }
     
     func test_fetchUsersInGame_throwsIfCannotFetchFromDatabase() async {
@@ -117,7 +117,7 @@ final class GameViewModelTests: XCTestCase {
                 
         await assertDoesThrow(test: {
             try await sut.fetchUsersInGame()
-        }, throws: .couldNotFetchUsers)
+        }, throws: GameViewModelError.couldNotFetchUsers)
     }
     
     func test_startRound_addsNewRoundAndUploadsToDatabase() async throws {
@@ -137,7 +137,7 @@ final class GameViewModelTests: XCTestCase {
         
         await assertDoesThrow(test: {
             try await sut.startRound()
-        }, throws: .noCurrentGame)
+        }, throws: GameViewModelError.noCurrentGame)
     }
     
     func test_startRound_throwsIfCouldNotAddGameToDatabase() async {
@@ -147,7 +147,7 @@ final class GameViewModelTests: XCTestCase {
         
         await assertDoesThrow(test: {
             try await sut.startRound()
-        }, throws: .couldNotCreateRound)
+        }, throws: GameViewModelError.couldNotCreateRound)
     }
     
     func test_fetchPreviousRounds_addsRoundsToPreviousRoundsIfSuccessful() async throws {
@@ -167,7 +167,7 @@ final class GameViewModelTests: XCTestCase {
         
         await assertDoesThrow(test: {
             try await sut.fetchPreviousRounds()
-        }, throws: .noCurrentGame)
+        }, throws: GameViewModelError.noCurrentGame)
     }
     
     func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
@@ -177,7 +177,7 @@ final class GameViewModelTests: XCTestCase {
         
         await assertDoesThrow(test: {
             try await sut.fetchPreviousRounds()
-        }, throws: .couldNotFetchRounds)
+        }, throws: GameViewModelError.couldNotFetchRounds)
     }
     
     // MARK: Helper Methods
@@ -195,18 +195,4 @@ final class GameViewModelTests: XCTestCase {
                 didFetchChildRecordsSuccessfully: databaseDidFetchChildRecordsSuccessfully)
             return (GameViewModel(withUser: localUser, database: database), database)
         }
-    
-    /// `GameViewModel` methods that throw should always throw a `GameViewModelError` error.
-    private func assertDoesThrow(test action: () async throws -> Void, throws expectedError: GameViewModelError) async {
-        do {
-            try await action()
-        } catch let error as GameViewModelError where error == expectedError {
-            XCTAssert(true)
-            return
-        } catch {
-            XCTFail("expected \(expectedError) error and got \(error)")
-            return
-        }
-        XCTFail("expected \(expectedError) error but did not throw error")
-    }
 }

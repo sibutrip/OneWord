@@ -10,7 +10,7 @@ import CloudKit
 actor CloudKitService: DatabaseService {
     
     enum CloudKitServiceError: Error {
-        case incorrectlyReadingCloudKitData
+        case incorrectlyReadingCloudKitData, recordNotInDatabase
     }
     
     let container: CloudContainer
@@ -35,8 +35,11 @@ actor CloudKitService: DatabaseService {
         fatalError("not yet implemented")
     }
     
+    /// - Throws `CloudKitServiceError.incorrectlyReadingCloudKitData` if `Record` initializer fails with fetched data. Indicates programmer error.
     func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : Record {
-        let ckRecord = try await database.record(for: CKRecord.ID(recordName: recordID))
+        guard let ckRecord = try? await database.record(for: CKRecord.ID(recordName: recordID)) else {
+            throw CloudKitServiceError.recordNotInDatabase
+        }
         guard let record = SomeRecord(from: ckRecord) else {
             throw CloudKitServiceError.incorrectlyReadingCloudKitData
         }
