@@ -21,6 +21,12 @@
 		7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */; };
 		7475CC1D2B63104500B8E6A6 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1C2B63104500B8E6A6 /* Question.swift */; };
 		7475CC1F2B6310DB00B8E6A6 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1E2B6310DB00B8E6A6 /* Player.swift */; };
+		7475CC212B6334B700B8E6A6 /* DatabaseServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */; };
+		7475CC232B6338D800B8E6A6 /* MockRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC222B6338D800B8E6A6 /* MockRecord.swift */; };
+		7475CC252B63390500B8E6A6 /* MockDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC242B63390500B8E6A6 /* MockDatabase.swift */; };
+		7475CC272B6339A800B8E6A6 /* CloudContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC262B6339A800B8E6A6 /* CloudContainer.swift */; };
+		7475CC292B633A1700B8E6A6 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC282B633A1700B8E6A6 /* Database.swift */; };
+		7475CC2B2B633CB400B8E6A6 /* MockCloudContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */; };
 		74A6B1642B60158D00ED0901 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1632B60158D00ED0901 /* Record.swift */; };
 		74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1652B60162900ED0901 /* ChildRecord.swift */; };
 		74F026992B61A2F400ED9B20 /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F026982B61A2F400ED9B20 /* Round.swift */; };
@@ -58,6 +64,12 @@
 		7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyToManyRecord.swift; sourceTree = "<group>"; };
 		7475CC1C2B63104500B8E6A6 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		7475CC1E2B6310DB00B8E6A6 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceTests.swift; sourceTree = "<group>"; };
+		7475CC222B6338D800B8E6A6 /* MockRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecord.swift; sourceTree = "<group>"; };
+		7475CC242B63390500B8E6A6 /* MockDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabase.swift; sourceTree = "<group>"; };
+		7475CC262B6339A800B8E6A6 /* CloudContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudContainer.swift; sourceTree = "<group>"; };
+		7475CC282B633A1700B8E6A6 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCloudContainer.swift; sourceTree = "<group>"; };
 		74A6B1632B60158D00ED0901 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		74A6B1652B60162900ED0901 /* ChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildRecord.swift; sourceTree = "<group>"; };
 		74F026982B61A2F400ED9B20 /* Round.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
@@ -128,6 +140,10 @@
 		7454A3832B5968D8006357C8 /* OneWordTests */ = {
 			isa = PBXGroup;
 			children = (
+				7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */,
+				7475CC242B63390500B8E6A6 /* MockDatabase.swift */,
+				7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */,
+				7475CC222B6338D800B8E6A6 /* MockRecord.swift */,
 				7454A3842B5968D8006357C8 /* GameVMTests.swift */,
 				74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */,
 				7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */,
@@ -162,6 +178,8 @@
 			isa = PBXGroup;
 			children = (
 				7454A3A82B5F08AB006357C8 /* DatabaseService.swift */,
+				7475CC262B6339A800B8E6A6 /* CloudContainer.swift */,
+				7475CC282B633A1700B8E6A6 /* Database.swift */,
 				74A6B1632B60158D00ED0901 /* Record.swift */,
 				74A6B1652B60162900ED0901 /* ChildRecord.swift */,
 				74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */,
@@ -284,6 +302,8 @@
 				7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */,
 				7454A3A02B5EF9D7006357C8 /* User.swift in Sources */,
 				7475CC1F2B6310DB00B8E6A6 /* Player.swift in Sources */,
+				7475CC272B6339A800B8E6A6 /* CloudContainer.swift in Sources */,
+				7475CC292B633A1700B8E6A6 /* Database.swift in Sources */,
 				7454A3762B5968D7006357C8 /* ContentView.swift in Sources */,
 				7454A3A92B5F08AB006357C8 /* DatabaseService.swift in Sources */,
 				74F0269F2B61FF8F00ED9B20 /* UserGameRelationship.swift in Sources */,
@@ -303,7 +323,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7454A3A32B5F0802006357C8 /* DatabaseServiceSpy.swift in Sources */,
+				7475CC252B63390500B8E6A6 /* MockDatabase.swift in Sources */,
+				7475CC232B6338D800B8E6A6 /* MockRecord.swift in Sources */,
+				7475CC2B2B633CB400B8E6A6 /* MockCloudContainer.swift in Sources */,
 				7454A3852B5968D8006357C8 /* GameVMTests.swift in Sources */,
+				7475CC212B6334B700B8E6A6 /* DatabaseServiceTests.swift in Sources */,
 				74F0269B2B61AF6D00ED9B20 /* RoundVMTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
