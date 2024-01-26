@@ -7,8 +7,7 @@
 
 import CloudKit
 
-final class UserGameRelationship: TwoParentsChildRecord {
-    
+struct UserGameRelationship: TwoParentsChildRecord {
     typealias Parent = User
     typealias SecondParent = GameModel
     
@@ -25,25 +24,28 @@ final class UserGameRelationship: TwoParentsChildRecord {
     
     // MARK: Initializers
     
-    convenience init(user: User, game: GameModel) {
+    init(user: User, game: GameModel) {
         self.init()
         self.user = user
         self.gameModel = game
     }
     
-    convenience init?(from record: CKRecord, with parent: User?) {
+    init?(from record: CKRecord, with parent: User?) {
         self.init()
         self.id = record.recordID.recordName
         self.user = parent
     }
     
-    convenience init?(from record: CKRecord, with secondParent: GameModel?) {
+    init?(from record: CKRecord, with secondParent: GameModel?) {
         self.init()
         self.id = record.recordID.recordName
         self.gameModel = secondParent
     }
     
-    required init() {
+    init() {
         self.id = UUID().uuidString
+    }
+    mutating func addingParent(_ parent: User) {
+        self.user = parent
     }
 }

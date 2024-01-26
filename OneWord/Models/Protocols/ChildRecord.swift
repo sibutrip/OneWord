@@ -11,6 +11,7 @@ protocol ChildRecord: Record {
     associatedtype Parent = Record
             
     init?(from record: CKRecord, with parent: Parent?)
+    mutating func addingParent(_ parent: Parent)
 }
 
 extension ChildRecord {

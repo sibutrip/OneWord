@@ -7,7 +7,7 @@
 
 import CloudKit
 
-final class Question: ChildRecord {
+struct Question: ChildRecord {
     
     enum RecordKeys: String, CaseIterable {
         case description, round
@@ -26,7 +26,7 @@ final class Question: ChildRecord {
     
     // MARK: Initializers
     
-    convenience init?(from record: CKRecord, with parent: Round?) {
+    init?(from record: CKRecord, with parent: Round?) {
         guard let description = record["description"] as? String else {
             return nil
         }
@@ -35,9 +35,11 @@ final class Question: ChildRecord {
         self.round = parent
     }
     
-    required init(withDecription description: String) {
+    init(withDecription description: String) {
         self.description = description
         self.id = UUID().uuidString
     }
-    
+    mutating func addingParent(_ parent: Round) {
+        self.round = parent
+    }
 }

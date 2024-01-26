@@ -7,7 +7,7 @@
 
 import CloudKit
 
-final class User: ManyToManyRecord {
+struct User: ManyToManyRecord {
     
     typealias RelatedRecord = GameModel
     typealias Child = UserGameRelationship
@@ -30,7 +30,7 @@ final class User: ManyToManyRecord {
     
     // MARK: Initializers
     
-    convenience init?(from record: CKRecord) {
+    init?(from record: CKRecord) {
         guard let name = record["name"] as? String,
               let systemUserID = record["systemUserID"] as? String else {
             return nil
@@ -40,7 +40,7 @@ final class User: ManyToManyRecord {
         self.systemUserID = systemUserID
     }
     
-    required init(withName name: String) {
+    init(withName name: String) {
         self.name = name
         self.systemUserID = ""
         self.id = UUID().uuidString

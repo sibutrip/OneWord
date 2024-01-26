@@ -35,6 +35,7 @@
 		74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */; };
 		74F0269F2B61FF8F00ED9B20 /* UserGameRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269E2B61FF8F00ED9B20 /* UserGameRelationship.swift */; };
 		74F026A12B6200E100ED9B20 /* TwoParentsChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */; };
+		74F86A6D2B643EA800CD7691 /* MockChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F86A6C2B643EA800CD7691 /* MockChildRecord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundViewModel.swift; sourceTree = "<group>"; };
 		74F0269E2B61FF8F00ED9B20 /* UserGameRelationship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGameRelationship.swift; sourceTree = "<group>"; };
 		74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoParentsChildRecord.swift; sourceTree = "<group>"; };
+		74F86A6C2B643EA800CD7691 /* MockChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockChildRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,7 +149,7 @@
 				74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */,
 				7475CC242B63390500B8E6A6 /* MockDatabase.swift */,
 				7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */,
-				7475CC222B6338D800B8E6A6 /* MockRecord.swift */,
+				74F86A6E2B643EAC00CD7691 /* MockRecords */,
 				7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */,
 				7475CC2C2B633FE600B8E6A6 /* XCTestCase+Extension.swift */,
 			);
@@ -198,6 +200,15 @@
 				74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		74F86A6E2B643EAC00CD7691 /* MockRecords */ = {
+			isa = PBXGroup;
+			children = (
+				7475CC222B6338D800B8E6A6 /* MockRecord.swift */,
+				74F86A6C2B643EA800CD7691 /* MockChildRecord.swift */,
+			);
+			path = MockRecords;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -328,6 +339,7 @@
 				7454A3A32B5F0802006357C8 /* DatabaseServiceSpy.swift in Sources */,
 				7475CC252B63390500B8E6A6 /* MockDatabase.swift in Sources */,
 				7475CC232B6338D800B8E6A6 /* MockRecord.swift in Sources */,
+				74F86A6D2B643EA800CD7691 /* MockChildRecord.swift in Sources */,
 				7475CC2B2B633CB400B8E6A6 /* MockCloudContainer.swift in Sources */,
 				7475CC2D2B633FE600B8E6A6 /* XCTestCase+Extension.swift in Sources */,
 				7454A3852B5968D8006357C8 /* GameVMTests.swift in Sources */,
