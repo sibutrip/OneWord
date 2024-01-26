@@ -31,6 +31,12 @@ actor CloudKitService: DatabaseService {
         fatalError("not yet implemented")
     }
     
+    /// - Parameters:
+    ///   - record: `Child` record to upload to database. Does not need to have its parent property set.
+    ///   - parent: `Parent` record to upload/update in the database. sets the `parent` property of the corresponding `Child` record
+    ///
+    /// - Throws `CloudKitServiceError.couldNotConnectToDatabase` if no internet connection to database.
+    /// - Returns: `Child` record with updated `parent` property.
     func add<Child>(_ record: Child, withParent parent: Child.Parent) async throws -> Child where Child : ChildRecord, Child.Parent: Record {
         var record = record
         record.addingParent(parent)
