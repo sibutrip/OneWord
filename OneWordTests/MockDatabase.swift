@@ -67,7 +67,7 @@ class MockDatabase: Database {
     
     func modifyRecords(saving recordsToSave: [CKRecord], deleting recordIDsToDelete: [CKRecord.ID]) async throws -> (saveResults: [CKRecord.ID : Result<CKRecord, Error>], deleteResults: [CKRecord.ID : Result<Void, Error>]) {
         messages.append(.modify)
-        if connectedToDatabase {
+        if connectedToDatabase && connectedToDatabase {
             let recordID = recordFromDatabase.recordID
             let saveResult: Result<CKRecord, Error> = Result.success(recordFromDatabase)
             let deleteResult: Result<Void,Error> = Result.success(())
@@ -79,7 +79,7 @@ class MockDatabase: Database {
     
     func record(for recordID: CKRecord.ID) async throws -> CKRecord {
         messages.append(.record)
-        if recordInDatabase {
+        if recordInDatabase && connectedToDatabase {
             if fetchedCorrectRecordType {
                 return recordFromDatabase
             } else {

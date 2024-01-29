@@ -27,11 +27,7 @@ actor CloudKitService: DatabaseService {
         var record = record
         record.addingParent(parent)
         record.addingSecondParent(secondParent)
-        do {
-            try await modifyOrAdd([record, parent, secondParent])
-        } catch {
-            throw CloudKitServiceError.couldNotConnectToDatabase
-        }
+        try await modifyOrAdd([record, parent, secondParent])
         return record
     }
     
@@ -75,12 +71,16 @@ actor CloudKitService: DatabaseService {
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for record in records {
                 taskGroup.addTask {
-                    let ckRecord = record.ckRecord
-                    let receivedRecordRequest = try? await self.database.record(for: ckRecord.recordID)
-                    if receivedRecordRequest == nil {
-                        _ = try await self.database.save(ckRecord)
-                    } else {
-                        let _ = try await self.database.modifyRecords(saving: [ckRecord], deleting: [])
+                    do {
+                        let ckRecord = record.ckRecord
+                        let receivedRecordRequest = try? await self.database.record(for: ckRecord.recordID)
+                        if receivedRecordRequest == nil {
+                            _ = try await self.database.save(ckRecord)
+                        } else {
+                            let _ = try await self.database.modifyRecords(saving: [ckRecord], deleting: [])
+                        }
+                    } catch {
+                        throw CloudKitServiceError.couldNotConnectToDatabase
                     }
                 }
             }
