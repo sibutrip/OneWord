@@ -63,4 +63,8 @@ struct Player: TwoParentsChildRecord {
     mutating func addingParent(_ parent: User) {
         self.user = parent
     }
+    
+    mutating func addingSecondParent(_ secondParent: Round) {
+        self.round = secondParent
+    }
 }

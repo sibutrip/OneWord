@@ -8,7 +8,7 @@
 @testable import OneWord
 import CloudKit
 
-actor MockDatabase: Database {
+class MockDatabase: Database {
     
     let recordInDatabase: Bool
     let fetchedCorrectRecordType: Bool

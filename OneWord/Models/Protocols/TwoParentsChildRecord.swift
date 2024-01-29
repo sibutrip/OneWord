@@ -11,4 +11,5 @@ protocol TwoParentsChildRecord: ChildRecord {
     associatedtype SecondParent = Record
         
     init?(from record: CKRecord, with secondParent: SecondParent?)
+    mutating func addingSecondParent(_ secondParent: SecondParent)
 }

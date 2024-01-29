@@ -23,8 +23,16 @@ actor CloudKitService: DatabaseService {
         fatalError("not yet implemented")
     }
     
-    func add<Child>(_ record: Child, withParent parent: Child.Parent, andSecondParent: Child.SecondParent) async throws -> Child where Child : TwoParentsChildRecord{
-        fatalError("not yet implemented")
+    func add<Child>(_ record: Child, withParent parent: Child.Parent, andSecondParent secondParent: Child.SecondParent) async throws -> Child where Child : TwoParentsChildRecord, Child.Parent: Record, Child.SecondParent: Record {
+        var record = record
+        record.addingParent(parent)
+        record.addingSecondParent(secondParent)
+        do {
+            try await modifyOrAdd([record, parent, secondParent])
+        } catch {
+            throw CloudKitServiceError.couldNotConnectToDatabase
+        }
+        return record
     }
     
     func childRecords<Child>(of parent: Child.Parent) async throws -> [Child] where Child : ChildRecord{
@@ -40,25 +48,7 @@ actor CloudKitService: DatabaseService {
     func add<Child>(_ record: Child, withParent parent: Child.Parent) async throws -> Child where Child : ChildRecord, Child.Parent: Record {
         var record = record
         record.addingParent(parent)
-        let childCkRecord = record.ckRecord
-        let parentCkRecord = parent.ckRecord
-        async let receivedParentRecordRequest = try? await database.record(for: parentCkRecord.recordID)
-        async let receivedChildRecordRequest = try? await database.record(for: childCkRecord.recordID)
-        let (receivedParentRecord, receivedChildRecord) = (await receivedParentRecordRequest, await receivedChildRecordRequest)
-        do {
-            if receivedParentRecord == nil {
-                _ = try await database.save(parentCkRecord)
-            } else {
-                let _ = try await database.modifyRecords(saving: [parentCkRecord], deleting: [])
-            }
-            if receivedChildRecord == nil {
-                _ = try await database.save(childCkRecord)
-            } else {
-                let _ = try await database.modifyRecords(saving: [childCkRecord], deleting: [])
-            }
-        } catch {
-            throw CloudKitServiceError.couldNotConnectToDatabase
-        }
+        try await modifyOrAdd([record, parent])
         return record
     }
     
@@ -76,5 +66,25 @@ actor CloudKitService: DatabaseService {
     
     init(withContainer container: CloudContainer) {
         self.container = container
+    }
+    
+    // MARK: Private Methods
+    
+    /// Determines if record is in database. If record is in database, it calles `database.modifyRecords` to modify an existing record, otherwise it calls `database.save` to save a new record.
+    private func modifyOrAdd(_ records: [any Record]) async throws{
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for record in records {
+                taskGroup.addTask {
+                    let ckRecord = record.ckRecord
+                    let receivedRecordRequest = try? await self.database.record(for: ckRecord.recordID)
+                    if receivedRecordRequest == nil {
+                        _ = try await self.database.save(ckRecord)
+                    } else {
+                        let _ = try await self.database.modifyRecords(saving: [ckRecord], deleting: [])
+                    }
+                }
+            }
+            try await taskGroup.waitForAll()
+        }
     }
 }

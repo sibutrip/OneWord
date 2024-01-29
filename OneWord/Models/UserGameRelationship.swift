@@ -8,6 +8,7 @@
 import CloudKit
 
 struct UserGameRelationship: TwoParentsChildRecord {
+    
     typealias Parent = User
     typealias SecondParent = GameModel
     
@@ -45,7 +46,12 @@ struct UserGameRelationship: TwoParentsChildRecord {
     init() {
         self.id = UUID().uuidString
     }
+    
     mutating func addingParent(_ parent: User) {
         self.user = parent
+    }
+    
+    mutating func addingSecondParent(_ secondParent: GameModel) {
+        self.gameModel = secondParent
     }
 }
