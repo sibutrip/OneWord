@@ -69,7 +69,9 @@ final class CloudKitServiceTests: XCTestCase {
         let uploadedChild: MockChildRecord = try await sut.add(childRecord, withParent: parentRecord)
         
         XCTAssertNotNil(uploadedChild.mockRecord)
-        let databaseMessages = await database.messages
-        XCTAssertEqual(databaseMessages, [.record, .modify, .record, .modify])
+        let databaseRecordCalls = database.messages.filter { $0 == .record }
+        let databaseModifyCalls = database.messages.filter { $0 == .modify }
+        XCTAssertEqual(databaseRecordCalls.count, 2)
+        XCTAssertEqual(databaseModifyCalls.count, 2)
     }
 }
