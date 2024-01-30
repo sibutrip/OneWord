@@ -181,13 +181,21 @@ final class GameViewModelTests: XCTestCase {
     }
     
     func test_fetchNewestRound_assignsNewestRoundToVMIfSuccessful() async throws {
-        let (sut, database) = makeSUT()
+        let (sut, _) = makeSUT()
         let game = GameModel(withName: "Test Group")
         sut.currentGame = game
         
         try await sut.fetchNewestRound()
         
         XCTAssertNotNil(sut.currentRound)
+    }
+    
+    func test_fetchNewestRound_throwsIfNoGameInDatabase() async throws {
+        let (sut, _) = makeSUT()
+        
+        await assertDoesThrow(test: {
+            try await sut.fetchNewestRound()
+        }, throws: GameViewModelError.noCurrentGame)
     }
     
     // MARK: Helper Methods
