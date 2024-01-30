@@ -10,13 +10,14 @@ import CloudKit
 struct Round: ChildRecord {
     
     enum RecordKeys: String, CaseIterable {
-        case roundNumber, game
+        case roundNumber, gameModel, question
     }
     
     static let recordType = "Round"
 
     var id: String
     var gameModel: GameModel?
+    var question: Question?
     
     
     // MARK: Database Record Keys
@@ -39,6 +40,7 @@ struct Round: ChildRecord {
         self.roundNumber = roundNumber
         self.id = UUID().uuidString
     }
+    
     mutating func addingParent(_ parent: GameModel) {
         self.gameModel = parent
     }
