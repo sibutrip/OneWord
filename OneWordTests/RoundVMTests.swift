@@ -7,21 +7,18 @@
 
 import XCTest
 @testable import OneWord
+import CloudKit
 
 final class RoundViewModelTests: XCTestCase {
-    func test_init_assignsRoundToViewModel() async throws {
-        let testRound = Round(roundNumber: 1)
-        let databaseService = MockCloudContainer().public
-//        let sut = RoundViewModel(round: testRound, databaseService: databaseService)
-    }
     
-//    func test_fetchRoundInfo_getsQuestionAndPlayersFromRound() async throws {
-//        let testRound = Round(roundNumber: 1)
+    func test_fetchRoundInfo_getsQuestionAndPlayersFromRound() async throws {
+        
+//        var testRound = Round(from: <#T##CKRecord#>)
 //        let sut = RoundViewModel(round: testRound)
 //        
 //        try await sut.fetchRoundInfo()
 //        
 //        XCTAssertNotNil(sut.question)
 //        XCTAssertNotEqual(sut.players, [])
-//    }
+    }
 }

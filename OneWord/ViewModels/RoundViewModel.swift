@@ -21,14 +21,8 @@ class RoundViewModel {
         self.databaseService = databaseService
     }
     
+    
+    /// - Throws `RoundViewModelError.questionNotFound` if `currentRound.question` is nil. This value should be set when the record is initially fetched in `GameViewModel`
     public func fetchRoundInfo() async throws {
-        #warning("add to tests")
-        guard let questionID = currentRound.question?.id else {
-            throw RoundViewModelError.questionIDNotFound
-        }
-        guard let question: Question = (try? await databaseService.fetch(withID: questionID)) else {
-            throw RoundViewModelError.couldNotFetchQuestion
-        }
-        currentRound.question = question
     }
 }

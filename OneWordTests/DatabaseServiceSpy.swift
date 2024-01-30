@@ -79,7 +79,7 @@ actor DatabaseServiceSpy: DatabaseService {
         ckRecord["user"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
         ckRecord["round"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
         ckRecord["game"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["question"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["questionNumber"] = 1
         ckRecord["isHost"] = true
         ckRecord["rank"] = 1
         return ckRecord
@@ -95,7 +95,7 @@ actor DatabaseServiceSpy: DatabaseService {
         ckRecord["user"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
         ckRecord["round"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
         ckRecord["game"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["question"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["questionNumber"] = 1
         ckRecord["isHost"] = true
         ckRecord["rank"] = 1
         return [ckRecord, ckRecord]

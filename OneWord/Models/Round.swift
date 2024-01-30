@@ -10,15 +10,18 @@ import CloudKit
 struct Round: ChildRecord {
     
     enum RecordKeys: String, CaseIterable {
-        case roundNumber, game, question
+        case roundNumber, game, questionNumber
     }
     
     static let recordType = "Round"
 
     var id: String
     var game: GameModel?
-    var question: Question?
+    var question: Question {
+        Question(atIndex: questionNumber)
+    }
     
+    private var questionNumber: Int
     
     // MARK: Database Record Keys
     
@@ -29,17 +32,17 @@ struct Round: ChildRecord {
     
     init?(from record: CKRecord, with parent: GameModel?) {
         guard let roundNumber = record["roundNumber"] as? Int,
-        let questionReference = record["question"] as? CKRecord.Reference else {
+        let questionNumber = record["questionNumber"] as? Int else {
             return nil
         }
-        self.init(roundNumber: roundNumber)
+        self.init(roundNumber: roundNumber, questionNumber: questionNumber)
         self.id = record.recordID.recordName
-        self.question = Question(from: questionReference)
         self.game = parent
     }
     
-    init(roundNumber: Int) {
+    init(roundNumber: Int, questionNumber: Int = Int.random(in: 0..<Question.all.count)) {
         self.roundNumber = roundNumber
+        self.questionNumber = questionNumber
         self.id = UUID().uuidString
     }
     
