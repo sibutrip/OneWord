@@ -201,6 +201,14 @@ final class GameViewModelTests: XCTestCase {
         }, throws: GameViewModelError.noCurrentGame)
     }
     
+    func test_fetchNewestRound_throwsIfCouldNotFetchRounds() async throws {
+        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
+        
+        await assertDoesThrow(test: {
+            try await sut.fetchNewestRound()
+        }, throws: GameViewModelError.couldNotFetchRounds)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(
