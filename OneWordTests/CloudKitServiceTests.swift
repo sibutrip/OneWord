@@ -47,7 +47,7 @@ final class CloudKitServiceTests: XCTestCase {
         let container = MockCloudContainer(recordInDatabase: false) // parent not in database
         let database = container.public as! MockDatabase
         let sut = CloudKitService(withContainer: container)
-        let childRecord = MockChildRecord(withDescription: "Test")
+        let childRecord = MockChildRecord(withName: "Test")
         let parentRecord = MockRecord(name: "test")
         
         let uploadedChild: MockChildRecord = try await sut.add(childRecord, withParent: parentRecord)
@@ -63,7 +63,7 @@ final class CloudKitServiceTests: XCTestCase {
         let container = MockCloudContainer()
         let database = container.public as! MockDatabase
         let sut = CloudKitService(withContainer: container)
-        let childRecord = MockChildRecord(withDescription: "Test")
+        let childRecord = MockChildRecord(withName: "Test")
         let parentRecord = MockRecord(name: "test")
         
         let uploadedChild: MockChildRecord = try await sut.add(childRecord, withParent: parentRecord)
@@ -78,11 +78,22 @@ final class CloudKitServiceTests: XCTestCase {
     func test_addChildWithParent_throwsIfCannotConnectToDatabase() async {
         let container = MockCloudContainer(connectedToDatabase: false)
         let sut = CloudKitService(withContainer: container)
-        let childRecord = MockChildRecord(withDescription: "Test")
+        let childRecord = MockChildRecord(withName: "Test")
         let parentRecord = MockRecord(name: "test")
         
         await assertDoesThrow(test: {
         let _: MockChildRecord = try await sut.add(childRecord, withParent: parentRecord)
         }, throws: CloudKitServiceError.couldNotConnectToDatabase)
+    }
+    
+    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
+        let container = MockCloudContainer()
+        let database = container.public as! MockDatabase
+        let sut = CloudKitService(withContainer: container)
+        let parent = MockRecord(name: "test")
+        
+        let mockChildRecord: MockChildRecord = try await sut.newestChildRecord(of: parent)
+        let receivedMessages = database.messages
+        XCTAssertEqual(receivedMessages, [.records])
     }
 }

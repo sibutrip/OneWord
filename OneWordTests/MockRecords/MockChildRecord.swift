@@ -13,25 +13,25 @@ struct MockChildRecord: ChildRecord {
     static let recordType = "MockChildRecord"
     
     init?(from record: CKRecord, with parent: MockRecord?) {
-        guard let description = record["description"] as? String else {
+        guard let name = record["name"] as? String else {
             return nil
         }
-        self.init(withDescription: description)
+        self.init(withName: name)
         self.id = record.recordID.recordName
     }
     
     var mockRecord: MockRecord?
     
     enum RecordKeys: String, CaseIterable {
-        case description, mockRecord
+        case name, mockRecord
     }
     
     var id: String
-    let description: String
+    let name: String
     
-    init(withDescription description: String) {
+    init(withName name: String) {
         self.id = UUID().uuidString
-        self.description = description
+        self.name = name
     }
     mutating func addingParent(_ parent: MockRecord) {
         self.mockRecord = parent
