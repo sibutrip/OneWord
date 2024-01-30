@@ -203,6 +203,8 @@ final class GameViewModelTests: XCTestCase {
     
     func test_fetchNewestRound_throwsIfCouldNotFetchRounds() async {
         let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
         
         await assertDoesThrow(test: {
             try await sut.fetchNewestRound()

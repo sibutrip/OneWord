@@ -72,7 +72,11 @@ actor CloudKitService: DatabaseService {
         let records = matchResults
             .compactMap { try? $0.1.get() }
             .compactMap { Child(from: $0, with: parent) }
-        guard let record = records.first, records.count == 1 else {
+        
+        guard let record = records.first else {
+            throw CloudKitServiceError.recordNotInDatabase
+        }
+        guard records.count == 1 else {
             throw CloudKitServiceError.incorrectlyReadingCloudKitData
         }
         return record

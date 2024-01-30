@@ -48,11 +48,18 @@ class MockDatabase: Database {
     }
     
     func records(matching query: CKQuery, inZoneWith zoneID: CKRecordZone.ID? = nil, desiredKeys: [CKRecord.FieldKey]? = nil, resultsLimit: Int = CKQueryOperation.maximumResults) async throws -> (matchResults: [(CKRecord.ID, Result<CKRecord, Error>)], queryCursor: CKQueryOperation.Cursor?) {
-        if connectedToDatabase && recordInDatabase {
+        if connectedToDatabase {
             messages.append(.records)
             let recordID = recordFromDatabase.recordID
             let saveResult: Result<CKRecord, Error> = Result.success(recordFromDatabase)
-            return (matchResults: [(recordID, saveResult)], queryCursor: nil)
+            if !fetchedCorrectRecordType {
+                return (matchResults: [(recordID, saveResult), (recordID, saveResult)], queryCursor: nil)
+            }
+            if recordInDatabase {
+                return (matchResults: [(recordID, saveResult)], queryCursor: nil)
+            } else {
+                return (matchResults: [], queryCursor: nil)
+            }
         } else {
             throw NSError(domain: "MockDatabase Error", code: 1)
         }

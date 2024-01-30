@@ -13,7 +13,8 @@ extension XCTestCase {
         do {
             try await action()
         } catch {
-            if let _ = error as? ErrorType {
+            if let receivedError = error as? ErrorType,
+               receivedError.localizedDescription == expectedError.localizedDescription {
                 XCTAssert(true)
                 return
             }
