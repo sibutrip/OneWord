@@ -92,8 +92,21 @@ final class CloudKitServiceTests: XCTestCase {
         let sut = CloudKitService(withContainer: container)
         let parent = MockRecord(name: "test")
         
-        let mockChildRecord: MockChildRecord = try await sut.newestChildRecord(of: parent)
+        let _: MockChildRecord = try await sut.newestChildRecord(of: parent)
         let receivedMessages = database.messages
         XCTAssertEqual(receivedMessages, [.records])
     }
+    
+    func test_newestChildRecord_throwsIfCouldNotConnectToDatabase() async {
+        let container = MockCloudContainer(connectedToDatabase: false)
+        let sut = CloudKitService(withContainer: container)
+        let parent = MockRecord(name: "test")
+        
+        await assertDoesThrow(test: {
+            let _: MockChildRecord = try await sut.newestChildRecord(of: parent)
+        }, throws: CloudKitServiceError.couldNotConnectToDatabase)
+        
+    }
+    
+    func test_newestChildRecord_throwsIfUnableToReadFetchedData() async { }
 }

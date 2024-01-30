@@ -61,10 +61,14 @@ actor CloudKitService: DatabaseService {
     }
     
     #warning("add to tests")
+    /// - Throws `CloudKitServiceError.couldNotConnectToDatabase` if unable to fetch records in `database`
+    /// - Throws `CloudKitServiceError.incorrectlyReadingCloudKitData` if `Record` initializer fails with fetched data. Indicates programmer error.
     func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : ChildRecord {
         let query = CKQuery(recordType: Child.recordType, predicate: NSPredicate(value: true))
         query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        let (matchResults, _) = try await database.records(matching: query, inZoneWith: .default, desiredKeys: nil, resultsLimit: 1)
+        guard let (matchResults, _) = (try? await database.records(matching: query, inZoneWith: .default, desiredKeys: nil, resultsLimit: 1)) else {
+            throw CloudKitServiceError.couldNotConnectToDatabase
+        }
         let records = matchResults
             .compactMap { try? $0.1.get() }
             .compactMap { Child(from: $0, with: parent) }
