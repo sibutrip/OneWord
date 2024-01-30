@@ -193,7 +193,7 @@ final class GameViewModelTests: XCTestCase {
         
     }
     
-    func test_fetchNewestRound_throwsIfNoGameInDatabase() async throws {
+    func test_fetchNewestRound_throwsIfNoGameInDatabase() async {
         let (sut, _) = makeSUT()
         
         await assertDoesThrow(test: {
@@ -201,7 +201,7 @@ final class GameViewModelTests: XCTestCase {
         }, throws: GameViewModelError.noCurrentGame)
     }
     
-    func test_fetchNewestRound_throwsIfCouldNotFetchRounds() async throws {
+    func test_fetchNewestRound_throwsIfCouldNotFetchRounds() async {
         let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
         
         await assertDoesThrow(test: {
