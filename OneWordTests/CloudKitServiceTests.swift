@@ -117,13 +117,13 @@ final class CloudKitServiceTests: XCTestCase {
         }, throws: CloudKitServiceError.recordNotInDatabase)
     }
     
-//    func test_newestChildRecord_throwsIfRecordNotInDatabase() async {
-//        let container = MockCloudContainer(recordInDatabase: false)
-//        let sut = CloudKitService(withContainer: container)
-//        let parent = MockRecord(name: "test")
-//        
-//        await assertDoesThrow(test: {
-//            let _: MockChildRecord = try await sut.newestChildRecord(of: parent)
-//        }, throws: CloudKitServiceError.incorrectlyReadingCloudKitData)
-//    }
+    func test_newestChildRecord_throwsIfInittingChildWithWrongCkRecord() async {
+        let container = MockCloudContainer(fetchedCorrectRecordType: false)
+        let sut = CloudKitService(withContainer: container)
+        let parent = MockRecord(name: "test")
+        
+        await assertDoesThrow(test: {
+            let _: MockChildRecord = try await sut.newestChildRecord(of: parent)
+        }, throws: CloudKitServiceError.incorrectlyReadingCloudKitData)
+    }
 }

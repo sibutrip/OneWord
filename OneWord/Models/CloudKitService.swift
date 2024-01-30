@@ -60,7 +60,6 @@ actor CloudKitService: DatabaseService {
         return record
     }
     
-    #warning("add to tests")
     /// - Throws `CloudKitServiceError.couldNotConnectToDatabase` if unable to fetch records in `database`
     /// - Throws `CloudKitServiceError.incorrectlyReadingCloudKitData` if `Record` initializer fails with fetched data. Indicates programmer error.
     func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : ChildRecord {
