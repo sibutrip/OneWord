@@ -10,13 +10,13 @@ import CloudKit
 struct Round: ChildRecord {
     
     enum RecordKeys: String, CaseIterable {
-        case roundNumber, gameModel, question
+        case roundNumber, game, question
     }
     
     static let recordType = "Round"
 
     var id: String
-    var gameModel: GameModel?
+    var game: GameModel?
     var question: Question?
     
     
@@ -28,12 +28,14 @@ struct Round: ChildRecord {
     // MARK: Initializers
     
     init?(from record: CKRecord, with parent: GameModel?) {
-        guard let roundNumber = record["roundNumber"] as? Int else {
+        guard let roundNumber = record["roundNumber"] as? Int,
+        let questionReference = record["question"] as? CKRecord.Reference else {
             return nil
         }
         self.init(roundNumber: roundNumber)
         self.id = record.recordID.recordName
-        self.gameModel = parent
+        self.question = Question(from: questionReference)
+        self.game = parent
     }
     
     init(roundNumber: Int) {
@@ -42,6 +44,6 @@ struct Round: ChildRecord {
     }
     
     mutating func addingParent(_ parent: GameModel) {
-        self.gameModel = parent
+        self.game = parent
     }
 }

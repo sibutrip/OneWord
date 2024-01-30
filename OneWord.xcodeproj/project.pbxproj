@@ -30,6 +30,7 @@
 		7475CC2D2B633FE600B8E6A6 /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC2C2B633FE600B8E6A6 /* XCTestCase+Extension.swift */; };
 		74A6B1642B60158D00ED0901 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1632B60158D00ED0901 /* Record.swift */; };
 		74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1652B60162900ED0901 /* ChildRecord.swift */; };
+		74CB1B772B68974F005C7F15 /* ChildRecordFetchedWithParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CB1B762B68974F005C7F15 /* ChildRecordFetchedWithParent.swift */; };
 		74F026992B61A2F400ED9B20 /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F026982B61A2F400ED9B20 /* Round.swift */; };
 		74F0269B2B61AF6D00ED9B20 /* RoundVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */; };
 		74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */; };
@@ -75,6 +76,7 @@
 		7475CC2C2B633FE600B8E6A6 /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
 		74A6B1632B60158D00ED0901 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		74A6B1652B60162900ED0901 /* ChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildRecord.swift; sourceTree = "<group>"; };
+		74CB1B762B68974F005C7F15 /* ChildRecordFetchedWithParent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildRecordFetchedWithParent.swift; sourceTree = "<group>"; };
 		74F026982B61A2F400ED9B20 /* Round.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
 		74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundVMTests.swift; sourceTree = "<group>"; };
 		74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundViewModel.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				7475CC282B633A1700B8E6A6 /* Database.swift */,
 				74A6B1632B60158D00ED0901 /* Record.swift */,
 				74A6B1652B60162900ED0901 /* ChildRecord.swift */,
+				74CB1B762B68974F005C7F15 /* ChildRecordFetchedWithParent.swift */,
 				74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */,
 				7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */,
 			);
@@ -317,6 +320,7 @@
 				7454A3A02B5EF9D7006357C8 /* User.swift in Sources */,
 				7475CC1F2B6310DB00B8E6A6 /* Player.swift in Sources */,
 				7475CC272B6339A800B8E6A6 /* CloudContainer.swift in Sources */,
+				74CB1B772B68974F005C7F15 /* ChildRecordFetchedWithParent.swift in Sources */,
 				7475CC292B633A1700B8E6A6 /* Database.swift in Sources */,
 				7454A3762B5968D7006357C8 /* ContentView.swift in Sources */,
 				7454A3A92B5F08AB006357C8 /* DatabaseService.swift in Sources */,

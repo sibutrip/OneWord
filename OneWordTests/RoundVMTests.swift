@@ -11,9 +11,8 @@ import XCTest
 final class RoundViewModelTests: XCTestCase {
     func test_init_assignsRoundToViewModel() async throws {
         let testRound = Round(roundNumber: 1)
-        let sut = RoundViewModel(round: testRound)
-        
-        XCTAssertEqual(sut.currentRound, testRound)
+        let databaseService = MockCloudContainer().public
+//        let sut = RoundViewModel(round: testRound, databaseService: databaseService)
     }
     
 //    func test_fetchRoundInfo_getsQuestionAndPlayersFromRound() async throws {

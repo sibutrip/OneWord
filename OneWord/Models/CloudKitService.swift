@@ -60,6 +60,22 @@ actor CloudKitService: DatabaseService {
         return record
     }
     
+    #warning("add to tests")
+    func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : ChildRecord {
+        let query = CKQuery(recordType: Child.recordType, predicate: NSPredicate(value: true))
+        query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        let (matchResults, _) = try await database.records(matching: query, inZoneWith: .default, desiredKeys: nil, resultsLimit: 1)
+        let records = matchResults
+            .compactMap { try? $0.1.get() }
+            .compactMap { Child(from: $0, with: parent) }
+        guard let record = records.first, records.count != 1 else {
+            throw CloudKitServiceError.incorrectlyReadingCloudKitData
+        }
+        return record
+    }
+    
+    // MARK: Initializer
+    
     init(withContainer container: CloudContainer) {
         self.container = container
     }

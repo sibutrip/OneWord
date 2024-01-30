@@ -11,4 +11,5 @@ protocol DatabaseService: Actor {
     func fetch<SomeRecord: Record>(withID recordID: String) async throws -> SomeRecord
     func childRecords<Child: ChildRecord>(of parent: Child.Parent) async throws -> [Child]
     func fetchManyToManyRecords<FromRecord: ManyToManyRecord>(from: FromRecord) async throws -> [FromRecord.RelatedRecord]
+    func newestChildRecord<Child: ChildRecord>(of parent: Child.Parent) async throws -> Child
 }

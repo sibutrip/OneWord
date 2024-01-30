@@ -10,6 +10,15 @@ import CloudKit
 @testable import OneWord
 
 actor DatabaseServiceSpy: DatabaseService {
+    func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
+        if didFetchChildRecordsSuccessfully {
+            receivedMessages.append(.newestChildRecord)
+            return Child(from: recordFromDatabase)!
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 4)
+        }
+    }
+    
     func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : OneWord.Record {
         if didFetchSuccessfully {
             receivedMessages.append(.fetch)
@@ -57,7 +66,7 @@ actor DatabaseServiceSpy: DatabaseService {
     
     
     enum Message {
-        case add, fetch, update, fetchChildRecords, fetchManyToMany
+        case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord
     }
 
     var recordFromDatabase: CKRecord = {
@@ -65,15 +74,30 @@ actor DatabaseServiceSpy: DatabaseService {
         ckRecord["systemUserID"] = "test id"
         ckRecord["name"] = "test name"
         ckRecord["inviteCode"] = "test invite code"
+        ckRecord["description"] = "description"
+        ckRecord["roundNumber"] = 1
+        ckRecord["user"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["round"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["game"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["question"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["isHost"] = true
+        ckRecord["rank"] = 1
         return ckRecord
     }()
     
     var childRecordsFromDatabase: [CKRecord] = {
-        let ckRecord = CKRecord(recordType: "ChildRecord")
+        let ckRecord = CKRecord(recordType: "TestRecord")
         ckRecord["systemUserID"] = "test id"
         ckRecord["name"] = "test name"
         ckRecord["inviteCode"] = "test invite code"
+        ckRecord["description"] = "description"
         ckRecord["roundNumber"] = 1
+        ckRecord["user"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["round"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["game"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["question"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
+        ckRecord["isHost"] = true
+        ckRecord["rank"] = 1
         return [ckRecord, ckRecord]
     }()
     

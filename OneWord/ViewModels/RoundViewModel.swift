@@ -8,15 +8,27 @@
 import Foundation
 
 class RoundViewModel {
-    private let database: DatabaseService
-    let currentRound: Round
+    enum RoundViewModelError: Error {
+        case questionIDNotFound, couldNotFetchQuestion
+    }
+    private let databaseService: DatabaseService
+    var currentRound: Round
     var question: Question? { currentRound.question }
     var players: [Player] = []
         
-    init(round: Round, database: DatabaseService) {
+    init(round: Round, databaseService: DatabaseService) {
         self.currentRound = round
-        self.database = database
+        self.databaseService = databaseService
     }
     
-    public func fetchRoundInfo() async throws { }
+    public func fetchRoundInfo() async throws {
+        #warning("add to tests")
+        guard let questionID = currentRound.question?.id else {
+            throw RoundViewModelError.questionIDNotFound
+        }
+        guard let question: Question = (try? await databaseService.fetch(withID: questionID)) else {
+            throw RoundViewModelError.couldNotFetchQuestion
+        }
+        currentRound.question = question
+    }
 }

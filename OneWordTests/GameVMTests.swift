@@ -180,6 +180,16 @@ final class GameViewModelTests: XCTestCase {
         }, throws: GameViewModelError.couldNotFetchRounds)
     }
     
+    func test_fetchNewestRound_assignsNewestRoundToVMIfSuccessful() async throws {
+        let (sut, database) = makeSUT()
+        let game = GameModel(withName: "Test Group")
+        sut.currentGame = game
+        
+        try await sut.fetchNewestRound()
+        
+        XCTAssertNotNil(sut.currentRound)
+    }
+    
     // MARK: Helper Methods
     
     private func makeSUT(

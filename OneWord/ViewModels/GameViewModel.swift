@@ -8,7 +8,7 @@
 class GameViewModel {
     
     enum GameViewModelError: Error {
-        case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers, couldNotCreateRound, couldNotFetchRounds
+        case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers, couldNotCreateRound, couldNotFetchRounds, couldNotFetchQuestion
     }
     
     private let databaseService: DatabaseService
@@ -91,5 +91,14 @@ class GameViewModel {
             throw GameViewModelError.couldNotFetchRounds
         }
         self.previousRounds = previousRounds
+    }
+    
+    /// - Throws `GameViewModelError.couldNotFetchRounds` if unable to make `Round` with `databaseService`
+    public func fetchNewestRound() async throws {
+        guard let currentGame else { throw GameViewModelError.noCurrentGame }
+        guard let newestRound: Round = (try? await databaseService.newestChildRecord(of: currentGame)) else {
+            throw GameViewModelError.couldNotFetchRounds
+        }
+        self.currentRound = newestRound
     }
 }
