@@ -1,5 +1,5 @@
 //
-//  ChildRecordFetchedWithParent.swift
+//  RecordFetchedByID.swift
 //  OneWord
 //
 //  Created by Cory Tripathy on 1/29/24.

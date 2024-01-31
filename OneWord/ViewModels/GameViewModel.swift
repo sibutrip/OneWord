@@ -14,7 +14,7 @@ class GameViewModel {
     private let databaseService: DatabaseService
     var localUser: User
     var users = [User]()
-    var currentGame: GameModel?
+    var currentGame: Game?
     
     var previousRounds = [Round]()
     var currentRound: Round?
@@ -30,7 +30,7 @@ class GameViewModel {
     /// Subsequent added users should also have `Game` as a child record of their `User` record.
     /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
     public func createGame(withGroupName name: String) async throws {
-        let newGame = GameModel(withName: name)
+        let newGame = Game(withName: name)
         let userGameRelationship = UserGameRelationship(user: localUser, game: newGame)
         do {
             let _ = try await databaseService.add(userGameRelationship, withParent: localUser, andSecondParent: newGame)

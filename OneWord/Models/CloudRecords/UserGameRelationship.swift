@@ -10,7 +10,7 @@ import CloudKit
 struct UserGameRelationship: TwoParentsChildRecord {
     
     typealias Parent = User
-    typealias SecondParent = GameModel
+    typealias SecondParent = Game
     
     enum RecordKeys: String, CaseIterable {
         case user, game
@@ -20,15 +20,15 @@ struct UserGameRelationship: TwoParentsChildRecord {
 
     var id: String
     var user: User?
-    var gameModel: GameModel?
+    var game: Game?
     
     
     // MARK: Initializers
     
-    init(user: User, game: GameModel) {
+    init(user: User, game: Game) {
         self.init()
         self.user = user
-        self.gameModel = game
+        self.game = game
     }
     
     init?(from record: CKRecord, with parent: User?) {
@@ -37,10 +37,10 @@ struct UserGameRelationship: TwoParentsChildRecord {
         self.user = parent
     }
     
-    init?(from record: CKRecord, with secondParent: GameModel?) {
+    init?(from record: CKRecord, with secondParent: Game?) {
         self.init()
         self.id = record.recordID.recordName
-        self.gameModel = secondParent
+        self.game = secondParent
     }
     
     init() {
@@ -51,7 +51,7 @@ struct UserGameRelationship: TwoParentsChildRecord {
         self.user = parent
     }
     
-    mutating func addingSecondParent(_ secondParent: GameModel) {
-        self.gameModel = secondParent
+    mutating func addingSecondParent(_ secondParent: Game) {
+        self.game = secondParent
     }
 }

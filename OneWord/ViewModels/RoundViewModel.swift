@@ -8,21 +8,20 @@
 import Foundation
 
 class RoundViewModel {
-    enum RoundViewModelError: Error {
-        case questionIDNotFound, couldNotFetchQuestion
-    }
+//    enum RoundViewModelError: Error { }
     private let databaseService: DatabaseService
     var currentRound: Round
     var question: Question? { currentRound.question }
-    var players: [Player] = []
+    var usersInRound: [UserInRound] = []
         
-    init(round: Round, databaseService: DatabaseService) {
+    init(round: Round, users: [User], databaseService: DatabaseService) {
         self.currentRound = round
         self.databaseService = databaseService
     }
     
-    
-    /// - Throws `RoundViewModelError.questionNotFound` if `currentRound.question` is nil. This value should be set when the record is initially fetched in `GameViewModel`
     public func fetchRoundInfo() async throws {
+        async let words: [Word] = try await databaseService.childRecords(of: currentRound)
+        async let players: [Player] = try await databaseService.childRecords(of: currentRound)
+        
     }
 }

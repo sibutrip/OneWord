@@ -16,7 +16,7 @@ struct Round: ChildRecord {
     static let recordType = "Round"
 
     var id: String
-    var game: GameModel?
+    var game: Game?
     var question: Question {
         Question(atIndex: questionNumber)
     }
@@ -30,7 +30,7 @@ struct Round: ChildRecord {
     
     // MARK: Initializers
     
-    init?(from record: CKRecord, with parent: GameModel?) {
+    init?(from record: CKRecord, with parent: Game?) {
         guard let roundNumber = record["roundNumber"] as? Int,
         let questionNumber = record["questionNumber"] as? Int else {
             return nil
@@ -46,7 +46,7 @@ struct Round: ChildRecord {
         self.id = UUID().uuidString
     }
     
-    mutating func addingParent(_ parent: GameModel) {
+    mutating func addingParent(_ parent: Game) {
         self.game = parent
     }
 }

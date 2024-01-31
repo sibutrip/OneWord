@@ -48,7 +48,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_addUser_addsUserToUsersArrayIfSuccessful() async throws {
         let (sut, database) = makeSUT()
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
         let userIDToAdd = "Some Unique ID"
         
@@ -69,7 +69,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_addUser_throwsIfUserToAddNotInDatabase() async {
         let (sut, _) = makeSUT(databaseDidFetchSuccessfully: false)
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
 
         await assertDoesThrow(test: {
@@ -79,7 +79,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async {
         let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
 
         await assertDoesThrow(test: {
@@ -89,7 +89,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_fetchUsersInGame_populatesUsersFromDatabase() async throws {
         let (sut, database) = makeSUT()
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
         
         try await sut.fetchUsersInGame()
@@ -112,7 +112,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_fetchUsersInGame_throwsIfCannotFetchFromDatabase() async {
         let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
                 
         await assertDoesThrow(test: {
@@ -122,7 +122,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_startRound_addsNewRoundAndUploadsToDatabase() async throws {
         let (sut, database) = makeSUT()
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
         
         try await sut.startRound()
@@ -142,7 +142,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_startRound_throwsIfCouldNotAddGameToDatabase() async {
         let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
         
         await assertDoesThrow(test: {
@@ -152,7 +152,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_fetchPreviousRounds_addsRoundsToPreviousRoundsIfSuccessful() async throws {
         let (sut, database) = makeSUT()
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
         
         try await sut.fetchPreviousRounds()
@@ -172,7 +172,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
         let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
         
         await assertDoesThrow(test: {
@@ -182,7 +182,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_fetchNewestRound_assignsNewestRoundToVMIfSuccessful() async throws {
         let (sut, database) = makeSUT()
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
         
         try await sut.fetchNewestRound()
@@ -203,7 +203,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_fetchNewestRound_throwsIfCouldNotFetchRounds() async {
         let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
-        let game = GameModel(withName: "Test Group")
+        let game = Game(withName: "Test Group")
         sut.currentGame = game
         
         await assertDoesThrow(test: {

@@ -7,9 +7,9 @@
 
 import CloudKit
 
-struct User: ManyToManyRecord {
+struct User: ManyToManyRecord, RecordFetchedByID {
     
-    typealias RelatedRecord = GameModel
+    typealias RelatedRecord = Game
     typealias Child = UserGameRelationship
     
     enum RecordKeys: String, CaseIterable {
@@ -19,13 +19,12 @@ struct User: ManyToManyRecord {
     static let recordType = "User"
     
     var id: String
-    var parent: GameModel?
     
     
     // MARK: Database Record Keys
     
-    var systemUserID: String
-    let name: String
+    var systemUserID: String?
+    var name: String?
     
     
     // MARK: Initializers
@@ -44,5 +43,9 @@ struct User: ManyToManyRecord {
         self.name = name
         self.systemUserID = ""
         self.id = UUID().uuidString
+    }
+    
+    init(from reference: CKRecord.Reference) {
+        self.id = reference.recordID.recordName
     }
 }

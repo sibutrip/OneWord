@@ -1,5 +1,5 @@
 //
-//  GameModel.swift
+//  Game.swift
 //  OneWord
 //
 //  Created by Cory Tripathy on 1/22/24.
@@ -7,7 +7,7 @@
 
 import CloudKit
 
-struct GameModel: ManyToManyRecord {
+struct Game: ManyToManyRecord {
     
     typealias RelatedRecord = User
     typealias Child = UserGameRelationship
