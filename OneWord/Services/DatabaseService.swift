@@ -10,7 +10,7 @@ import CloudKit
 actor DatabaseService: DatabaseServiceProtocol {
     
     enum DatabaseServiceError: Error {
-        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase
+        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase
     }
     
     let container: CloudContainer
@@ -53,9 +53,13 @@ actor DatabaseService: DatabaseServiceProtocol {
     
     func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : ChildRecord, SomeRecord: FetchedRecord, SomeRecord.Parent: FetchedRecord {
         let query = ReferenceQuery(child: SomeRecord.self, parent: parent)
-        let entries = try await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max)
-        let records = entries.compactMap { SomeRecord(from: $0) }
-        return records
+        do {
+            let entries = try await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max)
+            let records = entries.compactMap { SomeRecord(from: $0) }
+            return records
+        } catch {
+            throw DatabaseServiceError.couldNotGetChildrenFromDatabase
+        }
     }
     
     func fetchManyToManyRecords<FromRecord>(from: FromRecord) async throws -> [FromRecord.RelatedRecord] where FromRecord : ManyToManyRecord {

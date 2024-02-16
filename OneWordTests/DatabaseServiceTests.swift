@@ -123,6 +123,17 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertNotNil(childRecords)
     }
     
+    func test_childRecords_returnsEmptyArrayIfNoChildRecordsInDatabase() async throws {
+        let (sut, database) = makeSUT(recordInDatabase: false)
+        let parent = MockFetchedRecord(name: "Test")
+
+        let childRecords: [MockFetchedChildRecord] = try await sut.childRecords(of: parent)
+        
+        XCTAssertEqual(0, childRecords.count)
+        let databaseRecordsCalls = database.messages.filter { $0 == .records }
+        XCTAssertEqual(databaseRecordsCalls, [.records])
+    }
+    
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
 //        let database = container.public as! MockDatabase
