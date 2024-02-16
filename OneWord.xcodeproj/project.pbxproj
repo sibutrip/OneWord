@@ -34,7 +34,6 @@
 		74A8CBDF2B741B9E00EA9F5A /* FetchedUserGameRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBCD2B741B9D00EA9F5A /* FetchedUserGameRelationship.swift */; };
 		74A8CBE02B741B9E00EA9F5A /* FetchedWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBCF2B741B9D00EA9F5A /* FetchedWord.swift */; };
 		74A8CBE12B741B9E00EA9F5A /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBD02B741B9D00EA9F5A /* Word.swift */; };
-		74A8CBE22B741B9E00EA9F5A /* FetchedReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBD12B741B9D00EA9F5A /* FetchedReference.swift */; };
 		74A8CBE32B741B9E00EA9F5A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBD32B741B9D00EA9F5A /* User.swift */; };
 		74A8CBE42B741B9E00EA9F5A /* FetchedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBD42B741B9D00EA9F5A /* FetchedUser.swift */; };
 		74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBD62B741B9E00EA9F5A /* Game.swift */; };
@@ -42,7 +41,7 @@
 		74A8CBEB2B741BF100EA9F5A /* DatabaseEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBE72B741BF100EA9F5A /* DatabaseEntry.swift */; };
 		74A8CBEC2B741BF100EA9F5A /* CreatableRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBE82B741BF100EA9F5A /* CreatableRecord.swift */; };
 		74A8CBED2B741BF100EA9F5A /* FetchedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBE92B741BF100EA9F5A /* FetchedRecord.swift */; };
-		74A8CBF12B741C8800EA9F5A /* FetchedRecordReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF02B741C8800EA9F5A /* FetchedRecordReference.swift */; };
+		74A8CBF12B741C8800EA9F5A /* FetchedReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */; };
 		74A8CBF52B741CA700EA9F5A /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF42B741CA700EA9F5A /* Record.swift */; };
 		74A8CBF82B742A9C00EA9F5A /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF72B742A9C00EA9F5A /* Query.swift */; };
 		74CB1B772B68974F005C7F15 /* RecordFetchedByID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CB1B762B68974F005C7F15 /* RecordFetchedByID.swift */; };
@@ -93,7 +92,6 @@
 		74A8CBCD2B741B9D00EA9F5A /* FetchedUserGameRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedUserGameRelationship.swift; sourceTree = "<group>"; };
 		74A8CBCF2B741B9D00EA9F5A /* FetchedWord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedWord.swift; sourceTree = "<group>"; };
 		74A8CBD02B741B9D00EA9F5A /* Word.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
-		74A8CBD12B741B9D00EA9F5A /* FetchedReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedReference.swift; sourceTree = "<group>"; };
 		74A8CBD32B741B9D00EA9F5A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		74A8CBD42B741B9D00EA9F5A /* FetchedUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedUser.swift; sourceTree = "<group>"; };
 		74A8CBD62B741B9E00EA9F5A /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -101,7 +99,7 @@
 		74A8CBE72B741BF100EA9F5A /* DatabaseEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseEntry.swift; sourceTree = "<group>"; };
 		74A8CBE82B741BF100EA9F5A /* CreatableRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatableRecord.swift; sourceTree = "<group>"; };
 		74A8CBE92B741BF100EA9F5A /* FetchedRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedRecord.swift; sourceTree = "<group>"; };
-		74A8CBF02B741C8800EA9F5A /* FetchedRecordReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedRecordReference.swift; sourceTree = "<group>"; };
+		74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedReference.swift; sourceTree = "<group>"; };
 		74A8CBF42B741CA700EA9F5A /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		74A8CBF72B742A9C00EA9F5A /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		74CB1B762B68974F005C7F15 /* RecordFetchedByID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFetchedByID.swift; sourceTree = "<group>"; };
@@ -197,7 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				74A8CBCA2B741B9D00EA9F5A /* Question.swift */,
-				74A8CBD12B741B9D00EA9F5A /* FetchedReference.swift */,
+				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,
 				74A8CBD52B741B9E00EA9F5A /* Game */,
 				74A8CBC72B741B9D00EA9F5A /* Player */,
 				74A8CBC32B741B9D00EA9F5A /* Round */,
@@ -212,7 +210,6 @@
 		7454A3AC2B5F0998006357C8 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				74A8CBF02B741C8800EA9F5A /* FetchedRecordReference.swift */,
 				74A8CBE72B741BF100EA9F5A /* DatabaseEntry.swift */,
 				74A8CBF62B741DFC00EA9F5A /* Records */,
 				74A8CBF72B742A9C00EA9F5A /* Query.swift */,
@@ -435,7 +432,7 @@
 				74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */,
 				7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */,
 				7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */,
-				74A8CBF12B741C8800EA9F5A /* FetchedRecordReference.swift in Sources */,
+				74A8CBF12B741C8800EA9F5A /* FetchedReference.swift in Sources */,
 				74A8CBDE2B741B9E00EA9F5A /* UserGameRelationship.swift in Sources */,
 				74F026A12B6200E100ED9B20 /* TwoParentsChildRecord.swift in Sources */,
 				74A8CBE12B741B9E00EA9F5A /* Word.swift in Sources */,
@@ -447,7 +444,6 @@
 				74A8CBED2B741BF100EA9F5A /* FetchedRecord.swift in Sources */,
 				74A8CBF82B742A9C00EA9F5A /* Query.swift in Sources */,
 				74A8CBE42B741B9E00EA9F5A /* FetchedUser.swift in Sources */,
-				74A8CBE22B741B9E00EA9F5A /* FetchedReference.swift in Sources */,
 				74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
