@@ -14,7 +14,7 @@
 		7454A3852B5968D8006357C8 /* GameVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3842B5968D8006357C8 /* GameVMTests.swift */; };
 		7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */; };
 		7454A3A32B5F0802006357C8 /* DatabaseServiceSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */; };
-		7454A3A72B5F089E006357C8 /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A62B5F089E006357C8 /* CloudKitService.swift */; };
+		7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A62B5F089E006357C8 /* DatabaseService.swift */; };
 		7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */; };
 		7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */; };
 		7475CC212B6334B700B8E6A6 /* CloudKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC202B6334B700B8E6A6 /* CloudKitServiceTests.swift */; };
@@ -72,7 +72,7 @@
 		7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		7454A3A12B5F01BC006357C8 /* OneWord.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = OneWord.xctestplan; sourceTree = "<group>"; };
 		7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceSpy.swift; sourceTree = "<group>"; };
-		7454A3A62B5F089E006357C8 /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
+		7454A3A62B5F089E006357C8 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
 		7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyToManyRecord.swift; sourceTree = "<group>"; };
 		7475CC202B6334B700B8E6A6 /* CloudKitServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitServiceTests.swift; sourceTree = "<group>"; };
@@ -286,7 +286,7 @@
 		74A8CBEF2B741C1800EA9F5A /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				7454A3A62B5F089E006357C8 /* CloudKitService.swift */,
+				7454A3A62B5F089E006357C8 /* DatabaseService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -415,7 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74A8CBD92B741B9E00EA9F5A /* FetchedRound.swift in Sources */,
-				7454A3A72B5F089E006357C8 /* CloudKitService.swift in Sources */,
+				7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */,
 				74A8CBDF2B741B9E00EA9F5A /* FetchedUserGameRelationship.swift in Sources */,
 				74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */,
 				7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */,
