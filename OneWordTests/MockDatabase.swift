@@ -11,6 +11,7 @@ import CloudKit
 class MockDatabase: Database {
     func record(for entryID: OneWord.Entry.ID) async throws -> OneWord.Entry {
         if recordInDatabase && connectedToDatabase {
+            messages.append(.record)
             if fetchedCorrectRecordType {
                 return recordFromDatabase
             } else {
@@ -22,6 +23,7 @@ class MockDatabase: Database {
     
     func save(_ entry: OneWord.Entry) async throws -> OneWord.Entry {
         if connectedToDatabase {
+            messages.append(.save)
             return recordFromDatabase
         }
         throw NSError(domain: "Could not save record to database", code: 0)
@@ -44,6 +46,7 @@ class MockDatabase: Database {
     
     func modifyRecords(saving recordsToSave: [OneWord.Entry], deleting recordIDsToDelete: [OneWord.Entry.ID]) async throws -> (saveResults: [OneWord.Entry], deleteResults: [OneWord.Entry.ID]) {
         if connectedToDatabase {
+            messages.append(.modify)
            return (saveResults: [recordFromDatabase], deleteResults: [])
         }
         throw NSError(domain: "could not modify records in database", code: 0)

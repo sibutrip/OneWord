@@ -43,21 +43,20 @@ final class CloudKitServiceTests: XCTestCase {
 //        }, throws: CloudKitServiceError.incorrectlyReadingCloudKitData)
 //    }
 //    
-//    func test_addChildWithParent_addsChildAndParentToDatabaseIfRecordsNotInDatabase() async throws {
-//        let container = MockCloudContainer(recordInDatabase: false) // parent not in database
-//        let database = container.public as! MockDatabase
-//        let sut = DatabaseService(withContainer: container)
-//        let childRecord = MockChildRecord(withName: "Test")
-//        let parentRecord = MockRecord(name: "test")
-//
-//        let uploadedChild: MockChildRecord = try await sut.add(childRecord, withParent: parentRecord)
-//        
-//        XCTAssertNotNil(uploadedChild.mockRecord)
-//        let databaseRecordCalls = database.messages.filter { $0 == .record }
-//        let databaseSaveCalls = database.messages.filter { $0 == .save }
-//        XCTAssertEqual(databaseSaveCalls.count, 2)
-//        XCTAssertEqual(databaseRecordCalls.count, 2)
-//    }
+    func test_addChildWithParent_addsChildAndParentToDatabaseIfRecordsNotInDatabase() async throws {
+        let container = MockCloudContainer(recordInDatabase: false) // parent not in database
+        let database = container.public as! MockDatabase
+        let sut = DatabaseService(withContainer: container)
+        let parentRecord = MockCreatableRecord(name: "Test Parent")
+        let childRecord = MockCreatableChildRecord(name: "Test Child", parent: parentRecord)
+
+        try await sut.add(childRecord, withParent: parentRecord)
+        
+        let databaseRecordCalls = database.messages.filter { $0 == .modify }
+        let databaseSaveCalls = database.messages.filter { $0 == .save }
+        XCTAssertEqual(databaseSaveCalls.count, 1)
+        XCTAssertEqual(databaseRecordCalls.count, 1)
+    }
 //    
 //    func test_addChildWithParent_addsChildAndParentToDatabaseIfRecordsInDatabase() async throws {
 //        let container = MockCloudContainer()

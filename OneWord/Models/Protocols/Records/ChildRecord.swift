@@ -5,6 +5,6 @@
 //  Created by Cory Tripathy on 1/23/24.
 //
 
-protocol ChildRecord: FetchedRecord {
+protocol ChildRecord {
     associatedtype Parent = Record
 }

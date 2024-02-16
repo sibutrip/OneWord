@@ -11,8 +11,8 @@ import CloudKit
 
 final class RoundViewModelTests: XCTestCase {
     
-    func test_fetchRoundInfo_getsQuestionAndPlayersFromRound() async throws {
-        
+//    func test_fetchRoundInfo_getsQuestionAndPlayersFromRound() async throws {
+//        
 //        var testRound = Round(from: <#T##CKRecord#>)
 //        let sut = RoundViewModel(round: testRound)
 //        
@@ -20,5 +20,5 @@ final class RoundViewModelTests: XCTestCase {
 //        
 //        XCTAssertNotNil(sut.question)
 //        XCTAssertNotEqual(sut.players, [])
-    }
+//    }
 }

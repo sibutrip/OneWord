@@ -29,7 +29,8 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.newestChildRecord)
-            return Child(from: recordFromDatabase)!
+            fatalError()
+//            return Child(from: recordFromDatabase)!
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 4)
         }
@@ -47,7 +48,8 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func childRecords<Child>(of parent: Child.Parent) async throws -> [Child] where Child : OneWord.ChildRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)
-            return childRecordsFromDatabase.map { Child(from: $0)! }
+//            return childRecordsFromDatabase.map { Child(from: $0)! }
+            fatalError()
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 3)
         }

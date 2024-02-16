@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		741386022B7FC84000A1B424 /* MockCreatableRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386012B7FC84000A1B424 /* MockCreatableRecord.swift */; };
+		741386042B7FC92700A1B424 /* MockCreatableChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */; };
 		7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3732B5968D7006357C8 /* OneWordApp.swift */; };
 		7454A3762B5968D7006357C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3752B5968D7006357C8 /* ContentView.swift */; };
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
@@ -62,6 +64,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		741386012B7FC84000A1B424 /* MockCreatableRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableRecord.swift; sourceTree = "<group>"; };
+		741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableChildRecord.swift; sourceTree = "<group>"; };
 		7454A3702B5968D7006357C8 /* OneWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3732B5968D7006357C8 /* OneWordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordApp.swift; sourceTree = "<group>"; };
 		7454A3752B5968D7006357C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -127,6 +131,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		741386052B7FC9CD00A1B424 /* MockRecord */ = {
+			isa = PBXGroup;
+			children = (
+				7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */,
+				741386012B7FC84000A1B424 /* MockCreatableRecord.swift */,
+			);
+			path = MockRecord;
+			sourceTree = "<group>";
+		};
+		741386062B7FC9D900A1B424 /* MockChildRecord */ = {
+			isa = PBXGroup;
+			children = (
+				74F86A6C2B643EA800CD7691 /* MockFetchedChildRecord.swift */,
+				741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */,
+			);
+			path = MockChildRecord;
+			sourceTree = "<group>";
+		};
 		7454A3672B5968D7006357C8 = {
 			isa = PBXGroup;
 			children = (
@@ -308,8 +330,8 @@
 		74F86A6E2B643EAC00CD7691 /* MockRecords */ = {
 			isa = PBXGroup;
 			children = (
-				7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */,
-				74F86A6C2B643EA800CD7691 /* MockFetchedChildRecord.swift */,
+				741386062B7FC9D900A1B424 /* MockChildRecord */,
+				741386052B7FC9CD00A1B424 /* MockRecord */,
 			);
 			path = MockRecords;
 			sourceTree = "<group>";
@@ -454,9 +476,11 @@
 			files = (
 				7454A3A32B5F0802006357C8 /* DatabaseServiceSpy.swift in Sources */,
 				7475CC252B63390500B8E6A6 /* MockDatabase.swift in Sources */,
+				741386022B7FC84000A1B424 /* MockCreatableRecord.swift in Sources */,
 				7475CC232B6338D800B8E6A6 /* MockFetchedRecord.swift in Sources */,
 				74F86A6D2B643EA800CD7691 /* MockFetchedChildRecord.swift in Sources */,
 				7475CC2B2B633CB400B8E6A6 /* MockCloudContainer.swift in Sources */,
+				741386042B7FC92700A1B424 /* MockCreatableChildRecord.swift in Sources */,
 				7475CC2D2B633FE600B8E6A6 /* XCTestCase+Extension.swift in Sources */,
 				7454A3852B5968D8006357C8 /* GameVMTests.swift in Sources */,
 				7475CC212B6334B700B8E6A6 /* CloudKitServiceTests.swift in Sources */,

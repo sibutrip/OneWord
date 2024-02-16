@@ -18,8 +18,8 @@ actor DatabaseService: DatabaseServiceProtocol {
     
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : ChildRecord, SomeRecord : CreatableRecord, SomeRecord.Parent : CreatableRecord {
         let entry = record.entry
-        _ = try await database.save(entry)
-        try await modifyOrAdd(entries: [parent.entry])
+        async let _ = try await self.database.modifyRecords(saving: [parent.entry], deleting: [])
+        async let _ = try await database.save(entry)
     }
     
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : CreatableRecord, SomeRecord : TwoParentsChildRecord, SomeRecord.Parent : CreatableRecord, SomeRecord.SecondParent : CreatableRecord {
@@ -43,26 +43,6 @@ actor DatabaseService: DatabaseServiceProtocol {
     }
     
     // MARK: Helper Methods
-    
-    private func modifyOrAdd(entries: [Entry]) async throws {
-        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for entry in entries {
-                taskGroup.addTask {
-                    do {
-                        let receivedRecordRequest = try? await self.database.record(for: entry.id)
-                        if receivedRecordRequest == nil {
-                            _ = try await self.database.save(entry)
-                        } else {
-                            let _ = try await self.database.modifyRecords(saving: [entry], deleting: [])
-                        }
-                    } catch {
-                        throw CloudKitServiceError.couldNotConnectToDatabase
-                    }
-                }
-            }
-            try await taskGroup.waitForAll()
-        }
-    }
     
     // MARK: Initializer
     
