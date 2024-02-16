@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ManyToManyRecord: Record { 
+protocol ManyToManyRecord: FetchedRecord { 
     associatedtype RelatedRecord: ManyToManyRecord
     associatedtype Child: TwoParentsChildRecord
 }

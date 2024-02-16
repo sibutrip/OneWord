@@ -6,16 +6,16 @@
 //
 
 struct FetchedPlayer: FetchedRecord {
-    init?(from record: any DatabaseEntry) {
-        guard let user = record["user"] as? EntryReference,
-              let round = record["round"] as? EntryReference,
-              let rank = record["rank"] as? Int,
-              let isHost = record["isHost"] as? Bool else {
+    init?(from entry: Entry) {
+        guard let user = entry["user"] as? FetchedReference,
+              let round = entry["round"] as? FetchedReference,
+              let rank = entry["rank"] as? Int,
+              let isHost = entry["isHost"] as? Bool else {
             return nil
         }
-        self.id = record.recordName
-        self.user = FetchedReference(from: user)
-        self.round = FetchedReference(from: round)
+        self.id = entry.id
+        self.user = user
+        self.round = round
         self.rank = rank
         self.isHost = isHost
     }

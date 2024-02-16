@@ -6,14 +6,14 @@
 //
 
 struct FetchedUserGameRelationship: FetchedRecord {
-    init?(from record: any DatabaseEntry) {
-        guard let user = record["user"] as? EntryReference,
-              let game = record["game"] as? EntryReference else {
+    init?(from entry: Entry) {
+        guard let user = entry["user"] as? FetchedReference,
+              let game = entry["game"] as? FetchedReference else {
             return nil
         }
-        self.id = record.recordName
-        self.user = FetchedReference(from: user)
-        self.game = FetchedReference(from: game)
+        self.id = entry.id
+        self.user = user
+        self.game = game
     }
     
     static let recordType = "Word"

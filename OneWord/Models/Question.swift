@@ -6,11 +6,11 @@
 //
 
 struct Question: FetchedRecord {
-    init?(from record: any DatabaseEntry) {
-        guard let description = record["description"] as? String else {
+    init?(from entry: Entry) {
+        guard let description = entry["description"] as? String else {
             return nil
         }
-        self.id = record.recordName
+        self.id = entry.id
         self.description = description
     }
     

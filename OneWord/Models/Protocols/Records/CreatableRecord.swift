@@ -10,8 +10,8 @@ protocol CreatableRecord: Record {
 }
 
 extension CreatableRecord {
-    func entry<Entry: DatabaseEntry>() -> Entry {
-        let record = Entry(recordType: Self.recordType, recordID: id)
+    var entry: Entry {
+        var record = Entry(withID: self.id, recordType: Self.recordType)
         let propertiesMirrored = Mirror(reflecting: self)
         for recordKey in Self.RecordKeys.allCases.compactMap({ $0.rawValue as? String }) {
             if let propertyLabel = propertiesMirrored.children.first(where: { label, value in
@@ -20,11 +20,7 @@ extension CreatableRecord {
                 }
                 return label == recordKey
             }) {
-                if let propertyAsRecord = propertyLabel.value as? any Record {
-                    record[recordKey] = propertyAsRecord.reference(for: Entry.self)
-                } else {
-                    record[recordKey] = propertyLabel.value
-                }
+                record[recordKey] = propertyLabel.value
             }
         }
         return record

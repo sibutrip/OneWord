@@ -10,10 +10,3 @@ protocol Record {
     
     var id: String { get }
 }
-
-extension Record {
-    func reference<Entry: DatabaseEntry>(for type: Entry.Type) -> Entry.Reference {
-        return Entry(recordType: Self.recordType, recordID: id).reference
-    }
-}
-

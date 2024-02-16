@@ -6,12 +6,12 @@
 //
 
 struct FetchedUser: FetchedRecord {
-    init?(from record: any DatabaseEntry) {
-        guard let name = record["name"] as? String,
-              let systemID = record["systemID"] as? String else {
+    init?(from entry: Entry) {
+        guard let name = entry["name"] as? String,
+              let systemID = entry["systemID"] as? String else {
             return nil
         }
-        self.id = record.recordName
+        self.id = entry.id
         self.name = name
         self.systemID = systemID
     }

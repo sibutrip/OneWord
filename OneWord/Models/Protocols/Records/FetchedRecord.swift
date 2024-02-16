@@ -6,5 +6,5 @@
 //
 
 protocol FetchedRecord: Record {
-    init?(from record: any DatabaseEntry)
+    init?(from entry: Entry)
 }

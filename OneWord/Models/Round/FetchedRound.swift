@@ -6,14 +6,14 @@
 //
 
 struct FetchedRound: FetchedRecord {
-    init?(from record: any DatabaseEntry) {
-        guard let game = record["game"] as? EntryReference,
-              let question = record["question"] as? EntryReference else {
+    init?(from entry: Entry) {
+        guard let game = entry["game"] as? FetchedReference,
+              let question = entry["question"] as? FetchedReference else {
             return nil
         }
-        self.id = record.recordName
-        self.game = FetchedReference(from: game)
-        self.question = FetchedReference(from: question)
+        self.id = entry.id
+        self.game = game
+        self.question = question
     }
     
     static let recordType = "Round"

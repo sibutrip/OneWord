@@ -6,16 +6,16 @@
 //
 
 struct FetchedWord: FetchedRecord {
-    init?(from record: any DatabaseEntry) {
-        guard let description = record["description"] as? String,
-              let user = record["user"] as? EntryReference,
-              let round = record["round"] as? EntryReference else {
+    init?(from entry: Entry) {
+        guard let description = entry["description"] as? String,
+              let user = entry["user"] as? FetchedReference,
+              let round = entry["round"] as? FetchedReference else {
             return nil
         }
-        self.id = record.recordName
+        self.id = entry.id
         self.description = description
-        self.user = FetchedReference(from: user)
-        self.round = FetchedReference(from: round)
+        self.user = user
+        self.round = round
     }
     
     static let recordType = "Word"
