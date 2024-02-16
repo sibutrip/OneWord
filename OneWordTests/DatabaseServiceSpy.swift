@@ -10,6 +10,22 @@ import CloudKit
 @testable import OneWord
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
+    func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : OneWord.ChildRecord, SomeRecord : OneWord.CreatableRecord, SomeRecord.Parent : OneWord.CreatableRecord {
+        if didAddSuccessfully {
+            receivedMessages.append(.add)
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 0)
+        }
+    }
+    
+    func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : OneWord.CreatableRecord, SomeRecord : OneWord.TwoParentsChildRecord, SomeRecord.Parent : OneWord.CreatableRecord, SomeRecord.SecondParent : OneWord.CreatableRecord {
+        if didAddSuccessfully {
+            receivedMessages.append(.add)
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 0)
+        }
+    }
+    
     func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.newestChildRecord)
@@ -19,30 +35,12 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : OneWord.Record {
+    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : OneWord.FetchedRecord {
         if didFetchSuccessfully {
             receivedMessages.append(.fetch)
             return SomeRecord(from: recordFromDatabase)!
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 3)
-        }
-    }
-    
-    func add<Child>(_ record: Child, withParent parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
-        if didAddSuccessfully {
-            receivedMessages.append(.add)
-            return record
-        } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 0)
-        }
-    }
-    
-    func add<Child>(_ record: Child, withParent parent: Child.Parent, andSecondParent: Child.SecondParent) async throws -> Child where Child : OneWord.TwoParentsChildRecord {
-        if didAddSuccessfully {
-            receivedMessages.append(.add)
-            return record
-        } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 0)
         }
     }
     
@@ -69,36 +67,36 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord
     }
 
-    var recordFromDatabase: CKRecord = {
-        let ckRecord = CKRecord(recordType: "TestRecord")
-        ckRecord["systemUserID"] = "test id"
-        ckRecord["name"] = "test name"
-        ckRecord["inviteCode"] = "test invite code"
-        ckRecord["description"] = "description"
-        ckRecord["roundNumber"] = 1
-        ckRecord["user"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["round"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["game"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["questionNumber"] = 1
-        ckRecord["isHost"] = true
-        ckRecord["rank"] = 1
-        return ckRecord
+    var recordFromDatabase: Entry = {
+        var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
+        entry["systemUserID"] = "test id"
+        entry["name"] = "test name"
+        entry["inviteCode"] = "test invite code"
+        entry["description"] = "description"
+        entry["roundNumber"] = 1
+        entry["user"] = FetchedReference(recordID: UUID().uuidString)
+        entry["round"] = FetchedReference(recordID: UUID().uuidString)
+        entry["game"] = FetchedReference(recordID: UUID().uuidString)
+        entry["questionNumber"] = 1
+        entry["isHost"] = true
+        entry["rank"] = 1
+        return entry
     }()
     
-    var childRecordsFromDatabase: [CKRecord] = {
-        let ckRecord = CKRecord(recordType: "TestRecord")
-        ckRecord["systemUserID"] = "test id"
-        ckRecord["name"] = "test name"
-        ckRecord["inviteCode"] = "test invite code"
-        ckRecord["description"] = "description"
-        ckRecord["roundNumber"] = 1
-        ckRecord["user"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["round"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["game"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["questionNumber"] = 1
-        ckRecord["isHost"] = true
-        ckRecord["rank"] = 1
-        return [ckRecord, ckRecord]
+    var childRecordsFromDatabase: [Entry] = {
+        var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
+        entry["systemUserID"] = "test id"
+        entry["name"] = "test name"
+        entry["inviteCode"] = "test invite code"
+        entry["description"] = "description"
+        entry["roundNumber"] = 1
+        entry["user"] = FetchedReference(recordID: UUID().uuidString)
+        entry["round"] = FetchedReference(recordID: UUID().uuidString)
+        entry["game"] = FetchedReference(recordID: UUID().uuidString)
+        entry["questionNumber"] = 1
+        entry["isHost"] = true
+        entry["rank"] = 1
+        return [entry, entry]
     }()
     
     

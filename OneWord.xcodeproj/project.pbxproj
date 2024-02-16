@@ -18,7 +18,7 @@
 		7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */; };
 		7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */; };
 		7475CC212B6334B700B8E6A6 /* CloudKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC202B6334B700B8E6A6 /* CloudKitServiceTests.swift */; };
-		7475CC232B6338D800B8E6A6 /* MockRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC222B6338D800B8E6A6 /* MockRecord.swift */; };
+		7475CC232B6338D800B8E6A6 /* MockFetchedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */; };
 		7475CC252B63390500B8E6A6 /* MockDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC242B63390500B8E6A6 /* MockDatabase.swift */; };
 		7475CC272B6339A800B8E6A6 /* CloudContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC262B6339A800B8E6A6 /* CloudContainer.swift */; };
 		7475CC292B633A1700B8E6A6 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC282B633A1700B8E6A6 /* Database.swift */; };
@@ -48,7 +48,7 @@
 		74F0269B2B61AF6D00ED9B20 /* RoundVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */; };
 		74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */; };
 		74F026A12B6200E100ED9B20 /* TwoParentsChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */; };
-		74F86A6D2B643EA800CD7691 /* MockChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F86A6C2B643EA800CD7691 /* MockChildRecord.swift */; };
+		74F86A6D2B643EA800CD7691 /* MockFetchedChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F86A6C2B643EA800CD7691 /* MockFetchedChildRecord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +76,7 @@
 		7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
 		7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyToManyRecord.swift; sourceTree = "<group>"; };
 		7475CC202B6334B700B8E6A6 /* CloudKitServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitServiceTests.swift; sourceTree = "<group>"; };
-		7475CC222B6338D800B8E6A6 /* MockRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecord.swift; sourceTree = "<group>"; };
+		7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFetchedRecord.swift; sourceTree = "<group>"; };
 		7475CC242B63390500B8E6A6 /* MockDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabase.swift; sourceTree = "<group>"; };
 		7475CC262B6339A800B8E6A6 /* CloudContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudContainer.swift; sourceTree = "<group>"; };
 		7475CC282B633A1700B8E6A6 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 		74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundVMTests.swift; sourceTree = "<group>"; };
 		74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundViewModel.swift; sourceTree = "<group>"; };
 		74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoParentsChildRecord.swift; sourceTree = "<group>"; };
-		74F86A6C2B643EA800CD7691 /* MockChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockChildRecord.swift; sourceTree = "<group>"; };
+		74F86A6C2B643EA800CD7691 /* MockFetchedChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFetchedChildRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -308,8 +308,8 @@
 		74F86A6E2B643EAC00CD7691 /* MockRecords */ = {
 			isa = PBXGroup;
 			children = (
-				7475CC222B6338D800B8E6A6 /* MockRecord.swift */,
-				74F86A6C2B643EA800CD7691 /* MockChildRecord.swift */,
+				7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */,
+				74F86A6C2B643EA800CD7691 /* MockFetchedChildRecord.swift */,
 			);
 			path = MockRecords;
 			sourceTree = "<group>";
@@ -454,8 +454,8 @@
 			files = (
 				7454A3A32B5F0802006357C8 /* DatabaseServiceSpy.swift in Sources */,
 				7475CC252B63390500B8E6A6 /* MockDatabase.swift in Sources */,
-				7475CC232B6338D800B8E6A6 /* MockRecord.swift in Sources */,
-				74F86A6D2B643EA800CD7691 /* MockChildRecord.swift in Sources */,
+				7475CC232B6338D800B8E6A6 /* MockFetchedRecord.swift in Sources */,
+				74F86A6D2B643EA800CD7691 /* MockFetchedChildRecord.swift in Sources */,
 				7475CC2B2B633CB400B8E6A6 /* MockCloudContainer.swift in Sources */,
 				7475CC2D2B633FE600B8E6A6 /* XCTestCase+Extension.swift in Sources */,
 				7454A3852B5968D8006357C8 /* GameVMTests.swift in Sources */,

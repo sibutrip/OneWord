@@ -8,7 +8,8 @@
 @testable import OneWord
 import CloudKit
 
-struct MockRecord: Record {
+struct MockFetchedRecord: FetchedRecord {
+    
     enum RecordKeys: String, CaseIterable {
         case name
     }
@@ -24,13 +25,13 @@ struct MockRecord: Record {
     
     
     // MARK: Initializers
-
-    init?(from record: CKRecord) {
-        guard let name = record["name"] as? String else {
+    
+    init?(from entry: OneWord.Entry) {
+        guard let name = entry["name"] as? String else {
             return nil
         }
-        self.init(name: name)
-        self.id = record.recordID.recordName
+        self.name = name
+        self.id = entry.id
     }
     
     init(name: String) {

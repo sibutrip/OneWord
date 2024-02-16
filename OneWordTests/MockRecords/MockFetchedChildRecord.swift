@@ -8,11 +8,11 @@
 import CloudKit
 @testable import OneWord
 
-struct MockChildRecord: ChildRecord {
+struct MockFetchedChildRecord: FetchedRecord, ChildRecord {
     
     static let recordType = "MockChildRecord"
     
-    init?(from record: CKRecord, with parent: MockRecord?) {
+    init?(from record: CKRecord, with parent: FetchedRecord?) {
         guard let name = record["name"] as? String else {
             return nil
         }
@@ -20,7 +20,15 @@ struct MockChildRecord: ChildRecord {
         self.id = record.recordID.recordName
     }
     
-    var mockRecord: MockRecord?
+    init?(from entry: OneWord.Entry) {
+        guard let name = entry["name"] as? String else {
+            return nil
+        }
+        self.name = name
+        self.id = entry.id
+    }
+    
+    var mockRecord: FetchedRecord?
     
     enum RecordKeys: String, CaseIterable {
         case name, mockRecord
@@ -33,7 +41,7 @@ struct MockChildRecord: ChildRecord {
         self.id = UUID().uuidString
         self.name = name
     }
-    mutating func addingParent(_ parent: MockRecord) {
+    mutating func addingParent(_ parent: FetchedRecord) {
         self.mockRecord = parent
     }
 }

@@ -9,6 +9,46 @@
 import CloudKit
 
 class MockDatabase: Database {
+    func record(for entryID: OneWord.Entry.ID) async throws -> OneWord.Entry {
+        if recordInDatabase && connectedToDatabase {
+            if fetchedCorrectRecordType {
+                return recordFromDatabase
+            } else {
+                return incorrectRecordFromDatabase
+            }
+        }
+        throw NSError(domain: "Record not in database", code: 0)
+    }
+    
+    func save(_ entry: OneWord.Entry) async throws -> OneWord.Entry {
+        if connectedToDatabase {
+            return recordFromDatabase
+        }
+        throw NSError(domain: "Could not save record to database", code: 0)
+    }
+        
+    func records(matching query: OneWord.Query, desiredKeys: [OneWord.Entry.FieldKey]?, resultsLimit: Int) async throws -> [OneWord.Entry] {
+        if connectedToDatabase {
+            messages.append(.records)
+            if !fetchedCorrectRecordType {
+                return [incorrectRecordFromDatabase]
+            }
+            if recordInDatabase {
+                return [recordFromDatabase]
+            } else {
+                return []
+            }
+        }
+        throw NSError(domain: "Records not in database", code: 0)
+    }
+    
+    func modifyRecords(saving recordsToSave: [OneWord.Entry], deleting recordIDsToDelete: [OneWord.Entry.ID]) async throws -> (saveResults: [OneWord.Entry], deleteResults: [OneWord.Entry.ID]) {
+        if connectedToDatabase {
+           return (saveResults: [recordFromDatabase], deleteResults: [])
+        }
+        throw NSError(domain: "could not modify records in database", code: 0)
+    }
+    
     
     let recordInDatabase: Bool
     let fetchedCorrectRecordType: Bool
@@ -18,77 +58,25 @@ class MockDatabase: Database {
     private var records: [CKRecord] = []
     
     /// all possible subscripts from database
-    var recordFromDatabase: CKRecord = {
-        let ckRecord = CKRecord(recordType: "TestRecord")
-        ckRecord["systemUserID"] = "test id"
-        ckRecord["name"] = "test name"
-        ckRecord["inviteCode"] = "test invite code"
-        ckRecord["description"] = "description"
-        ckRecord["roundNumber"] = 1
-        ckRecord["user"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["round"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["game"] = CKRecord.Reference(recordID: .init(recordName: "Test"), action: .none)
-        ckRecord["questionNumber"] = 1
-        ckRecord["isHost"] = true
-        ckRecord["rank"] = 1
-        return ckRecord
+    var recordFromDatabase: Entry = {
+        var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
+        entry["systemUserID"] = "test id"
+        entry["name"] = "test name"
+        entry["inviteCode"] = "test invite code"
+        entry["description"] = "description"
+        entry["roundNumber"] = 1
+        entry["user"] = FetchedReference(recordID: UUID().uuidString)
+        entry["round"] = FetchedReference(recordID: UUID().uuidString)
+        entry["game"] = FetchedReference(recordID: UUID().uuidString)
+        entry["questionNumber"] = 1
+        entry["isHost"] = true
+        entry["rank"] = 1
+        return entry
     }()
     
-    var incorrectRecordFromDatabase: CKRecord = {
-        return CKRecord(recordType: "TestRecord")
+    var incorrectRecordFromDatabase: Entry = {
+        return Entry(withID: UUID().uuidString, recordType: "IncorrectRecord")
     }()
-    
-    func save(_ record: CKRecord) async throws -> CKRecord {
-        messages.append(.save)
-        if connectedToDatabase {
-            return record
-        } else {
-            throw NSError(domain: "MockDatabase Error", code: 0)
-        }
-    }
-    
-    func records(matching query: CKQuery, inZoneWith zoneID: CKRecordZone.ID? = nil, desiredKeys: [CKRecord.FieldKey]? = nil, resultsLimit: Int = CKQueryOperation.maximumResults) async throws -> (matchResults: [(CKRecord.ID, Result<CKRecord, Error>)], queryCursor: CKQueryOperation.Cursor?) {
-        if connectedToDatabase {
-            messages.append(.records)
-            let recordID = recordFromDatabase.recordID
-            let saveResult: Result<CKRecord, Error> = Result.success(recordFromDatabase)
-            if !fetchedCorrectRecordType {
-                return (matchResults: [(recordID, saveResult), (recordID, saveResult)], queryCursor: nil)
-            }
-            if recordInDatabase {
-                return (matchResults: [(recordID, saveResult)], queryCursor: nil)
-            } else {
-                return (matchResults: [], queryCursor: nil)
-            }
-        } else {
-            throw NSError(domain: "MockDatabase Error", code: 1)
-        }
-    }
-    
-    func modifyRecords(saving recordsToSave: [CKRecord], deleting recordIDsToDelete: [CKRecord.ID]) async throws -> (saveResults: [CKRecord.ID : Result<CKRecord, Error>], deleteResults: [CKRecord.ID : Result<Void, Error>]) {
-        messages.append(.modify)
-        if connectedToDatabase {
-            let recordID = recordFromDatabase.recordID
-            let saveResult: Result<CKRecord, Error> = Result.success(recordFromDatabase)
-            let deleteResult: Result<Void,Error> = Result.success(())
-            return (saveResults: [recordID: saveResult], deleteResults: [recordID: deleteResult])
-        } else {
-            throw NSError(domain: "MockDatabase Error", code: 1)
-        }
-    }
-    
-    func record(for recordID: CKRecord.ID) async throws -> CKRecord {
-        messages.append(.record)
-        if recordInDatabase && connectedToDatabase {
-            if fetchedCorrectRecordType {
-                return recordFromDatabase
-            } else {
-                return incorrectRecordFromDatabase
-            }
-        } else {
-            throw NSError(domain: "MockDatabase Error", code: 1)
-        }
-    }
     
     enum Message {
         case record, save, modify, records
