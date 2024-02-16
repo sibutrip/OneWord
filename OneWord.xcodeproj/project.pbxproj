@@ -195,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				74A8CBCA2B741B9D00EA9F5A /* Question.swift */,
+				74A8CBE72B741BF100EA9F5A /* Entry.swift */,
 				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,
 				74A8CBD52B741B9E00EA9F5A /* Game */,
 				74A8CBC72B741B9D00EA9F5A /* Player */,
@@ -210,7 +211,6 @@
 		7454A3AC2B5F0998006357C8 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				74A8CBE72B741BF100EA9F5A /* Entry.swift */,
 				74A8CBF62B741DFC00EA9F5A /* Records */,
 				74A8CBF72B742A9C00EA9F5A /* Query.swift */,
 				7454A3A82B5F08AB006357C8 /* DatabaseService.swift */,
