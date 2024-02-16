@@ -13,9 +13,7 @@ final class DatabaseServiceTests: XCTestCase {
     typealias DatabaseServiceError = DatabaseService.DatabaseServiceError
     
     func test_addChildWithParent_addsChildAndParentToDatabase() async throws {
-        let container = MockCloudContainer() // parent not in database
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let (sut, database) = makeSUT()
         let parentRecord = MockCreatableRecord(name: "Test Parent")
         let childRecord = MockCreatableChildRecord(name: "Test Child", parent: parentRecord)
 
@@ -27,9 +25,7 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseModifyCalls.count, 1)
     }
     func test_addChildWithParent_throwsIfParentRecordNotInDatabase() async {
-        let container = MockCloudContainer(recordInDatabase: false)
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let (sut, database) = makeSUT(recordInDatabase: false)
         let parentRecord = MockCreatableRecord(name: "Test Parent")
         let childRecord = MockCreatableChildRecord(name: "Test Child", parent: parentRecord)
         
@@ -41,9 +37,7 @@ final class DatabaseServiceTests: XCTestCase {
     }
     
     func test_addChildWithParent_throwsIfCouldNotSaveRecordToDatabase() async {
-        let container = MockCloudContainer(savedRecordToDatabase: false)
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let (sut, database) = makeSUT(savedRecordToDatabase: false)
         let parentRecord = MockCreatableRecord(name: "Test Parent")
         let childRecord = MockCreatableChildRecord(name: "Test Child", parent: parentRecord)
         
@@ -57,9 +51,7 @@ final class DatabaseServiceTests: XCTestCase {
     }
     
     func test_addChildWithTwoParents_addsChildAndParentToDatabase() async throws {
-        let container = MockCloudContainer() // parent not in database
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let (sut, database) = makeSUT()
         let firstParent = MockCreatableRecord(name: "First Test Parent")
         let secondParent = MockCreatableRecord(name: "Second Test Parent")
         let childRecord = MockCreatableTwoParentChildRecord(name: "Test Child", parent: firstParent, secondParent: secondParent)
@@ -72,9 +64,7 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseModifyCalls.count, 1)
     }
     func test_addChildWithTwoParents_throwsIfParentRecordNotInDatabase() async {
-        let container = MockCloudContainer(recordInDatabase: false)
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let (sut, database) = makeSUT(recordInDatabase: false)
         let firstParent = MockCreatableRecord(name: "First Test Parent")
         let secondParent = MockCreatableRecord(name: "Second Test Parent")
         let childRecord = MockCreatableTwoParentChildRecord(name: "Test Child", parent: firstParent, secondParent: secondParent)
@@ -87,9 +77,7 @@ final class DatabaseServiceTests: XCTestCase {
     }
     
     func test_addChildWithTwoParents_throwsIfCouldNotSaveRecordToDatabase() async {
-        let container = MockCloudContainer(savedRecordToDatabase: false)
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let (sut, database) = makeSUT(savedRecordToDatabase: false)
         let firstParent = MockCreatableRecord(name: "First Test Parent")
         let secondParent = MockCreatableRecord(name: "Second Test Parent")
         let childRecord = MockCreatableTwoParentChildRecord(name: "Test Child", parent: firstParent, secondParent: secondParent)
@@ -104,9 +92,7 @@ final class DatabaseServiceTests: XCTestCase {
     }
     
     func test_fetch_returnsRecordFromDatabase() async throws {
-        let container = MockCloudContainer()
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let (sut, database) = makeSUT()
         
         let fetchedRecord: MockFetchedRecord? = try? await sut.fetch(withID: "Some ID")
 
@@ -116,9 +102,7 @@ final class DatabaseServiceTests: XCTestCase {
     }
     
     func test_fetch_throwsIfFetchedIncorrectRecordFromDatabase() async {
-        let container = MockCloudContainer(fetchedCorrectRecordType: false)
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let (sut, database) = makeSUT(fetchedCorrectRecordType: false)
         
         await assertDoesThrow(test: {
             let _: MockFetchedRecord = try await sut.fetch(withID: "Some ID")
@@ -168,4 +152,18 @@ final class DatabaseServiceTests: XCTestCase {
 //            let _: MockChildRecord = try await sut.newestChildRecord(of: parent)
 //        }, throws: CloudKitServiceError.incorrectlyReadingCloudKitData)
 //    }
+    
+    // MARK: Helper Methods
+    private func makeSUT(recordInDatabase: Bool = true,
+                         fetchedCorrectRecordType: Bool = true,
+                         connectedToDatabase: Bool = true,
+                         savedRecordToDatabase: Bool = true) -> (DatabaseService, MockDatabase) {
+        let container = MockCloudContainer(recordInDatabase: recordInDatabase,
+                                           fetchedCorrectRecordType:fetchedCorrectRecordType,
+                                           connectedToDatabase: connectedToDatabase,
+                                           savedRecordToDatabase: savedRecordToDatabase)
+        let database = container.public as! MockDatabase
+        let sut = DatabaseService(withContainer: container)
+        return (sut, database)
+    }
 }
