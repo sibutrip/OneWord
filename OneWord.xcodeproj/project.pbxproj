@@ -41,7 +41,6 @@
 		74A8CBF12B741C8800EA9F5A /* FetchedReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */; };
 		74A8CBF52B741CA700EA9F5A /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF42B741CA700EA9F5A /* Record.swift */; };
 		74A8CBF82B742A9C00EA9F5A /* ReferenceQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */; };
-		74CB1B772B68974F005C7F15 /* RecordFetchedByID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CB1B762B68974F005C7F15 /* RecordFetchedByID.swift */; };
 		74F0269B2B61AF6D00ED9B20 /* RoundVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */; };
 		74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */; };
 		74F026A12B6200E100ED9B20 /* TwoParentsChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */; };
@@ -96,7 +95,6 @@
 		74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedReference.swift; sourceTree = "<group>"; };
 		74A8CBF42B741CA700EA9F5A /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceQuery.swift; sourceTree = "<group>"; };
-		74CB1B762B68974F005C7F15 /* RecordFetchedByID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFetchedByID.swift; sourceTree = "<group>"; };
 		74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundVMTests.swift; sourceTree = "<group>"; };
 		74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundViewModel.swift; sourceTree = "<group>"; };
 		74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoParentsChildRecord.swift; sourceTree = "<group>"; };
@@ -273,7 +271,6 @@
 				74A8CBE92B741BF100EA9F5A /* FetchedRecord.swift */,
 				74A6B1652B60162900ED0901 /* ChildRecord.swift */,
 				74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */,
-				74CB1B762B68974F005C7F15 /* RecordFetchedByID.swift */,
 				7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */,
 			);
 			path = RecordProtocols;
@@ -396,7 +393,6 @@
 				74A8CBDD2B741B9E00EA9F5A /* Question.swift in Sources */,
 				7475CC272B6339A800B8E6A6 /* CloudContainer.swift in Sources */,
 				74A8CBEB2B741BF100EA9F5A /* Entry.swift in Sources */,
-				74CB1B772B68974F005C7F15 /* RecordFetchedByID.swift in Sources */,
 				7475CC292B633A1700B8E6A6 /* Database.swift in Sources */,
 				7454A3762B5968D7006357C8 /* ContentView.swift in Sources */,
 				7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */,
