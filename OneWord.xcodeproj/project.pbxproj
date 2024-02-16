@@ -240,7 +240,7 @@
 		7454A3AC2B5F0998006357C8 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				74A8CBF62B741DFC00EA9F5A /* Records */,
+				74A8CBF62B741DFC00EA9F5A /* RecordProtocols */,
 				7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */,
 				7475CC262B6339A800B8E6A6 /* CloudContainer.swift */,
 				7475CC282B633A1700B8E6A6 /* Database.swift */,
@@ -265,7 +265,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		74A8CBF62B741DFC00EA9F5A /* Records */ = {
+		74A8CBF62B741DFC00EA9F5A /* RecordProtocols */ = {
 			isa = PBXGroup;
 			children = (
 				74A8CBF42B741CA700EA9F5A /* Record.swift */,
@@ -276,7 +276,7 @@
 				74CB1B762B68974F005C7F15 /* RecordFetchedByID.swift */,
 				7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */,
 			);
-			path = Records;
+			path = RecordProtocols;
 			sourceTree = "<group>";
 		};
 		74F86A6E2B643EAC00CD7691 /* MockRecords */ = {
