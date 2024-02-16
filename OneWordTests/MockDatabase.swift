@@ -24,7 +24,9 @@ class MockDatabase: Database {
     func save(_ entry: OneWord.Entry) async throws -> OneWord.Entry {
         if connectedToDatabase {
             messages.append(.save)
-            return recordFromDatabase
+            if savedRecordToDatabase {
+                return recordFromDatabase
+            }
         }
         throw NSError(domain: "Could not save record to database", code: 0)
     }
@@ -58,6 +60,7 @@ class MockDatabase: Database {
     let recordInDatabase: Bool
     let fetchedCorrectRecordType: Bool
     let connectedToDatabase: Bool
+    let savedRecordToDatabase: Bool
     var messages: [Message] = []
     
     private var records: [CKRecord] = []
@@ -89,9 +92,11 @@ class MockDatabase: Database {
     
     init(recordInDatabase: Bool = true,
          fetchedCorrectRecordType: Bool = true,
-         connectedToDatabase: Bool = true) {
+         connectedToDatabase: Bool = true,
+         savedRecordToDatabase: Bool = true) {
         self.recordInDatabase = recordInDatabase
         self.fetchedCorrectRecordType = fetchedCorrectRecordType
         self.connectedToDatabase = connectedToDatabase
+        self.savedRecordToDatabase = savedRecordToDatabase
     }
 }

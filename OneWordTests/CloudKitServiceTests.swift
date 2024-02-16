@@ -71,6 +71,22 @@ final class CloudKitServiceTests: XCTestCase {
         XCTAssertEqual(databaseRecordCalls.count, 1)
     }
     
+    func test_addChildWithParent_throwsIfCouldNotSaveRecordToDatabase() async {
+        let container = MockCloudContainer(savedRecordToDatabase: false)
+        let database = container.public as! MockDatabase
+        let sut = DatabaseService(withContainer: container)
+        let parentRecord = MockCreatableRecord(name: "Test Parent")
+        let childRecord = MockCreatableChildRecord(name: "Test Child", parent: parentRecord)
+        
+        await assertDoesThrow(test: {
+            try await sut.add(childRecord, withParent: parentRecord)
+        }, throws: CloudKitServiceError.couldNotSaveRecord)
+        let databaseModifyCalls = database.messages.filter { $0 == .modify }
+        let databaseSaveCalls = database.messages.filter { $0 == .save }
+        XCTAssertEqual(databaseSaveCalls.count, 1)
+        XCTAssertEqual(databaseModifyCalls.count, 1)
+    }
+    
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
 //        let database = container.public as! MockDatabase
