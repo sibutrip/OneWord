@@ -9,8 +9,8 @@ import CloudKit
 
 actor DatabaseService: DatabaseServiceProtocol {
     
-    enum CloudKitServiceError: Error {
-        case couldNotModifyRecord, couldNotSaveRecord
+    enum DatabaseServiceError: Error {
+        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase
     }
     
     let container: CloudContainer
@@ -20,12 +20,12 @@ actor DatabaseService: DatabaseServiceProtocol {
         do {
             _ = try await self.database.modifyRecords(saving: [parent.entry], deleting: [])
         } catch {
-            throw CloudKitServiceError.couldNotModifyRecord
+            throw DatabaseServiceError.couldNotModifyRecord
         }
         do {
             _ = try await database.save(record.entry)
         } catch {
-            throw CloudKitServiceError.couldNotSaveRecord
+            throw DatabaseServiceError.couldNotSaveRecord
         }
     }
     
@@ -34,17 +34,21 @@ actor DatabaseService: DatabaseServiceProtocol {
         do {
             _ = try await self.database.modifyRecords(saving: [parent.entry, secondParent.entry], deleting: [])
         } catch {
-            throw CloudKitServiceError.couldNotModifyRecord
+            throw DatabaseServiceError.couldNotModifyRecord
         }
         do {
             _ = try await database.save(entry)
         } catch {
-            throw CloudKitServiceError.couldNotSaveRecord
+            throw DatabaseServiceError.couldNotSaveRecord
         }
     }
     
     func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : FetchedRecord {
-        fatalError("not yet implemented")
+        let entry = try await database.record(for: recordID)
+        guard let record = SomeRecord(from: entry) else {
+            throw DatabaseServiceError.invalidDataFromDatabase
+        }
+        return record
     }
     
     func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : ChildRecord {

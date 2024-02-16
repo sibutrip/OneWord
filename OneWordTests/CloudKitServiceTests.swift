@@ -10,7 +10,7 @@ import CloudKit
 @testable import OneWord
 
 final class CloudKitServiceTests: XCTestCase {
-    typealias CloudKitServiceError = DatabaseService.CloudKitServiceError
+    typealias DatabaseServiceError = DatabaseService.DatabaseServiceError
     private let validID = "some valid ID"
 
 //    func test_fetch_returnsRecordWithIDFromDatabase() async {
@@ -66,7 +66,7 @@ final class CloudKitServiceTests: XCTestCase {
         
         await assertDoesThrow(test: {
             try await sut.add(childRecord, withParent: parentRecord)
-        }, throws: CloudKitServiceError.couldNotModifyRecord)
+        }, throws: DatabaseServiceError.couldNotModifyRecord)
         let databaseRecordCalls = database.messages.filter { $0 == .modify }
         XCTAssertEqual(databaseRecordCalls.count, 1)
     }
@@ -80,7 +80,7 @@ final class CloudKitServiceTests: XCTestCase {
         
         await assertDoesThrow(test: {
             try await sut.add(childRecord, withParent: parentRecord)
-        }, throws: CloudKitServiceError.couldNotSaveRecord)
+        }, throws: DatabaseServiceError.couldNotSaveRecord)
         let databaseModifyCalls = database.messages.filter { $0 == .modify }
         let databaseSaveCalls = database.messages.filter { $0 == .save }
         XCTAssertEqual(databaseSaveCalls.count, 1)
@@ -112,7 +112,7 @@ final class CloudKitServiceTests: XCTestCase {
 
         await assertDoesThrow(test: {
             try await sut.add(childRecord, withParent: firstParent, withSecondParent: secondParent)
-        }, throws: CloudKitServiceError.couldNotModifyRecord)
+        }, throws: DatabaseServiceError.couldNotModifyRecord)
         let databaseRecordCalls = database.messages.filter { $0 == .modify }
         XCTAssertEqual(databaseRecordCalls.count, 1)
     }
@@ -127,11 +127,23 @@ final class CloudKitServiceTests: XCTestCase {
 
         await assertDoesThrow(test: {
             try await sut.add(childRecord, withParent: firstParent, withSecondParent: secondParent)
-        }, throws: CloudKitServiceError.couldNotSaveRecord)
+        }, throws: DatabaseServiceError.couldNotSaveRecord)
         let databaseModifyCalls = database.messages.filter { $0 == .modify }
         let databaseSaveCalls = database.messages.filter { $0 == .save }
         XCTAssertEqual(databaseSaveCalls.count, 1)
         XCTAssertEqual(databaseModifyCalls.count, 1)
+    }
+    
+    func test_fetch_returnsRecordFromDatabase() async throws {
+        let container = MockCloudContainer(savedRecordToDatabase: false)
+        let database = container.public as! MockDatabase
+        let sut = DatabaseService(withContainer: container)
+        
+        let record: MockFetchedRecord? = try? await sut.fetch(withID: "Some ID")
+
+        XCTAssertNotNil(record)
+        let databaseRecordCalls = database.messages.filter { $0 == .record }
+        XCTAssertEqual(databaseRecordCalls, [.record])
     }
     
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
