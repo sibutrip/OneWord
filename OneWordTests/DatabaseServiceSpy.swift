@@ -9,7 +9,7 @@ import XCTest
 import CloudKit
 @testable import OneWord
 
-actor DatabaseServiceSpy: DatabaseService {
+actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.newestChildRecord)
