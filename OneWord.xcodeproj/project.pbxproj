@@ -40,7 +40,7 @@
 		74A8CBED2B741BF100EA9F5A /* FetchedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBE92B741BF100EA9F5A /* FetchedRecord.swift */; };
 		74A8CBF12B741C8800EA9F5A /* FetchedReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */; };
 		74A8CBF52B741CA700EA9F5A /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF42B741CA700EA9F5A /* Record.swift */; };
-		74A8CBF82B742A9C00EA9F5A /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF72B742A9C00EA9F5A /* Query.swift */; };
+		74A8CBF82B742A9C00EA9F5A /* ReferenceQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */; };
 		74CB1B772B68974F005C7F15 /* RecordFetchedByID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CB1B762B68974F005C7F15 /* RecordFetchedByID.swift */; };
 		74F0269B2B61AF6D00ED9B20 /* RoundVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */; };
 		74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */; };
@@ -95,7 +95,7 @@
 		74A8CBE92B741BF100EA9F5A /* FetchedRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedRecord.swift; sourceTree = "<group>"; };
 		74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedReference.swift; sourceTree = "<group>"; };
 		74A8CBF42B741CA700EA9F5A /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
-		74A8CBF72B742A9C00EA9F5A /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceQuery.swift; sourceTree = "<group>"; };
 		74CB1B762B68974F005C7F15 /* RecordFetchedByID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFetchedByID.swift; sourceTree = "<group>"; };
 		74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundVMTests.swift; sourceTree = "<group>"; };
 		74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundViewModel.swift; sourceTree = "<group>"; };
@@ -229,7 +229,7 @@
 				74A8CBCA2B741B9D00EA9F5A /* Question.swift */,
 				74A8CBE72B741BF100EA9F5A /* Entry.swift */,
 				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,
-				74A8CBF72B742A9C00EA9F5A /* Query.swift */,
+				74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */,
 				74A8CBD62B741B9E00EA9F5A /* Game.swift */,
 				7413860A2B7FF0D000A1B424 /* RecordModels */,
 				7454A3AC2B5F0998006357C8 /* Protocols */,
@@ -412,7 +412,7 @@
 				74A8CBE32B741B9E00EA9F5A /* User.swift in Sources */,
 				74A8CBDC2B741B9E00EA9F5A /* Player.swift in Sources */,
 				74A8CBED2B741BF100EA9F5A /* FetchedRecord.swift in Sources */,
-				74A8CBF82B742A9C00EA9F5A /* Query.swift in Sources */,
+				74A8CBF82B742A9C00EA9F5A /* ReferenceQuery.swift in Sources */,
 				74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

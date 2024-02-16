@@ -9,39 +9,24 @@ import CloudKit
 @testable import OneWord
 
 struct MockFetchedChildRecord: FetchedRecord, ChildRecord {
-    
+    typealias Parent = MockFetchedRecord
     static let recordType = "MockChildRecord"
-    
-    init?(from record: CKRecord, with parent: FetchedRecord?) {
-        guard let name = record["name"] as? String else {
-            return nil
-        }
-        self.init(withName: name)
-        self.id = record.recordID.recordName
-    }
-    
-    init?(from entry: OneWord.Entry) {
-        guard let name = entry["name"] as? String else {
-            return nil
-        }
-        self.name = name
-        self.id = entry.id
-    }
-    
-    var mockRecord: FetchedRecord?
     
     enum RecordKeys: String, CaseIterable {
         case name, mockRecord
     }
     
-    var id: String
-    let name: String
-    
-    init(withName name: String) {
-        self.id = UUID().uuidString
+    init?(from entry: OneWord.Entry) {
+        guard let name = entry["name"] as? String,
+              let mockRecord = entry["mockRecord"] as? FetchedRecord else {
+            return nil
+        }
         self.name = name
+        self.mockRecord = mockRecord
+        self.id = entry.id
     }
-    mutating func addingParent(_ parent: FetchedRecord) {
-        self.mockRecord = parent
-    }
+    
+    let mockRecord: FetchedRecord
+    let id: String
+    let name: String
 }

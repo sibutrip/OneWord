@@ -14,7 +14,7 @@ protocol Database {
     func save(_ entry: Entry) async throws -> Entry
     
     func records(
-        matching query: Query,
+        matching query: ReferenceQuery,
         desiredKeys: [Entry.FieldKey]?,
         resultsLimit: Int
     ) async throws -> [Entry]
@@ -50,9 +50,12 @@ extension CKDatabase: Database {
         return entry
     }
     
-    func records(matching query: Query, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {
+    func records(matching query: ReferenceQuery, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {
         let desiredKeys = desiredKeys as [CKRecord.FieldKey]?
-        let (matchResults,_) = try await records(matching: CKQuery(recordType: query.recordType, predicate: query.predicate), inZoneWith: nil, desiredKeys: desiredKeys, resultsLimit: .max)
+        // reference made from parent record (searching child records for field with parent reference)
+        let reference = CKRecord.Reference(record: CKRecord(recordType: query.parentRecordType, recordID: CKRecord.ID(recordName: query.parentRecord.id)), action: .none)
+        let predicate = NSPredicate(format: "\(query.parentRecordType) == %@", reference)
+        let (matchResults,_) = try await records(matching: CKQuery(recordType: query.childRecordType, predicate: predicate), inZoneWith: nil, desiredKeys: desiredKeys, resultsLimit: .max)
         let entries: [Entry] = matchResults.compactMap { (ckID, ckResult) in
             guard let ckRecord = try? ckResult.get() else { return nil }
             var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)

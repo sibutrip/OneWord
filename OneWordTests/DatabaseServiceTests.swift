@@ -91,7 +91,7 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseModifyCalls.count, 1)
     }
     
-    func test_fetch_returnsRecordFromDatabase() async throws {
+    func test_fetch_returnsRecordFromDatabase() async {
         let (sut, database) = makeSUT()
         
         let fetchedRecord: MockFetchedRecord? = try? await sut.fetch(withID: "Some ID")
@@ -110,6 +110,17 @@ final class DatabaseServiceTests: XCTestCase {
 
         let databaseRecordCalls = database.messages.filter { $0 == .record }
         XCTAssertEqual(databaseRecordCalls, [.record])
+    }
+    
+    func test_childRecords_returnsChildRecordsOnSuccess() async {
+        let (sut, database) = makeSUT()
+        let parent = MockFetchedRecord(name: "Test")
+        
+        let childRecords: [MockFetchedChildRecord]? = try? await sut.childRecords(of: parent)
+        
+        let databaseRecordsCalls = database.messages.filter { $0 == .records }
+        XCTAssertEqual(databaseRecordsCalls, [.records])
+        XCTAssertNotNil(childRecords)
     }
     
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {

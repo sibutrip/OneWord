@@ -51,8 +51,11 @@ actor DatabaseService: DatabaseServiceProtocol {
         return record
     }
     
-    func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : ChildRecord {
-        fatalError("not yet implemented")
+    func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : ChildRecord, SomeRecord: FetchedRecord, SomeRecord.Parent: FetchedRecord {
+        let query = ReferenceQuery(child: SomeRecord.self, parent: parent)
+        let entries = try await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max)
+        let records = entries.compactMap { SomeRecord(from: $0) }
+        return records
     }
     
     func fetchManyToManyRecords<FromRecord>(from: FromRecord) async throws -> [FromRecord.RelatedRecord] where FromRecord : ManyToManyRecord {

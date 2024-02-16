@@ -31,7 +31,7 @@ class MockDatabase: Database {
         throw NSError(domain: "Could not save record to database", code: 0)
     }
     
-    func records(matching query: OneWord.Query, desiredKeys: [OneWord.Entry.FieldKey]?, resultsLimit: Int) async throws -> [OneWord.Entry] {
+    func records(matching query: OneWord.ReferenceQuery, desiredKeys: [OneWord.Entry.FieldKey]?, resultsLimit: Int) async throws -> [OneWord.Entry] {
         if connectedToDatabase {
             messages.append(.records)
             if !fetchedCorrectRecordType {
