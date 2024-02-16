@@ -87,6 +87,53 @@ final class CloudKitServiceTests: XCTestCase {
         XCTAssertEqual(databaseModifyCalls.count, 1)
     }
     
+    func test_addChildWithTwoParents_addsChildAndParentToDatabase() async throws {
+        let container = MockCloudContainer() // parent not in database
+        let database = container.public as! MockDatabase
+        let sut = DatabaseService(withContainer: container)
+        let firstParent = MockCreatableRecord(name: "First Test Parent")
+        let secondParent = MockCreatableRecord(name: "Second Test Parent")
+        let childRecord = MockCreatableTwoParentChildRecord(name: "Test Child", parent: firstParent, secondParent: secondParent)
+
+        try await sut.add(childRecord, withParent: firstParent, withSecondParent: secondParent)
+        
+        let databaseModifyCalls = database.messages.filter { $0 == .modify }
+        let databaseSaveCalls = database.messages.filter { $0 == .save }
+        XCTAssertEqual(databaseSaveCalls.count, 1)
+        XCTAssertEqual(databaseModifyCalls.count, 1)
+    }
+    func test_addChildWithTwoParents_throwsIfParentRecordNotInDatabase() async {
+        let container = MockCloudContainer(recordInDatabase: false)
+        let database = container.public as! MockDatabase
+        let sut = DatabaseService(withContainer: container)
+        let firstParent = MockCreatableRecord(name: "First Test Parent")
+        let secondParent = MockCreatableRecord(name: "Second Test Parent")
+        let childRecord = MockCreatableTwoParentChildRecord(name: "Test Child", parent: firstParent, secondParent: secondParent)
+
+        await assertDoesThrow(test: {
+            try await sut.add(childRecord, withParent: firstParent, withSecondParent: secondParent)
+        }, throws: CloudKitServiceError.couldNotModifyRecord)
+        let databaseRecordCalls = database.messages.filter { $0 == .modify }
+        XCTAssertEqual(databaseRecordCalls.count, 1)
+    }
+    
+    func test_addChildWithTwoParents_throwsIfCouldNotSaveRecordToDatabase() async {
+        let container = MockCloudContainer(savedRecordToDatabase: false)
+        let database = container.public as! MockDatabase
+        let sut = DatabaseService(withContainer: container)
+        let firstParent = MockCreatableRecord(name: "First Test Parent")
+        let secondParent = MockCreatableRecord(name: "Second Test Parent")
+        let childRecord = MockCreatableTwoParentChildRecord(name: "Test Child", parent: firstParent, secondParent: secondParent)
+
+        await assertDoesThrow(test: {
+            try await sut.add(childRecord, withParent: firstParent, withSecondParent: secondParent)
+        }, throws: CloudKitServiceError.couldNotSaveRecord)
+        let databaseModifyCalls = database.messages.filter { $0 == .modify }
+        let databaseSaveCalls = database.messages.filter { $0 == .save }
+        XCTAssertEqual(databaseSaveCalls.count, 1)
+        XCTAssertEqual(databaseModifyCalls.count, 1)
+    }
+    
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
 //        let database = container.public as! MockDatabase

@@ -17,21 +17,30 @@ actor DatabaseService: DatabaseServiceProtocol {
     lazy var database = container.public
     
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : ChildRecord, SomeRecord : CreatableRecord, SomeRecord.Parent : CreatableRecord {
-        let entry = record.entry
         do {
-            try await self.database.modifyRecords(saving: [parent.entry], deleting: [])
+            _ = try await self.database.modifyRecords(saving: [parent.entry], deleting: [])
         } catch {
             throw CloudKitServiceError.couldNotModifyRecord
         }
         do {
-            try await database.save(entry)
+            _ = try await database.save(record.entry)
         } catch {
             throw CloudKitServiceError.couldNotSaveRecord
         }
     }
     
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : CreatableRecord, SomeRecord : TwoParentsChildRecord, SomeRecord.Parent : CreatableRecord, SomeRecord.SecondParent : CreatableRecord {
-        fatalError("not yet implemented")
+        let entry = record.entry
+        do {
+            _ = try await self.database.modifyRecords(saving: [parent.entry, secondParent.entry], deleting: [])
+        } catch {
+            throw CloudKitServiceError.couldNotModifyRecord
+        }
+        do {
+            _ = try await database.save(entry)
+        } catch {
+            throw CloudKitServiceError.couldNotSaveRecord
+        }
     }
     
     func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : FetchedRecord {

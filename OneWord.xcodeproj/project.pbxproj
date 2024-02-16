@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		741386022B7FC84000A1B424 /* MockCreatableRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386012B7FC84000A1B424 /* MockCreatableRecord.swift */; };
 		741386042B7FC92700A1B424 /* MockCreatableChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */; };
+		741386082B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */; };
 		7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3732B5968D7006357C8 /* OneWordApp.swift */; };
 		7454A3762B5968D7006357C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3752B5968D7006357C8 /* ContentView.swift */; };
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 /* Begin PBXFileReference section */
 		741386012B7FC84000A1B424 /* MockCreatableRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableRecord.swift; sourceTree = "<group>"; };
 		741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableChildRecord.swift; sourceTree = "<group>"; };
+		741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableTwoParentChildRecord.swift; sourceTree = "<group>"; };
 		7454A3702B5968D7006357C8 /* OneWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3732B5968D7006357C8 /* OneWordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordApp.swift; sourceTree = "<group>"; };
 		7454A3752B5968D7006357C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -147,6 +149,14 @@
 				741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */,
 			);
 			path = MockChildRecord;
+			sourceTree = "<group>";
+		};
+		741386092B7FEABE00A1B424 /* MockTwoParentChildRecord */ = {
+			isa = PBXGroup;
+			children = (
+				741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */,
+			);
+			path = MockTwoParentChildRecord;
 			sourceTree = "<group>";
 		};
 		7454A3672B5968D7006357C8 = {
@@ -330,6 +340,7 @@
 		74F86A6E2B643EAC00CD7691 /* MockRecords */ = {
 			isa = PBXGroup;
 			children = (
+				741386092B7FEABE00A1B424 /* MockTwoParentChildRecord */,
 				741386062B7FC9D900A1B424 /* MockChildRecord */,
 				741386052B7FC9CD00A1B424 /* MockRecord */,
 			);
@@ -484,6 +495,7 @@
 				7475CC2D2B633FE600B8E6A6 /* XCTestCase+Extension.swift in Sources */,
 				7454A3852B5968D8006357C8 /* GameVMTests.swift in Sources */,
 				7475CC212B6334B700B8E6A6 /* CloudKitServiceTests.swift in Sources */,
+				741386082B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift in Sources */,
 				74F0269B2B61AF6D00ED9B20 /* RoundVMTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
