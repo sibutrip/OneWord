@@ -1,5 +1,5 @@
 //
-//  CloudKitServiceTests.swift
+//  DatabaseServiceTests.swift
 //  OneWordTests
 //
 //  Created by Cory Tripathy on 1/25/24.
@@ -9,40 +9,9 @@ import XCTest
 import CloudKit
 @testable import OneWord
 
-final class CloudKitServiceTests: XCTestCase {
+final class DatabaseServiceTests: XCTestCase {
     typealias DatabaseServiceError = DatabaseService.DatabaseServiceError
-    private let validID = "some valid ID"
-
-//    func test_fetch_returnsRecordWithIDFromDatabase() async {
-//        let container = MockCloudContainer()
-//        let database = container.public as! MockDatabase
-//        let sut = DatabaseService(withContainer: container)
-//        
-//        let mockRecord: MockFetchedRecord? = try? await sut.fetch(withID: validID)
-//        
-//        XCTAssertNotNil(mockRecord)
-//        let databaseMessages = database.messages
-//        XCTAssertEqual(databaseMessages, [.record])
-//    }
-//    
-//    func test_fetch_throwsIfRecordNotInDatabase() async {
-//        let container = MockCloudContainer(recordInDatabase: false)
-//        let sut = DatabaseService(withContainer: container)
-//        
-//        await assertDoesThrow(test: {
-//            let _: MockRecord = try await sut.fetch(withID: validID)
-//        }, throws: CloudKitServiceError.recordNotInDatabase)
-//    }
-//    
-//    func test_fetch_throwsIfTriedToMakeRecordWithIncorrectCKRecord() async {
-//        let container = MockCloudContainer(fetchedCorrectRecordType: false)
-//        let sut = DatabaseService(withContainer: container)
-//        
-//        await assertDoesThrow(test: {
-//            let _: MockRecord = try await sut.fetch(withID: validID)
-//        }, throws: CloudKitServiceError.incorrectlyReadingCloudKitData)
-//    }
-//    
+    
     func test_addChildWithParent_addsChildAndParentToDatabase() async throws {
         let container = MockCloudContainer() // parent not in database
         let database = container.public as! MockDatabase
@@ -135,13 +104,26 @@ final class CloudKitServiceTests: XCTestCase {
     }
     
     func test_fetch_returnsRecordFromDatabase() async throws {
-        let container = MockCloudContainer(savedRecordToDatabase: false)
+        let container = MockCloudContainer()
         let database = container.public as! MockDatabase
         let sut = DatabaseService(withContainer: container)
         
-        let record: MockFetchedRecord? = try? await sut.fetch(withID: "Some ID")
+        let fetchedRecord: MockFetchedRecord? = try? await sut.fetch(withID: "Some ID")
 
-        XCTAssertNotNil(record)
+        XCTAssertNotNil(fetchedRecord)
+        let databaseRecordCalls = database.messages.filter { $0 == .record }
+        XCTAssertEqual(databaseRecordCalls, [.record])
+    }
+    
+    func test_fetch_throwsIfFetchedIncorrectRecordFromDatabase() async {
+        let container = MockCloudContainer(fetchedCorrectRecordType: false)
+        let database = container.public as! MockDatabase
+        let sut = DatabaseService(withContainer: container)
+        
+        await assertDoesThrow(test: {
+            let _: MockFetchedRecord = try await sut.fetch(withID: "Some ID")
+        }, throws: DatabaseServiceError.invalidDataFromDatabase)
+
         let databaseRecordCalls = database.messages.filter { $0 == .record }
         XCTAssertEqual(databaseRecordCalls, [.record])
     }
