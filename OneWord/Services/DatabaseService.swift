@@ -10,7 +10,7 @@ import CloudKit
 actor DatabaseService: DatabaseServiceProtocol {
     
     enum CloudKitServiceError: Error {
-        case incorrectlyReadingCloudKitData, recordNotInDatabase, couldNotConnectToDatabase
+        case couldNotModifyRecord, couldNotSaveRecord
     }
     
     let container: CloudContainer
@@ -18,8 +18,16 @@ actor DatabaseService: DatabaseServiceProtocol {
     
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : ChildRecord, SomeRecord : CreatableRecord, SomeRecord.Parent : CreatableRecord {
         let entry = record.entry
-        async let _ = try await self.database.modifyRecords(saving: [parent.entry], deleting: [])
-        async let _ = try await database.save(entry)
+        do {
+            try await self.database.modifyRecords(saving: [parent.entry], deleting: [])
+        } catch {
+            throw CloudKitServiceError.couldNotModifyRecord
+        }
+        do {
+            try await database.save(entry)
+        } catch {
+            throw CloudKitServiceError.couldNotSaveRecord
+        }
     }
     
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : CreatableRecord, SomeRecord : TwoParentsChildRecord, SomeRecord.Parent : CreatableRecord, SomeRecord.SecondParent : CreatableRecord {

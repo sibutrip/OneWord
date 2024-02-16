@@ -28,7 +28,7 @@ class MockDatabase: Database {
         }
         throw NSError(domain: "Could not save record to database", code: 0)
     }
-        
+    
     func records(matching query: OneWord.Query, desiredKeys: [OneWord.Entry.FieldKey]?, resultsLimit: Int) async throws -> [OneWord.Entry] {
         if connectedToDatabase {
             messages.append(.records)
@@ -47,7 +47,9 @@ class MockDatabase: Database {
     func modifyRecords(saving recordsToSave: [OneWord.Entry], deleting recordIDsToDelete: [OneWord.Entry.ID]) async throws -> (saveResults: [OneWord.Entry], deleteResults: [OneWord.Entry.ID]) {
         if connectedToDatabase {
             messages.append(.modify)
-           return (saveResults: [recordFromDatabase], deleteResults: [])
+            if recordInDatabase {
+                return (saveResults: [recordFromDatabase], deleteResults: [])
+            }
         }
         throw NSError(domain: "could not modify records in database", code: 0)
     }
