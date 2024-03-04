@@ -36,6 +36,7 @@ extension CKDatabase: Database {
     }
     
     func save(_ entry: Entry) async throws -> Entry {
+        // mapping logic. separate this. ckrecord to concrete as well. 
         let ckRecord = CKRecord(recordType: entry.recordType)
         for key in entry.allKeys() {
             if let entryValue = entry[key] as? FetchedReference {
@@ -47,6 +48,7 @@ extension CKDatabase: Database {
                 fatalError("not able to turn entry into ckrecord")
             }
         }
+        try await self.save(ckRecord)
         return entry
     }
     
