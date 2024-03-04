@@ -10,6 +10,7 @@ import CloudKit
 @testable import OneWord
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
+    
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : OneWord.ChildRecord, SomeRecord : OneWord.CreatableRecord, SomeRecord.Parent : OneWord.CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)
@@ -54,10 +55,19 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func fetchManyToManyRecords<FromRecord>(from: FromRecord) async throws -> [FromRecord.RelatedRecord] where FromRecord : OneWord.ManyToManyRecord {
+//    func fetchManyToManyRecords<FromRecord>(from: FromRecord) async throws -> [FromRecord.RelatedRecord] where FromRecord : OneWord.ManyToManyRecord {
+//        if didFetchChildRecordsSuccessfully {
+//            receivedMessages.append(.fetchManyToMany)
+//            return childRecordsFromDatabase.map { FromRecord.RelatedRecord(from: $0)! }
+//        } else {
+//            throw NSError(domain: "MockDatabaseServiceError", code: 3)
+//        }
+//    }
+    
+    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.SecondParent] where Intermediary : OneWord.FetchedTwoParentsChild, Intermediary.Parent : OneWord.Record, Intermediary.SecondParent : OneWord.FetchedRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchManyToMany)
-            return childRecordsFromDatabase.map { FromRecord.RelatedRecord(from: $0)! }
+            return childRecordsFromDatabase.map { Intermediary.SecondParent(from: $0)! }
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 3)
         }
@@ -75,9 +85,9 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         entry["inviteCode"] = "test invite code"
         entry["description"] = "description"
         entry["roundNumber"] = 1
-        entry["user"] = FetchedReference(recordID: UUID().uuidString)
-        entry["round"] = FetchedReference(recordID: UUID().uuidString)
-        entry["game"] = FetchedReference(recordID: UUID().uuidString)
+        entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
+        entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "round")
+        entry["game"] = FetchedReference(recordID: UUID().uuidString, recordType: "game")
         entry["questionNumber"] = 1
         entry["isHost"] = true
         entry["rank"] = 1
@@ -91,9 +101,9 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         entry["inviteCode"] = "test invite code"
         entry["description"] = "description"
         entry["roundNumber"] = 1
-        entry["user"] = FetchedReference(recordID: UUID().uuidString)
-        entry["round"] = FetchedReference(recordID: UUID().uuidString)
-        entry["game"] = FetchedReference(recordID: UUID().uuidString)
+        entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
+        entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
+        entry["game"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
         entry["questionNumber"] = 1
         entry["isHost"] = true
         entry["rank"] = 1

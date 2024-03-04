@@ -19,6 +19,7 @@
 		7454A3A32B5F0802006357C8 /* DatabaseServiceSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */; };
 		7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A62B5F089E006357C8 /* DatabaseService.swift */; };
 		7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */; };
+		74647F022B96754100491452 /* FetchedTwoParentChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74647F012B96754100491452 /* FetchedTwoParentChild.swift */; };
 		7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */; };
 		7475CC212B6334B700B8E6A6 /* DatabaseServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */; };
 		7475CC232B6338D800B8E6A6 /* MockFetchedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */; };
@@ -73,6 +74,7 @@
 		7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceSpy.swift; sourceTree = "<group>"; };
 		7454A3A62B5F089E006357C8 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
+		74647F012B96754100491452 /* FetchedTwoParentChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedTwoParentChild.swift; sourceTree = "<group>"; };
 		7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyToManyRecord.swift; sourceTree = "<group>"; };
 		7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceTests.swift; sourceTree = "<group>"; };
 		7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFetchedRecord.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				74A8CBE92B741BF100EA9F5A /* FetchedRecord.swift */,
 				74A6B1652B60162900ED0901 /* ChildRecord.swift */,
 				74F026A02B6200E100ED9B20 /* TwoParentsChildRecord.swift */,
+				74647F012B96754100491452 /* FetchedTwoParentChild.swift */,
 				7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */,
 			);
 			path = RecordProtocols;
@@ -390,6 +393,7 @@
 				74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */,
 				7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */,
 				74A8CBF52B741CA700EA9F5A /* Record.swift in Sources */,
+				74647F022B96754100491452 /* FetchedTwoParentChild.swift in Sources */,
 				74A8CBDD2B741B9E00EA9F5A /* Question.swift in Sources */,
 				7475CC272B6339A800B8E6A6 /* CloudContainer.swift in Sources */,
 				74A8CBEB2B741BF100EA9F5A /* Entry.swift in Sources */,

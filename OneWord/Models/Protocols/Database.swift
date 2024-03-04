@@ -19,12 +19,18 @@ protocol Database {
         resultsLimit: Int
     ) async throws -> [Entry]
     
+    func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry]
+    
     func modifyRecords(
         saving recordsToSave: [Entry],
         deleting recordIDsToDelete: [Entry.ID]) async throws -> (saveResults: [Entry], deleteResults: [Entry.ID])
 }
 
 extension CKDatabase: Database {
+    func records(fromReferences fetchedReference: [FetchedReference]) -> [Entry] {
+        fatalError("not yet implemented")
+    }
+    
     func record(for entryID: Entry.ID) async throws -> Entry {
         let ckRecordID = CKRecord.ID(recordName: entryID)
         let ckRecord: CKRecord = try await self.record(for: ckRecordID)

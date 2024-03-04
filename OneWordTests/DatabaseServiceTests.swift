@@ -134,6 +134,30 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseRecordsCalls, [.records])
     }
     
+    func test_childRecords_throwsIfNotConnectedToDatabase() async {
+        let (sut, _) = makeSUT(connectedToDatabase: false)
+        let parent = MockFetchedRecord(name: "Test")
+
+        await assertDoesThrow(test: {
+            let _: [MockFetchedChildRecord] = try await sut.childRecords(of: parent)
+        }, throws: DatabaseServiceError.couldNotGetChildrenFromDatabase)
+    }
+    
+//    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.SecondParent] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.SecondParent: FetchedRecord {
+//        let query = ReferenceQuery(child: intermediary.self, parent: parent)
+//        guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {
+//            throw DatabaseServiceError.couldNotGetChildrenFromDatabase
+//        }
+//        let intermediaryRecordReferences = entries
+//            .compactMap { Intermediary(from: $0) }
+//            .map { $0.secondParentReference }
+//        guard let fetchedSecondParentEntries = try? await database.records(fromReferences: intermediaryRecordReferences) else {
+//            throw DatabaseServiceError.couldNotGetRecordsFromReferences
+//        }
+//        let secondParents = fetchedSecondParentEntries.compactMap { Intermediary.SecondParent(from: $0) }
+//        return secondParents
+//    }
+    
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
 //        let database = container.public as! MockDatabase

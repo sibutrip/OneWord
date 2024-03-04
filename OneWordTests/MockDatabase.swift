@@ -9,6 +9,10 @@
 import CloudKit
 
 class MockDatabase: Database {
+    func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry] {
+        fatalError("not yet implemented")
+    }
+    
     func record(for entryID: OneWord.Entry.ID) async throws -> OneWord.Entry {
         if recordInDatabase && connectedToDatabase {
             messages.append(.record)
@@ -73,9 +77,9 @@ class MockDatabase: Database {
         entry["inviteCode"] = "test invite code"
         entry["description"] = "description"
         entry["roundNumber"] = 1
-        entry["user"] = FetchedReference(recordID: UUID().uuidString)
-        entry["round"] = FetchedReference(recordID: UUID().uuidString)
-        entry["game"] = FetchedReference(recordID: UUID().uuidString)
+        entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
+        entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "round")
+        entry["game"] = FetchedReference(recordID: UUID().uuidString, recordType: "game")
         entry["questionNumber"] = 1
         entry["isHost"] = true
         entry["rank"] = 1
