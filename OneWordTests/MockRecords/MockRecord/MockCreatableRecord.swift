@@ -17,7 +17,7 @@ struct MockCreatableRecord: CreatableRecord {
     
     let id: String
     let name: String
-    init( name: String) {
+    init(name: String) {
         self.id = UUID().uuidString
         self.name = name
     }

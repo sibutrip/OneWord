@@ -6,6 +6,6 @@
 //
 
 protocol FetchedTwoParentsChild: TwoParentsChildRecord, FetchedRecord {
-    var parentReference: FetchedReference { get }
-    var secondParentReference: FetchedReference { get }
+    var parentReference: FetchedReference? { get }
+    var secondParentReference: FetchedReference? { get }
 }

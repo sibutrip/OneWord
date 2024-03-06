@@ -7,6 +7,7 @@
 
 import CloudKit
 
+#warning("remove ck dependency")
 protocol CloudContainer {
     func userRecordID() async throws -> CKRecord.ID
     func accountStatus() async throws -> CKAccountStatus

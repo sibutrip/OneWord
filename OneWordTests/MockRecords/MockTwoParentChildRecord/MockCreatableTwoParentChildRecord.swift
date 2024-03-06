@@ -30,3 +30,28 @@ struct MockCreatableTwoParentChildRecord: TwoParentsChildRecord, CreatableRecord
         self.name = name
     }
 }
+
+struct MockFetchedTwoParentChildRecord: FetchedTwoParentsChild {
+    var parentReference: FetchedReference? { firstCreatableRecord }
+    var secondParentReference: FetchedReference? { secondCreatableRecord }
+    
+    init?(from entry: Entry) {
+        firstCreatableRecord = entry["user"] as? FetchedReference
+        secondCreatableRecord = entry["game"] as? FetchedReference
+        self.id = entry.id
+    }
+    
+    typealias Parent = MockFetchedRecord
+    typealias SecondParent = MockFetchedRecord
+    
+    enum RecordKeys: String, CaseIterable {
+        case firstCreatableRecord, secondCreatableRecord
+    }
+    
+    static let recordType = "MockChildRecord"
+    
+    let id: String
+    let firstCreatableRecord: FetchedReference?
+    let secondCreatableRecord: FetchedReference?
+}
+

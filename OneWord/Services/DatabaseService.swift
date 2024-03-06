@@ -63,14 +63,14 @@ actor DatabaseService: DatabaseServiceProtocol {
     }
     
     // TODO: make one for SecondParent
-    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.SecondParent] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.SecondParent: FetchedRecord {
+    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [FetchedRecord] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.SecondParent: FetchedRecord {
         let query = ReferenceQuery(child: intermediary.self, parent: parent)
         guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {
             throw DatabaseServiceError.couldNotGetChildrenFromDatabase
         }
         let intermediaryRecordReferences = entries
             .compactMap { Intermediary(from: $0) }
-            .map { $0.secondParentReference }
+            .compactMap { $0.secondParentReference }
         guard let fetchedSecondParentEntries = try? await database.records(fromReferences: intermediaryRecordReferences) else {
             throw DatabaseServiceError.couldNotGetRecordsFromReferences
         }

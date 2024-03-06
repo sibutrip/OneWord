@@ -18,10 +18,8 @@ struct FetchedUserGameRelationship: FetchedTwoParentsChild {
     typealias SecondParent = Game
     init?(from entry: Entry) {
         // TODO: you don't need (and actually can't know) BOTH values. just one.
-        guard let user = entry["user"] as? FetchedReference,
-              let game = entry["game"] as? FetchedReference else {
-            return nil
-        }
+        let user = entry["user"] as? FetchedReference
+        let game = entry["game"] as? FetchedReference
         self.id = entry.id
         self.user = user
         self.game = game
@@ -30,10 +28,10 @@ struct FetchedUserGameRelationship: FetchedTwoParentsChild {
     static let recordType = "Word"
     
     let id: String
-    let user: FetchedReference
-    let game: FetchedReference
+    let user: FetchedReference?
+    let game: FetchedReference?
     
-    var parentReference: FetchedReference { return user }
-    var secondParentReference: FetchedReference { return game }
+    var parentReference: FetchedReference? { return user }
+    var secondParentReference: FetchedReference? { return game }
     
 }

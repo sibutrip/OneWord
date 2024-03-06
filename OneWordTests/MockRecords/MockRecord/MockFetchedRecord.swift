@@ -6,7 +6,7 @@
 //
 
 @testable import OneWord
-import CloudKit
+import Foundation
 
 struct MockFetchedRecord: FetchedRecord {
     

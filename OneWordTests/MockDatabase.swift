@@ -6,11 +6,12 @@
 //
 
 @testable import OneWord
-import CloudKit
+import Foundation
 
 class MockDatabase: Database {
     func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry] {
-        fatalError("not yet implemented")
+        messages.append(.records)
+        return [recordFromDatabase]
     }
     
     func record(for entryID: OneWord.Entry.ID) async throws -> OneWord.Entry {
@@ -66,9 +67,7 @@ class MockDatabase: Database {
     let connectedToDatabase: Bool
     let savedRecordToDatabase: Bool
     var messages: [Message] = []
-    
-    private var records: [CKRecord] = []
-    
+        
     /// all possible subscripts from database
     var recordFromDatabase: Entry = {
         var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")

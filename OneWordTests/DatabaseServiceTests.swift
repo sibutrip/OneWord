@@ -6,7 +6,6 @@
 //
 
 import XCTest
-import CloudKit
 @testable import OneWord
 
 final class DatabaseServiceTests: XCTestCase {
@@ -141,6 +140,16 @@ final class DatabaseServiceTests: XCTestCase {
         await assertDoesThrow(test: {
             let _: [MockFetchedChildRecord] = try await sut.childRecords(of: parent)
         }, throws: DatabaseServiceError.couldNotGetChildrenFromDatabase)
+    }
+    
+    func test_fetchManyToManyRecords_returnsRecordsOnSuccess() async throws {
+        let (sut, database) = makeSUT()
+        let manyToMany = MockFetchedRecord(name: "test")
+        let records = try await sut.fetchManyToManyRecords(from: manyToMany, withIntermediary: MockFetchedTwoParentChildRecord.self)
+        
+        XCTAssertNotEqual(records.count, 0)
+        let databaseRecordsCalls = database.messages.filter { $0 == .records }
+        XCTAssertEqual(databaseRecordsCalls, [.records, .records])
     }
     
 //    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.SecondParent] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.SecondParent: FetchedRecord {

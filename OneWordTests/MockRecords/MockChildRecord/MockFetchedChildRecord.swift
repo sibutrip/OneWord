@@ -5,7 +5,7 @@
 //  Created by Cory Tripathy on 1/26/24.
 //
 
-import CloudKit
+import Foundation
 @testable import OneWord
 
 struct MockFetchedChildRecord: FetchedRecord, ChildRecord {
