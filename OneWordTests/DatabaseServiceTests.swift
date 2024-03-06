@@ -145,27 +145,15 @@ final class DatabaseServiceTests: XCTestCase {
     func test_fetchManyToManyRecords_returnsRecordsOnSuccess() async throws {
         let (sut, database) = makeSUT()
         let manyToMany = MockFetchedRecord(name: "test")
+        
         let records = try await sut.fetchManyToManyRecords(from: manyToMany, withIntermediary: MockFetchedTwoParentChildRecord.self)
         
         XCTAssertNotEqual(records.count, 0)
         let databaseRecordsCalls = database.messages.filter { $0 == .records }
-        XCTAssertEqual(databaseRecordsCalls, [.records, .records])
+        let databaseRecordsFromReferencesCalls = database.messages.filter { $0 == .recordsFromReferences }
+        XCTAssertEqual(databaseRecordsCalls.count, 1)
+        XCTAssertEqual(databaseRecordsFromReferencesCalls.count, 1)
     }
-    
-//    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.SecondParent] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.SecondParent: FetchedRecord {
-//        let query = ReferenceQuery(child: intermediary.self, parent: parent)
-//        guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {
-//            throw DatabaseServiceError.couldNotGetChildrenFromDatabase
-//        }
-//        let intermediaryRecordReferences = entries
-//            .compactMap { Intermediary(from: $0) }
-//            .map { $0.secondParentReference }
-//        guard let fetchedSecondParentEntries = try? await database.records(fromReferences: intermediaryRecordReferences) else {
-//            throw DatabaseServiceError.couldNotGetRecordsFromReferences
-//        }
-//        let secondParents = fetchedSecondParentEntries.compactMap { Intermediary.SecondParent(from: $0) }
-//        return secondParents
-//    }
     
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()

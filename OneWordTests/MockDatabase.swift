@@ -10,7 +10,7 @@ import Foundation
 
 class MockDatabase: Database {
     func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry] {
-        messages.append(.records)
+        messages.append(.recordsFromReferences)
         return [recordFromDatabase]
     }
     
@@ -90,7 +90,7 @@ class MockDatabase: Database {
     }()
     
     enum Message {
-        case record, save, modify, records
+        case record, save, modify, records, recordsFromReferences
     }
     
     init(recordInDatabase: Bool = true,
