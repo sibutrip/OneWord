@@ -145,11 +145,14 @@ final class DatabaseServiceTests: XCTestCase {
     func test_fetchManyToManyRecords_returnsRecordsOnSuccess() async throws {
         let (sut, database) = makeSUT()
         let manyToMany = MockFetchedRecord(name: "test")
+        
         let records = try await sut.fetchManyToManyRecords(from: manyToMany, withIntermediary: MockFetchedTwoParentChildRecord.self)
         
         XCTAssertNotEqual(records.count, 0)
         let databaseRecordsCalls = database.messages.filter { $0 == .records }
-        XCTAssertEqual(databaseRecordsCalls, [.records, .records])
+        let databaseRecordsFromReferencesCalls = database.messages.filter { $0 == .recordsFromReferences }
+        XCTAssertEqual(databaseRecordsCalls.count, 1)
+        XCTAssertEqual(databaseRecordsFromReferencesCalls.count, 1)
     }
     
 //    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.SecondParent] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.SecondParent: FetchedRecord {
