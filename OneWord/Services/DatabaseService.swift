@@ -62,8 +62,7 @@ actor DatabaseService: DatabaseServiceProtocol {
         }
     }
     
-    // TODO: make one for SecondParent
-    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [FetchedRecord] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.SecondParent: FetchedRecord {
+    func fetchManyToManyRecords<Intermediary>(fromParent parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [FetchedRecord] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.SecondParent: FetchedRecord {
         let query = ReferenceQuery(child: intermediary.self, parent: parent)
         guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {
             throw DatabaseServiceError.couldNotGetChildrenFromDatabase
@@ -76,6 +75,21 @@ actor DatabaseService: DatabaseServiceProtocol {
         }
         let secondParents = fetchedSecondParentEntries.compactMap { Intermediary.SecondParent(from: $0) }
         return secondParents
+    }
+    
+    func fetchManyToManyRecords<Intermediary>(fromSecondParent secondParent: Intermediary.SecondParent, withIntermediary intermediary: Intermediary.Type) async throws -> [FetchedRecord] where Intermediary: FetchedTwoParentsChild, Intermediary.SecondParent: Record, Intermediary.Parent: FetchedRecord {
+        let query = ReferenceQuery(child: intermediary.self, secondParent: secondParent)
+        guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {
+            throw DatabaseServiceError.couldNotGetChildrenFromDatabase
+        }
+        let intermediaryRecordReferences = entries
+            .compactMap { Intermediary(from: $0) }
+            .compactMap { $0.parentReference }
+        guard let fetchedParentEntries = try? await database.records(fromReferences: intermediaryRecordReferences) else {
+            throw DatabaseServiceError.couldNotGetRecordsFromReferences
+        }
+        let parents = fetchedParentEntries.compactMap { Intermediary.Parent(from: $0) }
+        return parents
     }
     
     func newestChildRecord<SomeRecord>(of parent: SomeRecord.Parent) async throws -> SomeRecord where SomeRecord : ChildRecord {

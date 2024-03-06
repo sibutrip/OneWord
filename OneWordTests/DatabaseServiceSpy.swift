@@ -63,7 +63,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
 //        }
 //    }
     
-    func fetchManyToManyRecords<Intermediary>(from parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [FetchedRecord] where Intermediary : OneWord.FetchedTwoParentsChild, Intermediary.Parent : OneWord.Record, Intermediary.SecondParent : OneWord.FetchedRecord {
+    func fetchManyToManyRecords<Intermediary>(fromParent parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [FetchedRecord] where Intermediary : OneWord.FetchedTwoParentsChild, Intermediary.Parent : OneWord.Record, Intermediary.SecondParent : OneWord.FetchedRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchManyToMany)
             return childRecordsFromDatabase.map { Intermediary.SecondParent(from: $0)! }

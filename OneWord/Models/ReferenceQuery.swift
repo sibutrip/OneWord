@@ -16,4 +16,9 @@ struct ReferenceQuery {
         self.childRecordType = Child.recordType
         self.parentRecordType = Child.Parent.recordType
     }
+    init<Child: TwoParentsChildRecord>(child: Child.Type, secondParent: Child.SecondParent) where Child.SecondParent: Record{
+        self.parentRecord = secondParent
+        self.childRecordType = Child.recordType
+        self.parentRecordType = Child.SecondParent.recordType
+    }
 }

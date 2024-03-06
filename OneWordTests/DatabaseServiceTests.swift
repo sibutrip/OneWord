@@ -142,11 +142,12 @@ final class DatabaseServiceTests: XCTestCase {
         }, throws: DatabaseServiceError.couldNotGetChildrenFromDatabase)
     }
     
-    func test_fetchManyToManyRecords_returnsRecordsOnSuccess() async throws {
+    #warning("add sad paths")
+    func test_fetchManyToManyRecordsFromParent_returnsRecordsOnSuccess() async throws {
         let (sut, database) = makeSUT()
         let manyToMany = MockFetchedRecord(name: "test")
         
-        let records = try await sut.fetchManyToManyRecords(from: manyToMany, withIntermediary: MockFetchedTwoParentChildRecord.self)
+        let records = try await sut.fetchManyToManyRecords(fromParent: manyToMany, withIntermediary: MockFetchedTwoParentChildRecord.self)
         
         XCTAssertNotEqual(records.count, 0)
         let databaseRecordsCalls = database.messages.filter { $0 == .records }
@@ -154,6 +155,20 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseRecordsCalls.count, 1)
         XCTAssertEqual(databaseRecordsFromReferencesCalls.count, 1)
     }
+    
+#warning("add sad paths")
+func test_fetchManyToManyRecordsFromSecondParent_returnsRecordsOnSuccess() async throws {
+    let (sut, database) = makeSUT()
+    let manyToMany = MockFetchedRecord(name: "test")
+    
+    let records = try await sut.fetchManyToManyRecords(fromSecondParent: manyToMany, withIntermediary: MockFetchedTwoParentChildRecord.self)
+    
+    XCTAssertNotEqual(records.count, 0)
+    let databaseRecordsCalls = database.messages.filter { $0 == .records }
+    let databaseRecordsFromReferencesCalls = database.messages.filter { $0 == .recordsFromReferences }
+    XCTAssertEqual(databaseRecordsCalls.count, 1)
+    XCTAssertEqual(databaseRecordsFromReferencesCalls.count, 1)
+}
     
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
