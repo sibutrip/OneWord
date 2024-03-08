@@ -10,9 +10,14 @@ import Foundation
 struct User: CreatableRecord, Identifiable {
     enum RecordKeys: String, CaseIterable { case name, systemID }
     static let recordType = "User"
-    let id: String = UUID().uuidString
+    let id: String
     let name: String
     let systemID: String
+    init(id: String = UUID().uuidString, name: String, systemID: String) {
+        self.id = id
+        self.name = name
+        self.systemID = systemID
+    }
 }
 
 struct FetchedUser: FetchedRecord {

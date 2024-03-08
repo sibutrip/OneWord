@@ -38,7 +38,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.newestChildRecord)
             fatalError()
-//            return Child(from: recordFromDatabase)!
+            //            return Child(from: recordFromDatabase)!
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 3)
         }
@@ -56,16 +56,25 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func childRecords<Child>(of parent: Child.Parent) async throws -> [Child] where Child : ChildRecord, Child: FetchedRecord, Child.Parent: FetchedRecord  {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)
-            return childRecordsFromDatabase.map { Child(from: $0)! }
+            return [Child(from: recordFromDatabase)!]
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 5)
         }
     }
     
-    func fetchManyToManyRecords<Intermediary>(fromParent parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [FetchedRecord] where Intermediary : OneWord.FetchedTwoParentsChild, Intermediary.Parent : OneWord.Record, Intermediary.SecondParent : OneWord.FetchedRecord {
+    func fetchManyToManyRecords<Intermediary>(fromSecondParent secondParent: Intermediary.SecondParent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.FetchedParent] where Intermediary : OneWord.FetchedTwoParentsChild {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchManyToMany)
-            return childRecordsFromDatabase.map { Intermediary.SecondParent(from: $0)! }
+            return [Intermediary.FetchedParent(from: recordFromDatabase)!]
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 6)
+        }
+    }
+    
+    func fetchManyToManyRecords<Intermediary>(fromParent parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.FetchedSecondParent] where Intermediary : FetchedTwoParentsChild {
+        if didFetchChildRecordsSuccessfully {
+            receivedMessages.append(.fetchManyToMany)
+            return [Intermediary.FetchedSecondParent(from: recordFromDatabase)!]
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 6)
         }
@@ -75,13 +84,13 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     enum Message {
         case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save
     }
-
+    
     var recordFromDatabase: Entry = {
         var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
-        entry["systemID"] = "test id"
-        entry["name"] = "test name"
-        entry["inviteCode"] = "test invite code"
-        entry["description"] = "description"
+        entry["systemID"] = "fetcher user id"
+        entry["name"] = "fetched user"
+        entry["inviteCode"] = "fetched invite code"
+        entry["description"] = "fetched description"
         entry["roundNumber"] = 1
         entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
         entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "round")
@@ -92,30 +101,13 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         return entry
     }()
     
-    var childRecordsFromDatabase: [Entry] = {
-        var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
-        entry["systemID"] = "test id"
-        entry["name"] = "test name"
-        entry["inviteCode"] = "test invite code"
-        entry["description"] = "description"
-        entry["roundNumber"] = 1
-        entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
-        entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
-        entry["game"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
-        entry["questionNumber"] = 1
-        entry["isHost"] = true
-        entry["rank"] = 1
-        return [entry, entry]
-    }()
-    
-    
     let didAddSuccessfully: Bool
     let didFetchSuccessfully: Bool
     let didUpdateSuccessfully: Bool
     let didFetchChildRecordsSuccessfully: Bool
-        
+    
     var receivedMessages: [Message] = []
-        
+    
     init(
         didAddSuccessfully: Bool = true,
         didFetchSuccessfully: Bool = true,

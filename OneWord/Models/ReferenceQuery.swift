@@ -13,12 +13,12 @@ struct ReferenceQuery {
     let parentRecord: Record
     init<Child: ChildRecord>(child: Child.Type, parent: Child.Parent) where Child.Parent: Record{
         self.parentRecord = parent
-        self.childRecordType = Child.recordType
+        self.childRecordType = child.recordType
         self.parentRecordType = Child.Parent.recordType
     }
     init<Child: TwoParentsChildRecord>(child: Child.Type, secondParent: Child.SecondParent) where Child.SecondParent: Record{
         self.parentRecord = secondParent
-        self.childRecordType = Child.recordType
+        self.childRecordType = child.recordType
         self.parentRecordType = Child.SecondParent.recordType
     }
 }

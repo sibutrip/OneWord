@@ -70,31 +70,30 @@ final class GameViewModelTests: XCTestCase {
         }, throws: GameViewModelError.userNotFound)
     }
     
-//    func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async {
-//        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
-//        let game = Game(withName: "Test Group")
-//        sut.currentGame = game
-//
-//        await assertDoesThrow(test: {
-//            try await sut.addUser(withId: "Some Unique ID")
-//        }, throws: GameViewModelError.couldNotAddUserToGame)
-//    }
-//    
-//    func test_fetchUsersInGame_populatesUsersFromDatabase() async throws {
-//        let (sut, database) = makeSUT()
-//        let game = Game(withName: "Test Group")
-//        sut.currentGame = game
-//        
-//        try await sut.fetchUsersInGame()
-//        
-//        let expectedUsers = await database.childRecordsFromDatabase.map {
-//            User(from: $0)!
-//        }
-//        XCTAssertEqual(sut.users, expectedUsers)
-//        let receivedMessages = await database.receivedMessages
-//        XCTAssertEqual(receivedMessages, [.fetchManyToMany])
-//    }
-//    
+    func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async {
+        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
+        let game = Game(groupName: "Test Group")
+        sut.currentGame = game
+
+        await assertDoesThrow(test: {
+            try await sut.addUser(withId: "Some Unique ID")
+        }, throws: GameViewModelError.couldNotAddUserToGame)
+    }
+    
+    func test_fetchUsersInGame_populatesUsersFromDatabase() async throws {
+        let (sut, database) = makeSUT()
+        let game = Game(groupName: "Test Group")
+        sut.currentGame = game
+        
+        try await sut.fetchUsersInGame()
+        
+        XCTAssertEqual(sut.users.count, 1)
+        // user should NOT be the local user. but the user from db
+        XCTAssertNotEqual(sut.users.first!.id, sut.localUser.id)
+        let receivedMessages = await database.receivedMessages
+        XCTAssertEqual(receivedMessages, [.fetchManyToMany])
+    }
+    
 //    func test_fetchUsersInGame_throwsIfCurrentGameIsNil() async {
 //        let (sut, _) = makeSUT()
 //                

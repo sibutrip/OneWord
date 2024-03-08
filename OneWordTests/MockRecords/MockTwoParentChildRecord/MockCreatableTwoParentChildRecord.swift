@@ -32,6 +32,9 @@ struct MockCreatableTwoParentChildRecord: TwoParentsChildRecord, CreatableRecord
 }
 
 struct MockFetchedTwoParentChildRecord: FetchedTwoParentsChild {
+    typealias FetchedParent = MockFetchedRecord
+    typealias FetchedSecondParent = MockFetchedRecord
+    
     var parentReference: FetchedReference? { firstCreatableRecord }
     var secondParentReference: FetchedReference? { secondCreatableRecord }
     

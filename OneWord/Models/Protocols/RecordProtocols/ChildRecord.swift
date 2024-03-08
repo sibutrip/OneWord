@@ -6,5 +6,5 @@
 //
 
 protocol ChildRecord: Record {
-    associatedtype Parent = Record
+    associatedtype Parent: Record
 }

@@ -19,6 +19,8 @@ struct UserGameRelationship: CreatableRecord, TwoParentsChildRecord {
 }
 
 struct FetchedUserGameRelationship: FetchedTwoParentsChild {
+    typealias FetchedParent = FetchedUser
+    typealias FetchedSecondParent = FetchedGame
     typealias Parent = User
     typealias SecondParent = Game
     init?(from entry: Entry) {

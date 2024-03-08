@@ -62,16 +62,21 @@ class GameViewModel {
         }
     }
     
-//    /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
-//    /// - Throws `GameViewModelError.couldNotFetchUsers` if could not fetch users from database.
-//    public func fetchUsersInGame() async throws {
-//        guard let currentGame else { throw GameViewModelError.noCurrentGame }
-//        guard let usersInGame: [User] = (try? await databaseService.fetchManyToManyRecords(from: currentGame)) else {
-//            throw GameViewModelError.couldNotFetchUsers
-//        }
-//        self.users = usersInGame
-//    }
-//    
+    /// Replaces `self.users` with all users currently in database.
+    /// 
+    /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
+    /// - Throws `GameViewModelError.couldNotFetchUsers` if could not fetch users from database.
+    public func fetchUsersInGame() async throws {
+        guard let currentGame else { throw GameViewModelError.noCurrentGame }
+        guard let fetchedUsers: [FetchedUser] = (try? await databaseService.fetchManyToManyRecords(
+            fromSecondParent: currentGame,
+            withIntermediary: FetchedUserGameRelationship.self)) else {
+            throw GameViewModelError.couldNotFetchUsers
+        }
+        let users: [User] = fetchedUsers.map { User(id: $0.id, name: $0.name, systemID: $0.systemID) }
+        self.users = users
+    }
+    
 //    /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.
 //    /// - Throws `GameViewModelError.couldNotCreateRound` if `databaseService.add` throws.
 //    public func startRound() async throws {
