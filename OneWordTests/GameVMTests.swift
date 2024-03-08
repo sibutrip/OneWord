@@ -20,14 +20,15 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(sut.users.map { $0.id }, [localUser.id])
     }
     
-//    func test_createGame_addsNewGameToDatabaseWithUserAsParent() async throws {
-//        let (sut, databaseService) = makeSUT()
-//        
-//        try await sut.createGame(withGroupName: "Test Group")
-//        
-//        let receivedMessages = await databaseService.receivedMessages
-//        XCTAssertEqual(receivedMessages, [.add])
-//    }
+    func test_createGame_addsNewGameToDatabaseWithUserAsParent() async throws {
+        let (sut, databaseService) = makeSUT()
+        
+        try await sut.createGame(withGroupName: "Test Group")
+        
+        XCTAssertNotNil(sut.currentGame)
+        let receivedMessages = await databaseService.receivedMessages
+        XCTAssertEqual(receivedMessages, [.save, .add])
+    }
 //    
 //    func test_createGame_assignsGameToViewModelIfCreatedSuccessfully() async throws {
 //        let (sut, _) = makeSUT()

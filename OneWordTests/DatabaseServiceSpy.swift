@@ -11,14 +11,18 @@ import XCTest
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
     func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : OneWord.CreatableRecord {
-        fatalError("not yet implemented")
+        if didAddSuccessfully {
+            receivedMessages.append(.save)
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 0)
+        }
     }
     
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : OneWord.ChildRecord, SomeRecord : OneWord.CreatableRecord, SomeRecord.Parent : OneWord.CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)
         } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 0)
+            throw NSError(domain: "MockDatabaseServiceError", code: 1)
         }
     }
     
@@ -26,7 +30,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         if didAddSuccessfully {
             receivedMessages.append(.add)
         } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 0)
+            throw NSError(domain: "MockDatabaseServiceError", code: 2)
         }
     }
     
@@ -36,7 +40,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
             fatalError()
 //            return Child(from: recordFromDatabase)!
         } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 4)
+            throw NSError(domain: "MockDatabaseServiceError", code: 3)
         }
     }
     
@@ -45,7 +49,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
             receivedMessages.append(.fetch)
             return SomeRecord(from: recordFromDatabase)!
         } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 3)
+            throw NSError(domain: "MockDatabaseServiceError", code: 4)
         }
     }
     
@@ -54,25 +58,16 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
             receivedMessages.append(.fetchChildRecords)
             return childRecordsFromDatabase.map { Child(from: $0)! }
         } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 3)
+            throw NSError(domain: "MockDatabaseServiceError", code: 5)
         }
     }
-    
-//    func fetchManyToManyRecords<FromRecord>(from: FromRecord) async throws -> [FromRecord.RelatedRecord] where FromRecord : OneWord.ManyToManyRecord {
-//        if didFetchChildRecordsSuccessfully {
-//            receivedMessages.append(.fetchManyToMany)
-//            return childRecordsFromDatabase.map { FromRecord.RelatedRecord(from: $0)! }
-//        } else {
-//            throw NSError(domain: "MockDatabaseServiceError", code: 3)
-//        }
-//    }
     
     func fetchManyToManyRecords<Intermediary>(fromParent parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [FetchedRecord] where Intermediary : OneWord.FetchedTwoParentsChild, Intermediary.Parent : OneWord.Record, Intermediary.SecondParent : OneWord.FetchedRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchManyToMany)
             return childRecordsFromDatabase.map { Intermediary.SecondParent(from: $0)! }
         } else {
-            throw NSError(domain: "MockDatabaseServiceError", code: 3)
+            throw NSError(domain: "MockDatabaseServiceError", code: 6)
         }
     }
     
