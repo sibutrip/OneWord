@@ -5,8 +5,6 @@
 //  Created by Cory Tripathy on 1/31/24.
 //
 
-import CloudKit
-
 struct Entry {
     typealias FieldKey = String
     typealias ID = String

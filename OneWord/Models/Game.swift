@@ -10,8 +10,12 @@ import Foundation
 struct Game: CreatableRecord {
     enum RecordKeys: String, CaseIterable { case groupName }
     static let recordType = "Game"
-    let id: String = UUID().uuidString
+    let id: String
     let groupName: String
+    init(id: String = UUID().uuidString, groupName: String) {
+        self.id = id
+        self.groupName = groupName
+    }
 }
 
 struct FetchedGame: FetchedRecord {
