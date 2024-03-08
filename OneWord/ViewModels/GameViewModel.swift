@@ -41,26 +41,27 @@ class GameViewModel {
         }
     }
     
-//    /// Adds a user to an existing game.
-//    /// - Parameter userID: The database-registed ID of a `User`. For CloudKit, this is is taken from the user's id in the `Users` CKRecord.
-//    ///
-//    /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
-//    /// - Throws `GameViewModelError.userNotFound` if no user with that ID was found in the database.
-//    /// - Throws `GameViewModelError.couldNotAddUserToGame` if could not update `Game` and `User` records in the database.
-//    public func addUser(withId userID: String) async throws {
-//        guard let currentGame else { throw GameViewModelError.noCurrentGame }
-//        guard let userToAdd: User = (try? await databaseService.fetch(withID: userID)) else {
-//            throw GameViewModelError.userNotFound
-//        }
-//        let userGameRelationship = UserGameRelationship(user: userToAdd, game: currentGame)
-//        do {
-//            let _ = try await databaseService.add(userGameRelationship, withParent: userToAdd, andSecondParent: currentGame)
-//            self.users.append(userToAdd)
-//        } catch {
-//            throw GameViewModelError.couldNotAddUserToGame
-//        }
-//    }
-//    
+    /// Adds a user to an existing game.
+    /// - Parameter userID: The database-registed ID of a `User`. For CloudKit, this is is taken from the user's id in the `Users` CKRecord.
+    ///
+    /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
+    /// - Throws `GameViewModelError.userNotFound` if no user with that ID was found in the database.
+    /// - Throws `GameViewModelError.couldNotAddUserToGame` if could not update `Game` and `User` records in the database.
+    public func addUser(withId userID: String) async throws {
+        guard let currentGame else { throw GameViewModelError.noCurrentGame }
+        guard let fetchedUser: FetchedUser = (try? await databaseService.fetch(withID: userID)) else {
+            throw GameViewModelError.userNotFound
+        }
+        let userToAdd = User(name: fetchedUser.name, systemID: fetchedUser.systemID)
+        let userGameRelationship = UserGameRelationship(user: userToAdd, game: currentGame)
+        do {
+            let _ = try await databaseService.add(userGameRelationship, withParent: userToAdd, withSecondParent: currentGame)
+            self.users.append(userToAdd)
+        } catch {
+            throw GameViewModelError.couldNotAddUserToGame
+        }
+    }
+    
 //    /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
 //    /// - Throws `GameViewModelError.couldNotFetchUsers` if could not fetch users from database.
 //    public func fetchUsersInGame() async throws {

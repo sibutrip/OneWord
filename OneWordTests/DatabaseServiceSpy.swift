@@ -78,7 +78,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
 
     var recordFromDatabase: Entry = {
         var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
-        entry["systemUserID"] = "test id"
+        entry["systemID"] = "test id"
         entry["name"] = "test name"
         entry["inviteCode"] = "test invite code"
         entry["description"] = "description"
@@ -94,7 +94,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
     var childRecordsFromDatabase: [Entry] = {
         var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
-        entry["systemUserID"] = "test id"
+        entry["systemID"] = "test id"
         entry["name"] = "test name"
         entry["inviteCode"] = "test invite code"
         entry["description"] = "description"
