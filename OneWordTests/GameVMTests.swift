@@ -60,16 +60,16 @@ final class GameViewModelTests: XCTestCase {
         }, throws: GameViewModelError.noCurrentGame)
     }
     
-//    func test_addUser_throwsIfUserToAddNotInDatabase() async {
-//        let (sut, _) = makeSUT(databaseDidFetchSuccessfully: false)
-//        let game = Game(withName: "Test Group")
-//        sut.currentGame = game
-//
-//        await assertDoesThrow(test: {
-//            try await sut.addUser(withId: "Some Unique ID")
-//        }, throws: GameViewModelError.userNotFound)
-//    }
-//    
+    func test_addUser_throwsIfUserToAddNotInDatabase() async {
+        let (sut, _) = makeSUT(databaseDidFetchSuccessfully: false)
+        let game = Game(groupName: "Test Group")
+        sut.currentGame = game
+
+        await assertDoesThrow(test: {
+            try await sut.addUser(withId: "Some Unique ID")
+        }, throws: GameViewModelError.userNotFound)
+    }
+    
 //    func test_addUser_throwsIfCannotUpdateGameOrNewUserInDatabase() async {
 //        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
 //        let game = Game(withName: "Test Group")
