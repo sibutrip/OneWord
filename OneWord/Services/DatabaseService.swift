@@ -17,7 +17,7 @@ actor DatabaseService: DatabaseServiceProtocol {
     lazy var database = container.public
     
     
-    #warning("add tests to this")
+#warning("add tests to this")
     func save<SomeRecord: CreatableRecord>(_ record: SomeRecord) async throws {
         do {
             _ = try await database.save(record.entry)
@@ -61,7 +61,7 @@ actor DatabaseService: DatabaseServiceProtocol {
         return record
     }
     
-    func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : ChildRecord, SomeRecord: FetchedRecord, SomeRecord.Parent: FetchedRecord {
+    func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : ChildRecord, SomeRecord: FetchedRecord, SomeRecord.Parent: CreatableRecord {
         let query = ReferenceQuery(child: SomeRecord.self, parent: parent)
         do {
             let entries = try await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max)
@@ -105,7 +105,12 @@ actor DatabaseService: DatabaseServiceProtocol {
     func newestChildRecord<SomeRecord>(of parent: SomeRecord.Parent) async throws -> SomeRecord where SomeRecord : ChildRecord {
         fatalError("not yet implemented")
     }
-        
+    
+    func records<SomeRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord] where SomeRecord : FetchedRecord {
+        fatalError("not yet implemented")
+    }
+    
+    
     // MARK: Initializer
     
     init(withContainer container: CloudContainer) {

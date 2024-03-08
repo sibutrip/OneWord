@@ -64,7 +64,7 @@ final class GameViewModelTests: XCTestCase {
         let (sut, _) = makeSUT(databaseDidFetchSuccessfully: false)
         let game = Game(groupName: "Test Group")
         sut.currentGame = game
-
+        
         await assertDoesThrow(test: {
             try await sut.addUser(withId: "Some Unique ID")
         }, throws: GameViewModelError.userNotFound)
@@ -74,7 +74,7 @@ final class GameViewModelTests: XCTestCase {
         let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
         let game = Game(groupName: "Test Group")
         sut.currentGame = game
-
+        
         await assertDoesThrow(test: {
             try await sut.addUser(withId: "Some Unique ID")
         }, throws: GameViewModelError.couldNotAddUserToGame)
@@ -96,7 +96,7 @@ final class GameViewModelTests: XCTestCase {
     
     func test_fetchUsersInGame_throwsIfCurrentGameIsNil() async {
         let (sut, _) = makeSUT()
-                
+        
         await assertDoesThrow(test: {
             try await sut.fetchUsersInGame()
         }, throws: GameViewModelError.noCurrentGame)
@@ -106,15 +106,45 @@ final class GameViewModelTests: XCTestCase {
         let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
         let game = Game(groupName: "Test Group")
         sut.currentGame = game
-                
+        
         await assertDoesThrow(test: {
             try await sut.fetchUsersInGame()
         }, throws: GameViewModelError.couldNotFetchUsers)
     }
     
+    func test_fetchPreviousRounds_addsRoundsToPreviousRoundsIfSuccessful() async throws {
+        let (sut, database) = makeSUT()
+        let game = Game(groupName: "Test Group")
+        sut.currentGame = game
+        
+        try await sut.fetchPreviousRounds()
+        
+        XCTAssertEqual(sut.previousRounds.count, 1)
+        let receivedMessages = await database.receivedMessages
+        XCTAssertEqual(receivedMessages, [.fetchChildRecords, .fetch])
+    }
+//    
+//    func test_fetchPreviousRounds_throwsIfCurrentGameIsNil() async {
+//        let (sut, _) = makeSUT()
+//        
+//        await assertDoesThrow(test: {
+//            try await sut.fetchPreviousRounds()
+//        }, throws: GameViewModelError.noCurrentGame)
+//    }
+//    
+//    func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
+//        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
+//        let game = Game(withName: "Test Group")
+//        sut.currentGame = game
+//        
+//        await assertDoesThrow(test: {
+//            try await sut.fetchPreviousRounds()
+//        }, throws: GameViewModelError.couldNotFetchRounds)
+//    }
+//    
 //    func test_startRound_addsNewRoundAndUploadsToDatabase() async throws {
 //        let (sut, database) = makeSUT()
-//        let game = Game(withName: "Test Group")
+//        let game = Game(groupName: "Test Group")
 //        sut.currentGame = game
 //        
 //        try await sut.startRound()
@@ -140,36 +170,6 @@ final class GameViewModelTests: XCTestCase {
 //        await assertDoesThrow(test: {
 //            try await sut.startRound()
 //        }, throws: GameViewModelError.couldNotCreateRound)
-//    }
-//    
-//    func test_fetchPreviousRounds_addsRoundsToPreviousRoundsIfSuccessful() async throws {
-//        let (sut, database) = makeSUT()
-//        let game = Game(withName: "Test Group")
-//        sut.currentGame = game
-//        
-//        try await sut.fetchPreviousRounds()
-//
-//        XCTAssertEqual(sut.previousRounds.count, 2)
-//        let receivedMessages = await database.receivedMessages
-//        XCTAssertEqual(receivedMessages, [.fetchChildRecords])
-//    }
-//    
-//    func test_fetchPreviousRounds_throwsIfCurrentGameIsNil() async {
-//        let (sut, _) = makeSUT()
-//        
-//        await assertDoesThrow(test: {
-//            try await sut.fetchPreviousRounds()
-//        }, throws: GameViewModelError.noCurrentGame)
-//    }
-//    
-//    func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
-//        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
-//        let game = Game(withName: "Test Group")
-//        sut.currentGame = game
-//        
-//        await assertDoesThrow(test: {
-//            try await sut.fetchPreviousRounds()
-//        }, throws: GameViewModelError.couldNotFetchRounds)
 //    }
 //    
 //    func test_fetchNewestRound_assignsNewestRoundToVMIfSuccessful() async throws {

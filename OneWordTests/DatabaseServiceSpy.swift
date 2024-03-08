@@ -10,6 +10,10 @@ import XCTest
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
+    func records<SomeRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedRecord {
+        fatalError("not yet implemented")
+    }
+    
     func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : OneWord.CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.save)
@@ -53,10 +57,10 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func childRecords<Child>(of parent: Child.Parent) async throws -> [Child] where Child : ChildRecord, Child: FetchedRecord, Child.Parent: FetchedRecord  {
+    func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : OneWord.ChildRecord, SomeRecord : OneWord.FetchedRecord, SomeRecord.Parent : OneWord.CreatableRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)
-            return [Child(from: recordFromDatabase)!]
+            return [SomeRecord(from: recordFromDatabase)!]
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 5)
         }
@@ -95,7 +99,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
         entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "round")
         entry["game"] = FetchedReference(recordID: UUID().uuidString, recordType: "game")
-        entry["questionNumber"] = 1
+        entry["question"] = FetchedReference(recordID: UUID().uuidString, recordType: "question")
         entry["isHost"] = true
         entry["rank"] = 1
         return entry

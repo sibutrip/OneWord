@@ -6,14 +6,19 @@
 //
 
 protocol Database {
+    
     func record(for entryID: Entry.ID) async throws -> Entry
+    
     func save(_ entry: Entry) async throws
+    
     func records(
-        matching query: ReferenceQuery,
+        matching referenceQuery: ReferenceQuery,
         desiredKeys: [Entry.FieldKey]?,
         resultsLimit: Int
     ) async throws -> [Entry]
+   
     func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry]
+    
     func modifyRecords(
         saving recordsToSave: [Entry],
         deleting recordIDsToDelete: [Entry.ID]) async throws -> (saveResults: [Entry], deleteResults: [Entry.ID])

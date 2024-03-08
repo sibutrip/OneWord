@@ -13,7 +13,8 @@ struct Round: CreatableRecord {
     let question: Question
 }
 
-struct FetchedRound: FetchedRecord {
+struct FetchedRound: FetchedRecord, ChildRecord {
+    typealias Parent = Game
     init?(from entry: Entry) {
         guard let game = entry["game"] as? FetchedReference,
               let question = entry["question"] as? FetchedReference else {

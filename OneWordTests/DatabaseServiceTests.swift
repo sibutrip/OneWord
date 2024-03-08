@@ -113,7 +113,7 @@ final class DatabaseServiceTests: XCTestCase {
     
     func test_childRecords_returnsChildRecordsOnSuccess() async {
         let (sut, database) = makeSUT()
-        let parent = MockFetchedRecord(name: "Test")
+        let parent = MockCreatableRecord(name: "Test")
         
         let childRecords: [MockFetchedChildRecord]? = try? await sut.childRecords(of: parent)
         
@@ -124,7 +124,7 @@ final class DatabaseServiceTests: XCTestCase {
     
     func test_childRecords_returnsEmptyArrayIfNoChildRecordsInDatabase() async throws {
         let (sut, database) = makeSUT(recordInDatabase: false)
-        let parent = MockFetchedRecord(name: "Test")
+        let parent = MockCreatableRecord(name: "Test")
 
         let childRecords: [MockFetchedChildRecord] = try await sut.childRecords(of: parent)
         
@@ -135,7 +135,7 @@ final class DatabaseServiceTests: XCTestCase {
     
     func test_childRecords_throwsIfNotConnectedToDatabase() async {
         let (sut, _) = makeSUT(connectedToDatabase: false)
-        let parent = MockFetchedRecord(name: "Test")
+        let parent = MockCreatableRecord(name: "Test")
 
         await assertDoesThrow(test: {
             let _: [MockFetchedChildRecord] = try await sut.childRecords(of: parent)

@@ -9,7 +9,7 @@ import Foundation
 @testable import OneWord
 
 struct MockFetchedChildRecord: FetchedRecord, ChildRecord {
-    typealias Parent = MockFetchedRecord
+    typealias Parent = MockCreatableRecord
     static let recordType = "MockChildRecord"
     
     enum RecordKeys: String, CaseIterable {
