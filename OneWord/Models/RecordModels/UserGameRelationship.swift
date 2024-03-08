@@ -5,10 +5,15 @@
 //  Created by Cory Tripathy on 1/31/24.
 //
 
-struct UserGameRelationship: CreatableRecord {
+import Foundation
+
+struct UserGameRelationship: CreatableRecord, TwoParentsChildRecord {
+    typealias Parent = User
+    typealias SecondParent = Game
+    
     enum RecordKeys: String, CaseIterable { case user, game }
     static let recordType = "UserGameRelationship"
-    let id: String
+    let id: String = UUID().uuidString
     let user: User
     let game: Game
 }
@@ -33,5 +38,4 @@ struct FetchedUserGameRelationship: FetchedTwoParentsChild {
     
     var parentReference: FetchedReference? { return user }
     var secondParentReference: FetchedReference? { return game }
-    
 }

@@ -5,10 +5,12 @@
 //  Created by Cory Tripathy on 1/31/24.
 //
 
-struct User: CreatableRecord {
+import Foundation
+
+struct User: CreatableRecord, Identifiable {
     enum RecordKeys: String, CaseIterable { case name, systemID }
     static let recordType = "User"
-    let id: String
+    let id: String = UUID().uuidString
     let name: String
     let systemID: String
 }

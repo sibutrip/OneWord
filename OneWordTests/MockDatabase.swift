@@ -9,6 +9,17 @@
 import Foundation
 
 class MockDatabase: Database {
+    
+    func save(_ entry: OneWord.Entry) async throws {
+        if connectedToDatabase {
+            messages.append(.save)
+            if savedRecordToDatabase {
+                return
+            }
+        }
+        throw NSError(domain: "Could not save record to database", code: 0)
+    }
+    
     func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry] {
         messages.append(.recordsFromReferences)
         return [recordFromDatabase]
@@ -24,16 +35,6 @@ class MockDatabase: Database {
             }
         }
         throw NSError(domain: "Record not in database", code: 0)
-    }
-    
-    func save(_ entry: OneWord.Entry) async throws -> OneWord.Entry {
-        if connectedToDatabase {
-            messages.append(.save)
-            if savedRecordToDatabase {
-                return recordFromDatabase
-            }
-        }
-        throw NSError(domain: "Could not save record to database", code: 0)
     }
     
     func records(matching query: OneWord.ReferenceQuery, desiredKeys: [OneWord.Entry.FieldKey]?, resultsLimit: Int) async throws -> [OneWord.Entry] {

@@ -10,6 +10,10 @@ import XCTest
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
+    func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : OneWord.CreatableRecord {
+        fatalError("not yet implemented")
+    }
+    
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : OneWord.ChildRecord, SomeRecord : OneWord.CreatableRecord, SomeRecord.Parent : OneWord.CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)
@@ -74,7 +78,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
     
     enum Message {
-        case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord
+        case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save
     }
 
     var recordFromDatabase: Entry = {

@@ -16,6 +16,16 @@ actor DatabaseService: DatabaseServiceProtocol {
     let container: CloudContainer
     lazy var database = container.public
     
+    
+    #warning("add tests to this")
+    func save<SomeRecord: CreatableRecord>(_ record: SomeRecord) async throws {
+        do {
+            _ = try await database.save(record.entry)
+        } catch {
+            fatalError("error description not created")
+        }
+    }
+    
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : ChildRecord, SomeRecord : CreatableRecord, SomeRecord.Parent : CreatableRecord {
         do {
             _ = try await self.database.modifyRecords(saving: [parent.entry], deleting: [])

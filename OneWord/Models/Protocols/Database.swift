@@ -11,7 +11,7 @@ protocol Database {
     
     func record(for entryID: Entry.ID) async throws -> Entry
     
-    func save(_ entry: Entry) async throws -> Entry
+    func save(_ entry: Entry) async throws
     
     func records(
         matching query: ReferenceQuery,
@@ -41,7 +41,7 @@ extension CKDatabase: Database {
         return entry
     }
     
-    func save(_ entry: Entry) async throws -> Entry {
+    func save(_ entry: Entry) async throws {
         // mapping logic. separate this. ckrecord to concrete as well. 
         let ckRecord = CKRecord(recordType: entry.recordType)
         for key in entry.allKeys() {
@@ -55,7 +55,6 @@ extension CKDatabase: Database {
             }
         }
         try await self.save(ckRecord)
-        return entry
     }
     
     func records(matching query: ReferenceQuery, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {

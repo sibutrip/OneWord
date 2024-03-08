@@ -1,45 +1,46 @@
-////
-////  GameViewModel.swift
-////  OneWord
-////
-////  Created by Cory Tripathy on 1/22/24.
-////
 //
-//class GameViewModel {
-//    
-//    enum GameViewModelError: Error {
-//        case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers, couldNotCreateRound, couldNotFetchRounds, couldNotFetchQuestion
-//    }
-//    
-//    private let databaseService: DatabaseService
-//    var localUser: User
-//    var users = [User]()
-//    var currentGame: Game?
-//    
-//    var previousRounds = [Round]()
-//    var currentRound: Round?
-//    
-//    init(withUser user: User, database: DatabaseService) {
-//        localUser = user
-//        users.append(user)
-//        databaseService = database
-//    }
-//    
-//    /// Creates new game and updates database with one-to-many relationship.
-//    ///
-//    /// Subsequent added users should also have `Game` as a child record of their `User` record.
-//    /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
-//    public func createGame(withGroupName name: String) async throws {
-//        let newGame = Game(withName: name)
-//        let userGameRelationship = UserGameRelationship(user: localUser, game: newGame)
-//        do {
-//            let _ = try await databaseService.add(userGameRelationship, withParent: localUser, andSecondParent: newGame)
-//            self.currentGame = newGame
-//        } catch {
-//            throw GameViewModelError.couldNotCreateGame
-//        }
-//    }
-//    
+//  GameViewModel.swift
+//  OneWord
+//
+//  Created by Cory Tripathy on 1/22/24.
+//
+
+class GameViewModel {
+    
+    enum GameViewModelError: Error {
+        case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers, couldNotCreateRound, couldNotFetchRounds, couldNotFetchQuestion
+    }
+    
+    private let databaseService: DatabaseServiceProtocol
+    var localUser: User
+    var users = [User]()
+    var currentGame: Game?
+    
+    var previousRounds = [Round]()
+    var currentRound: Round?
+    
+    init(withUser user: User, database: DatabaseServiceProtocol) {
+        localUser = user
+        users.append(user)
+        databaseService = database
+    }
+    
+    /// Creates new game and updates database with one-to-many relationship.
+    ///
+    /// Subsequent added users should also have `Game` as a child record of their `User` record.
+    /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
+    public func createGame(withGroupName groupName: String) async throws {
+        let newGame = Game(groupName: groupName)
+        let userGameRelationship = UserGameRelationship(user: localUser, game: newGame)
+        do {
+            try await databaseService.save(newGame)
+            try await databaseService.add(userGameRelationship, withParent: localUser, withSecondParent: newGame)
+            self.currentGame = newGame
+        } catch {
+            throw GameViewModelError.couldNotCreateGame
+        }
+    }
+    
 //    /// Adds a user to an existing game.
 //    /// - Parameter userID: The database-registed ID of a `User`. For CloudKit, this is is taken from the user's id in the `Users` CKRecord.
 //    ///
@@ -101,4 +102,4 @@
 //        }
 //        self.currentRound = newestRound
 //    }
-//}
+}

@@ -8,19 +8,18 @@
 import XCTest
 @testable import OneWord
 
-//final class GameViewModelTests: XCTestCase {
-//    typealias GameViewModelError = GameViewModel.GameViewModelError
-//    
-//    func test_init_setsUserToLocalUserAndAddsToUsersArray() {
-//        let localUser = User(withName: "Cory")
-//        let database = DatabaseServiceSpy()
-//        
-//        let sut = GameViewModel(withUser: localUser, database: database)
-//        
-//        XCTAssertEqual(sut.localUser, localUser)
-//        XCTAssertEqual(sut.users, [localUser])
-//    }
-//    
+final class GameViewModelTests: XCTestCase {
+    typealias GameViewModelError = GameViewModel.GameViewModelError
+    
+    func test_init_setsUserToUsersArray() {
+        let localUser = User(name: "Cory", systemID: UUID().uuidString)
+        let database = DatabaseServiceSpy()
+        
+        let sut = GameViewModel(withUser: localUser, database: database)
+        
+        XCTAssertEqual(sut.users.map { $0.id }, [localUser.id])
+    }
+    
 //    func test_createGame_addsNewGameToDatabaseWithUserAsParent() async throws {
 //        let (sut, databaseService) = makeSUT()
 //        
@@ -210,20 +209,20 @@ import XCTest
 //            try await sut.fetchNewestRound()
 //        }, throws: GameViewModelError.couldNotFetchRounds)
 //    }
-//    
-//    // MARK: Helper Methods
-//    
-//    private func makeSUT(
-//        databaseDidAddSuccessfully: Bool = true,
-//        databaseDidFetchSuccessfully: Bool = true,
-//        databaseDidUpdateSuccessfully: Bool = true,
-//        databaseDidFetchChildRecordsSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
-//            let localUser = User(withName: "Cory")
-//            let database = DatabaseServiceSpy(
-//                didAddSuccessfully: databaseDidAddSuccessfully,
-//                didFetchSuccessfully: databaseDidFetchSuccessfully,
-//                didUpdateSuccessfully: databaseDidUpdateSuccessfully,
-//                didFetchChildRecordsSuccessfully: databaseDidFetchChildRecordsSuccessfully)
-//            return (GameViewModel(withUser: localUser, database: database), database)
-//        }
-//}
+    
+    // MARK: Helper Methods
+    
+    private func makeSUT(
+        databaseDidAddSuccessfully: Bool = true,
+        databaseDidFetchSuccessfully: Bool = true,
+        databaseDidUpdateSuccessfully: Bool = true,
+        databaseDidFetchChildRecordsSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
+            let localUser = User(name: "Cory", systemID: UUID().uuidString)
+            let database = DatabaseServiceSpy(
+                didAddSuccessfully: databaseDidAddSuccessfully,
+                didFetchSuccessfully: databaseDidFetchSuccessfully,
+                didUpdateSuccessfully: databaseDidUpdateSuccessfully,
+                didFetchChildRecordsSuccessfully: databaseDidFetchChildRecordsSuccessfully)
+            return (GameViewModel(withUser: localUser, database: database), database)
+        }
+}
