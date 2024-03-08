@@ -123,15 +123,15 @@ final class GameViewModelTests: XCTestCase {
         let receivedMessages = await database.receivedMessages
         XCTAssertEqual(receivedMessages, [.fetchChildRecords, .fetch])
     }
-//    
-//    func test_fetchPreviousRounds_throwsIfCurrentGameIsNil() async {
-//        let (sut, _) = makeSUT()
-//        
-//        await assertDoesThrow(test: {
-//            try await sut.fetchPreviousRounds()
-//        }, throws: GameViewModelError.noCurrentGame)
-//    }
-//    
+    
+    func test_fetchPreviousRounds_throwsIfCurrentGameIsNil() async {
+        let (sut, _) = makeSUT()
+        
+        await assertDoesThrow(test: {
+            try await sut.fetchPreviousRounds()
+        }, throws: GameViewModelError.noCurrentGame)
+    }
+    
 //    func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
 //        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
 //        let game = Game(withName: "Test Group")

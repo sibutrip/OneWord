@@ -86,12 +86,13 @@ class GameViewModel {
         }
         var previousRounds = [Round]()
         for previousRound in fetchedPreviousRounds {
-            let fetchedQuestion: Question = try await databaseService.fetch(withID: previousRound.question.recordName)
+            guard let fetchedQuestion: Question = try? await databaseService.fetch(withID: previousRound.question.recordName) else {
+                throw GameViewModelError.couldNotFetchQuestion
+            }
             previousRounds.append(Round(id: previousRound.id, game: currentGame, question: fetchedQuestion))
         }
         self.previousRounds = previousRounds
     }
-    
     
 //    /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.
 //    /// - Throws `GameViewModelError.couldNotCreateRound` if `databaseService.add` throws.
