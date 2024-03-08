@@ -52,14 +52,14 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(receivedMessages, [.fetch, .add])
     }
     
-//    func test_addUser_throwsIfCurrentGameIsNil() async {
-//        let (sut, _) = makeSUT()
-//        
-//        await assertDoesThrow(test: {
-//            try await sut.addUser(withId: "Some Unique ID")
-//        }, throws: GameViewModelError.noCurrentGame)
-//    }
-//    
+    func test_addUser_throwsIfCurrentGameIsNil() async {
+        let (sut, _) = makeSUT()
+        
+        await assertDoesThrow(test: {
+            try await sut.addUser(withId: "Some Unique ID")
+        }, throws: GameViewModelError.noCurrentGame)
+    }
+    
 //    func test_addUser_throwsIfUserToAddNotInDatabase() async {
 //        let (sut, _) = makeSUT(databaseDidFetchSuccessfully: false)
 //        let game = Game(withName: "Test Group")
