@@ -29,23 +29,16 @@ final class GameViewModelTests: XCTestCase {
         let receivedMessages = await databaseService.receivedMessages
         XCTAssertEqual(receivedMessages, [.save, .add])
     }
-//    
-//    func test_createGame_assignsGameToViewModelIfCreatedSuccessfully() async throws {
-//        let (sut, _) = makeSUT()
-//        
-//        try await sut.createGame(withGroupName: "Test Group")
-//        
-//        XCTAssertNotNil(sut.currentGame)
-//    }
-//    
-//    func test_createGame_throwsIfCannotAddGameToDatabase() async {
-//        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
-//        
-//        await assertDoesThrow(test: {
-//            try await sut.createGame(withGroupName: "Test Group")
-//        }, throws: GameViewModelError.couldNotCreateGame)
-//    }
-//    
+    
+    func test_createGame_throwsIfCannotAddGameToDatabase() async {
+        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
+        
+        await assertDoesThrow(test: {
+            try await sut.createGame(withGroupName: "Test Group")
+        }, throws: GameViewModelError.couldNotCreateGame)
+        XCTAssertNil(sut.currentGame)
+    }
+    
 //    func test_addUser_addsUserToUsersArrayIfSuccessful() async throws {
 //        let (sut, database) = makeSUT()
 //        let game = Game(withName: "Test Group")
