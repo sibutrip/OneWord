@@ -10,9 +10,6 @@ import CloudKit
 struct Entry {
     typealias FieldKey = String
     typealias ID = String
-    struct Reference {
-        let id: String
-    }
     
     private var values: [String: Any] = [:]
     
