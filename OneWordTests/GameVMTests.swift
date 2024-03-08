@@ -94,14 +94,14 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(receivedMessages, [.fetchManyToMany])
     }
     
-//    func test_fetchUsersInGame_throwsIfCurrentGameIsNil() async {
-//        let (sut, _) = makeSUT()
-//                
-//        await assertDoesThrow(test: {
-//            try await sut.fetchUsersInGame()
-//        }, throws: GameViewModelError.noCurrentGame)
-//    }
-//    
+    func test_fetchUsersInGame_throwsIfCurrentGameIsNil() async {
+        let (sut, _) = makeSUT()
+                
+        await assertDoesThrow(test: {
+            try await sut.fetchUsersInGame()
+        }, throws: GameViewModelError.noCurrentGame)
+    }
+    
 //    func test_fetchUsersInGame_throwsIfCannotFetchFromDatabase() async {
 //        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
 //        let game = Game(withName: "Test Group")
