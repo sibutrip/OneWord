@@ -154,6 +154,7 @@
 			children = (
 				74A8CBC92B741B9D00EA9F5A /* Player.swift */,
 				74A8CBC62B741B9D00EA9F5A /* Round.swift */,
+				74A8CBD62B741B9E00EA9F5A /* Game.swift */,
 				74A8CBD32B741B9D00EA9F5A /* User.swift */,
 				74A8CBCC2B741B9D00EA9F5A /* UserGameRelationship.swift */,
 				74A8CBD02B741B9D00EA9F5A /* Word.swift */,
@@ -232,7 +233,6 @@
 				74A8CBE72B741BF100EA9F5A /* Entry.swift */,
 				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,
 				74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */,
-				74A8CBD62B741B9E00EA9F5A /* Game.swift */,
 				74647F532B9BA72200491452 /* CKDatabase+Database.swift */,
 				7413860A2B7FF0D000A1B424 /* RecordModels */,
 				7454A3AC2B5F0998006357C8 /* Protocols */,

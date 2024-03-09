@@ -10,10 +10,6 @@ import XCTest
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
-    func records<SomeRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedRecord {
-        fatalError("not yet implemented")
-    }
-    
     func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : OneWord.CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.save)
@@ -84,9 +80,16 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
+    func records<SomeRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedRecord {
+        if didFetchSuccessfully {
+            receivedMessages.append(.recordsForType)
+            return [SomeRecord(from: recordFromDatabase)!]
+        }
+        throw NSError(domain: "MockDatabaseServiceError", code: 7)
+    }
     
     enum Message {
-        case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save
+        case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save, recordsForType
     }
     
     var recordFromDatabase: Entry = {
@@ -94,7 +97,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         entry["systemID"] = "fetcher user id"
         entry["name"] = "fetched user"
         entry["inviteCode"] = "fetched invite code"
-        entry["description"] = "fetched description"
+        entry["questionInfo"] = "my amazing question"
         entry["roundNumber"] = 1
         entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
         entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "round")

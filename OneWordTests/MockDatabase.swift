@@ -75,7 +75,7 @@ class MockDatabase: Database {
         entry["systemUserID"] = "test id"
         entry["name"] = "test name"
         entry["inviteCode"] = "test invite code"
-        entry["description"] = "description"
+        entry["questionInfo"] = "my amazing question"
         entry["roundNumber"] = 1
         entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
         entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "round")

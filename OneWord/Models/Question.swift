@@ -7,7 +7,7 @@
 
 struct Question: FetchedRecord {
     init?(from entry: Entry) {
-        guard let description = entry["description"] as? String else {
+        guard let description = entry["questionInfo"] as? String else {
             return nil
         }
         self.id = entry.id
@@ -19,3 +19,6 @@ struct Question: FetchedRecord {
     let id: String
     let description: String
 }
+
+/// To put into a set
+extension Question: Hashable { }

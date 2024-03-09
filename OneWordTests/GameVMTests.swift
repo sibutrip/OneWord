@@ -154,18 +154,18 @@ final class GameViewModelTests: XCTestCase {
         }
     }
     
-//    func test_startRound_addsNewRoundAndUploadsToDatabase() async throws {
-//        let (sut, database) = makeSUT()
-//        let game = Game(groupName: "Test Group")
-//        sut.currentGame = game
-//        
-//        try await sut.startRound()
-//        
-//        XCTAssertNotNil(sut.currentRound)
-//        let receivedMessages = await database.receivedMessages
-//        XCTAssertEqual(receivedMessages, [.add])
-//    }
-//    
+    func test_startRound_addsNewRoundAndUploadsToDatabase() async throws {
+        let (sut, database) = makeSUT()
+        let game = Game(groupName: "Test Group")
+        sut.currentGame = game
+        
+        try await sut.startRound()
+        
+        XCTAssertNotNil(sut.currentRound)
+        let receivedMessages = await database.receivedMessages
+        XCTAssertEqual(receivedMessages, [.recordsForType, .add])
+    }
+    
 //    func test_startRound_throwsIfCurrentGameIsNil() async {
 //        let (sut, _) = makeSUT()
 //        
