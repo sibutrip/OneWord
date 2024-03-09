@@ -6,21 +6,24 @@
 //
 
 struct Word: CreatableRecord {
-    enum RecordKeys: String, CaseIterable { case description, user, round }
+    enum RecordKeys: String, CaseIterable { case wordDescription, user, round, rank }
     static let recordType = "Word"
     let id: String
-    let description: String
+    let wordDescription: String
+    let rank: Int?
     let user: User
     let round: Round
 }
 
-struct FetchedWord: FetchedRecord {
+struct FetchedWord: FetchedRecord, ChildRecord {
+    typealias Parent = Round
     init?(from entry: Entry) {
-        guard let description = entry["description"] as? String,
+        guard let description = entry["wordDescription"] as? String,
               let user = entry["user"] as? FetchedReference,
               let round = entry["round"] as? FetchedReference else {
             return nil
         }
+        self.rank = entry["rank"] as? Int
         self.id = entry.id
         self.description = description
         self.user = user
@@ -31,6 +34,7 @@ struct FetchedWord: FetchedRecord {
     
     let id: String
     let description: String
+    let rank: Int?
     let user: FetchedReference
     let round: FetchedReference
 }

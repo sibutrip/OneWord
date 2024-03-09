@@ -95,6 +95,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     var recordFromDatabase: Entry = {
         var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
         entry["systemID"] = "fetcher user id"
+        entry["wordDescription"] = "my amazing word"
         entry["name"] = "fetched user"
         entry["inviteCode"] = "fetched invite code"
         entry["questionInfo"] = "my amazing question"
