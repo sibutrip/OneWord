@@ -174,16 +174,16 @@ final class GameViewModelTests: XCTestCase {
         }, throws: GameViewModelError.noCurrentGame)
     }
     
-//    func test_startRound_throwsIfCouldNotAddGameToDatabase() async {
-//        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
-//        let game = Game(withName: "Test Group")
-//        sut.currentGame = game
-//        
-//        await assertDoesThrow(test: {
-//            try await sut.startRound()
-//        }, throws: GameViewModelError.couldNotCreateRound)
-//    }
-//    
+    func test_startRound_throwsIfCouldNotAddGameToDatabase() async {
+        let (sut, _) = makeSUT(databaseDidAddSuccessfully: false)
+        let game = Game(groupName: "Test Group")
+        sut.currentGame = game
+        
+        await assertDoesThrow(test: {
+            try await sut.startRound()
+        }, throws: GameViewModelError.couldNotCreateRound)
+    }
+    
 //    func test_fetchNewestRound_assignsNewestRoundToVMIfSuccessful() async throws {
 //        let (sut, database) = makeSUT()
 //        let game = Game(withName: "Test Group")
@@ -194,7 +194,6 @@ final class GameViewModelTests: XCTestCase {
 //        XCTAssertNotNil(sut.currentRound)
 //        let receivedMessages = await database.receivedMessages
 //        XCTAssertEqual(receivedMessages, [.newestChildRecord])
-//        
 //    }
 //    
 //    func test_fetchNewestRound_throwsIfNoGameInDatabase() async {
