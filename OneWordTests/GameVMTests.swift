@@ -162,6 +162,7 @@ final class GameViewModelTests: XCTestCase {
         try await sut.startRound()
         
         XCTAssertNotNil(sut.currentRound)
+        XCTAssertEqual(sut.currentRound!.id, sut.previousRounds.first!.id)
         let receivedMessages = await database.receivedMessages
         XCTAssertEqual(receivedMessages, [.recordsForType, .add])
     }
@@ -184,9 +185,21 @@ final class GameViewModelTests: XCTestCase {
         }, throws: GameViewModelError.couldNotCreateRound)
     }
     
+    func test_startRound_throwsIfNoAvailableQuestions() async {
+        let (sut, database) = makeSUT()
+        let game = Game(groupName: "Test Group")
+        sut.currentGame = game
+        let previousQuestion = (try! await database.records(forType: Question.self)).first!
+        sut.previousRounds = [Round(game: game, question: previousQuestion)]
+        
+        await assertDoesThrow(test: {
+            try await sut.startRound()
+        }, throws: GameViewModelError.noAvailableQuestions)
+    }
+    
 //    func test_fetchNewestRound_assignsNewestRoundToVMIfSuccessful() async throws {
 //        let (sut, database) = makeSUT()
-//        let game = Game(withName: "Test Group")
+//        let game = Game(groupName: "Test Group")
 //        sut.currentGame = game
 //        
 //        try await sut.fetchNewestRound()

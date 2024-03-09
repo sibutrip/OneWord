@@ -108,6 +108,7 @@ class GameViewModel {
             let newRound = Round(game: currentGame, question: randomQuestion)
             try await databaseService.add(newRound, withParent: currentGame)
             currentRound = newRound
+            previousRounds.append(newRound)
         } catch {
             throw GameViewModelError.couldNotCreateRound
         }
