@@ -107,6 +107,23 @@ class GameViewModel {
         guard let randomQuestion = newQuestions.randomElement() else {
             throw GameViewModelError.noAvailableQuestions
         }
+        let nextHost = try nextHost()
+        do {
+            let newRound = Round(game: currentGame, question: randomQuestion, host: nextHost)
+            try await databaseService.add(newRound, withParent: currentGame)
+            currentRound = newRound
+            previousRounds.append(newRound)
+        } catch {
+            throw GameViewModelError.couldNotCreateRound
+        }
+    }
+    
+    // MARK: Helper Methods
+    
+    /// Gets next host based on 1. who has hosted the least 2. If nobody has hosted, get a random user.
+    ///
+    /// - Throws `GameViewModelError.noUser` if there are no users in the game.
+    private func nextHost() throws -> User {
         let nextHost = previousRounds
             .reduce(into: [User:Int]()) { partialResult, round in
                 partialResult[round.host, default: 0] += 1
@@ -117,14 +134,7 @@ class GameViewModel {
 #warning("add no users error to tests")
             throw GameViewModelError.noUsers
         }
-        do {
-            let newRound = Round(game: currentGame, question: randomQuestion, host: nextHost)
-            try await databaseService.add(newRound, withParent: currentGame)
-            currentRound = newRound
-            previousRounds.append(newRound)
-        } catch {
-            throw GameViewModelError.couldNotCreateRound
-        }
+        return nextHost
     }
     
     //    /// - Throws `GameViewModelError.couldNotFetchRounds` if unable to make `Round` with `databaseService`
