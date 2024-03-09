@@ -101,10 +101,10 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         entry["questionInfo"] = "my amazing question"
         entry["roundNumber"] = 1
         entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
+        entry["host"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
         entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "round")
         entry["game"] = FetchedReference(recordID: UUID().uuidString, recordType: "game")
         entry["question"] = FetchedReference(recordID: UUID().uuidString, recordType: "question")
-        entry["isHost"] = true
         entry["rank"] = 1
         return entry
     }()

@@ -12,12 +12,10 @@ class RoundViewModel {
     private let databaseService: DatabaseServiceProtocol
     let round: Round
     let users: [User]
-    let host: User
     var words: [Word] = []
         
-    init(round: Round, users: [User], host: User, databaseService: DatabaseServiceProtocol) {
+    init(round: Round, users: [User], databaseService: DatabaseServiceProtocol) {
         self.round = round
-        self.host = host
         self.users = users
         self.databaseService = databaseService
     }

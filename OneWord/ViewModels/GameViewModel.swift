@@ -8,7 +8,7 @@
 class GameViewModel {
     
     enum GameViewModelError: Error {
-        case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers, couldNotCreateRound, couldNotFetchRounds, couldNotFetchQuestion, noAvailableQuestions
+        case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers, couldNotCreateRound, couldNotFetchRounds, noAvailableQuestions, couldNotFetchRoundDetails, noUsers
     }
     
     private let databaseService: DatabaseServiceProtocol
@@ -63,7 +63,7 @@ class GameViewModel {
     }
     
     /// Replaces `self.users` with all users currently in database.
-    /// 
+    ///
     /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotFetchUsers` if could not fetch users from database.
     public func fetchUsersInGame() async throws {
@@ -86,10 +86,13 @@ class GameViewModel {
         }
         var previousRounds = [Round]()
         for previousRound in fetchedPreviousRounds {
-            guard let fetchedQuestion: Question = try? await databaseService.fetch(withID: previousRound.question.recordName) else {
-                throw GameViewModelError.couldNotFetchQuestion
+            async let fetchedQuestionTask: Question = try await databaseService.fetch(withID: previousRound.question.recordName)
+            async let fetchedUserTask: FetchedUser = try await databaseService.fetch(withID: previousRound.host.recordName)
+            guard let (question, fetchedUser) = try? await (fetchedQuestionTask, fetchedUserTask) else {
+                throw GameViewModelError.couldNotFetchRoundDetails
             }
-            previousRounds.append(Round(id: previousRound.id, game: currentGame, question: fetchedQuestion))
+            let user = User(id: fetchedUser.id, name: fetchedUser.name, systemID: fetchedUser.systemID)
+            previousRounds.append(Round(id: previousRound.id, game: currentGame, question: question, host: user))
         }
         self.previousRounds = previousRounds
     }
@@ -104,8 +107,18 @@ class GameViewModel {
         guard let randomQuestion = newQuestions.randomElement() else {
             throw GameViewModelError.noAvailableQuestions
         }
+        let nextHost = previousRounds
+            .reduce(into: [User:Int]()) { partialResult, round in
+                partialResult[round.host, default: 0] += 1
+            }
+            .sorted { $0.value > $1.value }
+            .last?.key ?? users.randomElement()
+        guard let nextHost else {
+#warning("add no users error to tests")
+            throw GameViewModelError.noUsers
+        }
         do {
-            let newRound = Round(game: currentGame, question: randomQuestion)
+            let newRound = Round(game: currentGame, question: randomQuestion, host: nextHost)
             try await databaseService.add(newRound, withParent: currentGame)
             currentRound = newRound
             previousRounds.append(newRound)
@@ -113,13 +126,13 @@ class GameViewModel {
             throw GameViewModelError.couldNotCreateRound
         }
     }
-
-//    /// - Throws `GameViewModelError.couldNotFetchRounds` if unable to make `Round` with `databaseService`
-//    public func fetchNewestRound() async throws {
-//        guard let currentGame else { throw GameViewModelError.noCurrentGame }
-//        guard let newestRound: Round = (try? await databaseService.newestChildRecord(of: currentGame)) else {
-//            throw GameViewModelError.couldNotFetchRounds
-//        }
-//        self.currentRound = newestRound
-//    }
+    
+    //    /// - Throws `GameViewModelError.couldNotFetchRounds` if unable to make `Round` with `databaseService`
+    //    public func fetchNewestRound() async throws {
+    //        guard let currentGame else { throw GameViewModelError.noCurrentGame }
+    //        guard let newestRound: Round = (try? await databaseService.newestChildRecord(of: currentGame)) else {
+    //            throw GameViewModelError.couldNotFetchRounds
+    //        }
+    //        self.currentRound = newestRound
+    //    }
 }

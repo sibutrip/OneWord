@@ -34,14 +34,14 @@ final class RoundViewModelTests: XCTestCase {
         let userReference: FetchedReference = await database.recordFromDatabase["user"] as! FetchedReference
         let user = User(id: userReference.recordName, name: "Cory", systemID: UUID().uuidString)
         let question: Question = (try! await database.records(forType: Question.self)).first!
-        let round = Round(game: game, question: question)
+        let round = Round(game: game, question: question, host: user)
         let users = [
             user,
             User(name: "Zoe", systemID: UUID().uuidString),
             User(name: "Tariq", systemID: UUID().uuidString)
         ]
         await database.setDidFetchChildRecordsSuccessfully(to: didFetchChildRecordsSuccessfully)
-        let roundVm = RoundViewModel(round: round, users: users, host: users.first!, databaseService: database)
+        let roundVm = RoundViewModel(round: round, users: users, databaseService: database)
         return roundVm
     }
 }

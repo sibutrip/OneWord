@@ -37,3 +37,5 @@ struct FetchedUser: FetchedRecord {
     let name: String
     let systemID: String
 }
+
+extension User: Hashable { }

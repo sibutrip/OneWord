@@ -121,7 +121,7 @@ final class GameViewModelTests: XCTestCase {
         
         XCTAssertEqual(sut.previousRounds.count, 1)
         let receivedMessages = await database.receivedMessages
-        XCTAssertEqual(receivedMessages, [.fetchChildRecords, .fetch])
+        XCTAssertEqual(receivedMessages, [.fetchChildRecords, .fetch, .fetch])
     }
     
     func test_fetchPreviousRounds_throwsIfCurrentGameIsNil() async {
@@ -150,7 +150,7 @@ final class GameViewModelTests: XCTestCase {
             
             await assertDoesThrow(test: {
                 try await sut.fetchPreviousRounds()
-            }, throws: GameViewModelError.couldNotFetchQuestion)
+            }, throws: GameViewModelError.couldNotFetchRoundDetails)
         }
     }
     
@@ -190,7 +190,7 @@ final class GameViewModelTests: XCTestCase {
         let game = Game(groupName: "Test Group")
         sut.currentGame = game
         let previousQuestion = (try! await database.records(forType: Question.self)).first!
-        sut.previousRounds = [Round(game: game, question: previousQuestion)]
+        sut.previousRounds = [Round(game: game, question: previousQuestion, host: sut.localUser)]
         
         await assertDoesThrow(test: {
             try await sut.startRound()
