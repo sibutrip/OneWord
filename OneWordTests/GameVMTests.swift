@@ -132,14 +132,26 @@ final class GameViewModelTests: XCTestCase {
         }, throws: GameViewModelError.noCurrentGame)
     }
     
-//    func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
-//        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
-//        let game = Game(withName: "Test Group")
-//        sut.currentGame = game
-//        
-//        await assertDoesThrow(test: {
-//            try await sut.fetchPreviousRounds()
-//        }, throws: GameViewModelError.couldNotFetchRounds)
+    func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
+        let (sut, _) = makeSUT(databaseDidFetchChildRecordsSuccessfully: false)
+        let game = Game(groupName: "Test Group")
+        sut.currentGame = game
+        
+        await assertDoesThrow(test: {
+            try await sut.fetchPreviousRounds()
+        }, throws: GameViewModelError.couldNotFetchRounds)
+    }
+    
+//    func test_fetchPreviousRounds_throwsIfCouldNotFetchQuestions() async  {
+//        func test_fetchPreviousRounds_throwsIfCouldNotConnectToDatabase() async {
+//            let (sut, _) = makeSUT(databaseDidFetchSuccessfully: false)
+//            let game = Game(groupName: "Test Group")
+//            sut.currentGame = game
+//            
+//            await assertDoesThrow(test: {
+//                try await sut.fetchPreviousRounds()
+//            }, throws: GameViewModelError.couldNotFetchQuestion)
+//        }
 //    }
 //    
 //    func test_startRound_addsNewRoundAndUploadsToDatabase() async throws {
