@@ -109,12 +109,16 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         return entry
     }()
     
-    let didAddSuccessfully: Bool
-    let didFetchSuccessfully: Bool
-    let didUpdateSuccessfully: Bool
-    let didFetchChildRecordsSuccessfully: Bool
+    var didAddSuccessfully: Bool
+    var didFetchSuccessfully: Bool
+    var didUpdateSuccessfully: Bool
+    var didFetchChildRecordsSuccessfully: Bool
     
     var receivedMessages: [Message] = []
+    
+    func setDidFetchChildRecordsSuccessfully(to newValue: Bool) {
+        self.didFetchChildRecordsSuccessfully = newValue
+    }
     
     init(
         didAddSuccessfully: Bool = true,

@@ -9,7 +9,7 @@ import XCTest
 @testable import OneWord
 
 final class RoundViewModelTests: XCTestCase {
-    
+    typealias RoundViewModelError = RoundViewModel.RoundViewModelError
     func test_fetchWords_assignsWordsToViewModel() async throws {
         let sut = await makeSUT()
         
@@ -18,8 +18,16 @@ final class RoundViewModelTests: XCTestCase {
         XCTAssertNotEqual(sut.words.count, 0)
     }
     
+    func test_fetchWords_throwsIfCantFetchWordRecords() async {
+        let sut = await makeSUT(didFetchChildRecordsSuccessfully: false)
+        
+        await assertDoesThrow(test: {
+            try await sut.fetchWords()
+        }, throws: RoundViewModelError.noWordsFound)
+    }
+    
     // MARK: Helper Methods
-    func makeSUT() async -> RoundViewModel {
+    func makeSUT(didFetchChildRecordsSuccessfully: Bool = true) async -> RoundViewModel {
         let game = Game(groupName: "Test game")
         let database = DatabaseServiceSpy()
         // fetch one user this way so that a word's user can match one stored in the array
@@ -32,6 +40,7 @@ final class RoundViewModelTests: XCTestCase {
             User(name: "Zoe", systemID: UUID().uuidString),
             User(name: "Tariq", systemID: UUID().uuidString)
         ]
+        await database.setDidFetchChildRecordsSuccessfully(to: didFetchChildRecordsSuccessfully)
         let roundVm = RoundViewModel(round: round, users: users, host: users.first!, databaseService: database)
         return roundVm
     }
