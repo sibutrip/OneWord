@@ -10,11 +10,13 @@ class RoundViewModel {
         case noWordsFound
     }
     private let database: DatabaseServiceProtocol
+    let localUser: User
     let round: Round
     let users: [User]
     var words: [Word] = []
         
-    init(round: Round, users: [User], databaseService: DatabaseServiceProtocol) {
+    init(localUser: User, round: Round, users: [User], databaseService: DatabaseServiceProtocol) {
+        self.localUser = localUser
         self.round = round
         self.users = users
         self.database = databaseService

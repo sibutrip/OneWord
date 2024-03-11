@@ -32,16 +32,16 @@ final class RoundViewModelTests: XCTestCase {
         let database = DatabaseServiceSpy()
         // fetch one user this way so that a word's user can match one stored in the array
         let userReference: FetchedReference = await database.recordFromDatabase["user"] as! FetchedReference
-        let user = User(id: userReference.recordName, name: "Cory", systemID: UUID().uuidString)
+        let localUser = User(id: userReference.recordName, name: "Cory", systemID: UUID().uuidString)
         let question: Question = (try! await database.records(forType: Question.self)).first!
-        let round = Round(game: game, question: question, host: user)
+        let round = Round(game: game, question: question, host: localUser)
         let users = [
-            user,
+            localUser,
             User(name: "Zoe", systemID: UUID().uuidString),
             User(name: "Tariq", systemID: UUID().uuidString)
         ]
         await database.setDidFetchChildRecordsSuccessfully(to: didFetchChildRecordsSuccessfully)
-        let roundVm = RoundViewModel(round: round, users: users, databaseService: database)
+        let roundVm = RoundViewModel(localUser: localUser, round: round, users: users, databaseService: database)
         return roundVm
     }
 }
