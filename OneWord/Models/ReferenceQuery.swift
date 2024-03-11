@@ -8,7 +8,7 @@
 struct ReferenceQuery {
     let childRecordType: String
     let parentRecordType: String
-    let parentRecord: Record
+    let parentRecord: any Record
     init<Child: ChildRecord>(child: Child.Type, parent: Child.Parent) where Child.Parent: Record{
         self.parentRecord = parent
         self.childRecordType = child.recordType

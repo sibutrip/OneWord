@@ -9,6 +9,14 @@ import XCTest
 @testable import OneWord
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
+    func authenticate() async throws -> OneWord.FetchedUser.ID {
+        return UUID().uuidString
+    }
+    
+    func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord where SomeRecord : OneWord.FetchedRecord {
+        return SomeRecord(from: Self.recordFromDatabase)!
+    }
+    
     
     func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : OneWord.CreatableRecord {
         if didAddSuccessfully {
@@ -46,7 +54,6 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.newestChildRecord)
             fatalError()
-            //            return Child(from: recordFromDatabase)!
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 3)
         }
@@ -108,7 +115,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save, recordsForType
     }
     
-    static var recordFromDatabase: Entry = {
+    static let recordFromDatabase: Entry = {
         var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
         entry["systemID"] = "fetcher user id"
         entry["wordDescription"] = "my amazing word"
@@ -118,7 +125,6 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         entry["roundNumber"] = 1
         entry["user"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
         entry["host"] = FetchedReference(recordID: UUID().uuidString, recordType: "user")
-        entry["round"] = FetchedReference(recordID: UUID().uuidString, recordType: "round")
         entry["game"] = FetchedReference(recordID: UUID().uuidString, recordType: "game")
         entry["question"] = FetchedReference(recordID: UUID().uuidString, recordType: "question")
         entry["rank"] = 1

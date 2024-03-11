@@ -6,6 +6,7 @@
 //
 
 struct Question: FetchedRecord {
+    enum RecordKeys: String, CaseIterable { case questionInfo }
     init?(from entry: Entry) {
         guard let description = entry["questionInfo"] as? String else {
             return nil

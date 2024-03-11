@@ -27,6 +27,7 @@ struct Round: CreatableRecord, ChildRecord {
 
 struct FetchedRound: FetchedRecord, ChildRecord {
     typealias Parent = Game
+    enum RecordKeys: String, CaseIterable { case game, question, host }
     init?(from entry: Entry) {
         guard let game = entry["game"] as? FetchedReference,
               let question = entry["question"] as? FetchedReference,
