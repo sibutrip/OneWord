@@ -91,8 +91,8 @@ class GameViewModel {
             guard let (question, fetchedUser) = try? await (fetchedQuestionTask, fetchedUserTask) else {
                 throw GameViewModelError.couldNotFetchRoundDetails
             }
-            let user = User(id: fetchedUser.id, name: fetchedUser.name, systemID: fetchedUser.systemID)
-            previousRounds.append(Round(id: previousRound.id, game: currentGame, question: question, host: user))
+            let host = User(id: fetchedUser.id, name: fetchedUser.name, systemID: fetchedUser.systemID)
+            previousRounds.append(Round(id: previousRound.id, game: currentGame, question: question, host: host))
         }
         self.previousRounds = previousRounds
     }
@@ -118,7 +118,7 @@ class GameViewModel {
         }
     }
     
-    // MARK: Helper Methods
+    // MARK: - Helper Methods
     
     /// Gets next host based on 1. who has hosted the least 2. If nobody has hosted, get a random user.
     ///
