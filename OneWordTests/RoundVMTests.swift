@@ -11,15 +11,17 @@ import XCTest
 final class RoundViewModelTests: XCTestCase {
     typealias RoundViewModelError = RoundViewModel.RoundViewModelError
     func test_fetchWords_assignsWordsToViewModel() async throws {
-        let sut = await makeSUT()
+        let (sut, database) = await makeSUT()
         
         try await sut.fetchWords()
         
         XCTAssertNotEqual(sut.playedWords.count, 0)
+        let databaseMessages = await database.receivedMessages
+        XCTAssertEqual(databaseMessages, [.fetchChildRecords])
     }
     
     func test_fetchWords_throwsIfCantFetchWordRecords() async {
-        let sut = await makeSUT(didFetchChildRecordsSuccessfully: false)
+        let (sut, _) = await makeSUT(didFetchChildRecordsSuccessfully: false)
         
         await assertDoesThrow(test: {
             try await sut.fetchWords()
@@ -27,16 +29,16 @@ final class RoundViewModelTests: XCTestCase {
     }
     
     func test_playWord_updatesWordInDbAndRemovesFromLocalUser() async throws {
-        let sut = await makeSUT()
+        let (sut, database) = await makeSUT()
         let wordToPlay = sut.localUser.words.first!
         
         try await sut.playWord(wordToPlay)
         
         XCTAssertTrue(!sut.localUser.words.contains(where: { $0.id == wordToPlay.id }))
     }
-    
+        
     // MARK: Helper Methods
-    func makeSUT(didFetchChildRecordsSuccessfully: Bool = true) async -> RoundViewModel {
+    func makeSUT(didFetchChildRecordsSuccessfully: Bool = true) async -> (RoundViewModel, DatabaseServiceSpy) {
         let game = Game(groupName: "Test game")
         let database = DatabaseServiceSpy()
         // fetch one user this way so that a word's user can match one stored in the array
@@ -47,7 +49,8 @@ final class RoundViewModelTests: XCTestCase {
             Word.new(description: "Sea Shanty", withUser: user)
         ]
         let localUser = LocalUser(user: user, words: words)
-        let question: Question = (try! await database.records(forType: Question.self)).first!
+        let questionEntry: Entry = await database.recordFromDatabase
+        let question = Question(from: questionEntry)!
         let round = Round(localUser: localUser, game: game, question: question, host: localUser.user)
         let users = [
             localUser.user,
@@ -56,6 +59,6 @@ final class RoundViewModelTests: XCTestCase {
         ]
         await database.setDidFetchChildRecordsSuccessfully(to: didFetchChildRecordsSuccessfully)
         let roundVm = RoundViewModel(localUser: localUser, round: round, users: users, databaseService: database)
-        return roundVm
+        return (roundVm, database)
     }
 }
