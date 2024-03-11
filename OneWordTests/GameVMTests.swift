@@ -12,7 +12,12 @@ final class GameViewModelTests: XCTestCase {
     typealias GameViewModelError = GameViewModel.GameViewModelError
     
     func test_init_setsUserToUsersArray() {
-        let localUser = User(name: "Cory", systemID: UUID().uuidString)
+        let user = User(name: "Cory", systemID: UUID().uuidString)
+        let words = [
+            Word.new(description: "Tomothy Barbados", withUser: user),
+            Word.new(description: "Sea Shanty", withUser: user)
+        ]
+        let localUser = LocalUser(user: user, words: words)
         let database = DatabaseServiceSpy()
         
         let sut = GameViewModel(withUser: localUser, database: database)
@@ -121,7 +126,7 @@ final class GameViewModelTests: XCTestCase {
         
         XCTAssertEqual(sut.previousRounds.count, 1)
         let receivedMessages = await database.receivedMessages
-        XCTAssertEqual(receivedMessages, [.fetchChildRecords, .fetch])
+        XCTAssertEqual(receivedMessages, [.fetchChildRecords, .fetch, .fetch])
     }
     
     func test_fetchPreviousRounds_throwsIfCurrentGameIsNil() async {
@@ -150,7 +155,7 @@ final class GameViewModelTests: XCTestCase {
             
             await assertDoesThrow(test: {
                 try await sut.fetchPreviousRounds()
-            }, throws: GameViewModelError.couldNotFetchQuestion)
+            }, throws: GameViewModelError.couldNotFetchRoundDetails)
         }
     }
     
@@ -190,7 +195,7 @@ final class GameViewModelTests: XCTestCase {
         let game = Game(groupName: "Test Group")
         sut.currentGame = game
         let previousQuestion = (try! await database.records(forType: Question.self)).first!
-        sut.previousRounds = [Round(game: game, question: previousQuestion)]
+        sut.previousRounds = [Round(localUser: sut.localUser, game: game, question: previousQuestion, host: sut.localUser.user)]
         
         await assertDoesThrow(test: {
             try await sut.startRound()
@@ -234,7 +239,12 @@ final class GameViewModelTests: XCTestCase {
         databaseDidFetchSuccessfully: Bool = true,
         databaseDidUpdateSuccessfully: Bool = true,
         databaseDidFetchChildRecordsSuccessfully: Bool = true) -> (sut: GameViewModel, databaseService: DatabaseServiceSpy) {
-            let localUser = User(name: "Cory", systemID: UUID().uuidString)
+            let user = User(name: "Cory", systemID: UUID().uuidString)
+            let words = [
+                Word.new(description: "Tomothy Barbados", withUser: user),
+                Word.new(description: "Sea Shanty", withUser: user)
+            ]
+            let localUser = LocalUser(user: user, words: words)
             let database = DatabaseServiceSpy(
                 didAddSuccessfully: databaseDidAddSuccessfully,
                 didFetchSuccessfully: databaseDidFetchSuccessfully,

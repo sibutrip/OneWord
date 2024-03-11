@@ -39,6 +39,20 @@ actor DatabaseService: DatabaseServiceProtocol {
         }
     }
     
+#warning("add tests to this")
+    func add<SomeRecord>(_ record: SomeRecord, withSecondParent parent: SomeRecord.SecondParent) async throws where SomeRecord : TwoParentsChildRecord, SomeRecord : CreatableRecord, SomeRecord.SecondParent : CreatableRecord {
+        do {
+            _ = try await self.database.modifyRecords(saving: [parent.entry], deleting: [])
+        } catch {
+            throw DatabaseServiceError.couldNotModifyRecord
+        }
+        do {
+            _ = try await database.save(record.entry)
+        } catch {
+            throw DatabaseServiceError.couldNotSaveRecord
+        }
+    }
+    
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : CreatableRecord, SomeRecord : TwoParentsChildRecord, SomeRecord.Parent : CreatableRecord, SomeRecord.SecondParent : CreatableRecord {
         let entry = record.entry
         do {
@@ -63,6 +77,18 @@ actor DatabaseService: DatabaseServiceProtocol {
     
     func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : ChildRecord, SomeRecord: FetchedRecord, SomeRecord.Parent: CreatableRecord {
         let query = ReferenceQuery(child: SomeRecord.self, parent: parent)
+        do {
+            let entries = try await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max)
+            let records = entries.compactMap { SomeRecord(from: $0) }
+            return records
+        } catch {
+            throw DatabaseServiceError.couldNotGetChildrenFromDatabase
+        }
+    }
+    
+    #warning("add to tests")
+    func childRecords<SomeRecord>(of parent: SomeRecord.SecondParent) async throws -> [SomeRecord] where SomeRecord: FetchedTwoParentsChild, SomeRecord.Parent: CreatableRecord {
+        let query = ReferenceQuery(child: SomeRecord.self, secondParent: parent)
         do {
             let entries = try await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max)
             let records = entries.compactMap { SomeRecord(from: $0) }
