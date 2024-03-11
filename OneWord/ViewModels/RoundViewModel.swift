@@ -9,7 +9,7 @@ class RoundViewModel {
     enum RoundViewModelError: Error {
         case noWordsFound
     }
-    private let databaseService: DatabaseServiceProtocol
+    private let database: DatabaseServiceProtocol
     let round: Round
     let users: [User]
     var words: [Word] = []
@@ -17,11 +17,11 @@ class RoundViewModel {
     init(round: Round, users: [User], databaseService: DatabaseServiceProtocol) {
         self.round = round
         self.users = users
-        self.databaseService = databaseService
+        self.database = databaseService
     }
     
     func fetchWords() async throws {
-        guard let fetchedWords: [FetchedWord] = try? await databaseService.childRecords(of: round) else {
+        guard let fetchedWords: [FetchedWord] = try? await database.childRecords(of: round) else {
             throw RoundViewModelError.noWordsFound
         }
         let words: [Word] = fetchedWords.compactMap { fetchedWord in
