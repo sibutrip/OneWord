@@ -72,6 +72,18 @@ actor DatabaseService: DatabaseServiceProtocol {
         }
     }
     
+    #warning("add to tests")
+    func childRecords<SomeRecord>(of parent: SomeRecord.SecondParent) async throws -> [SomeRecord] where SomeRecord: FetchedTwoParentsChild, SomeRecord.Parent: CreatableRecord {
+        let query = ReferenceQuery(child: SomeRecord.self, secondParent: parent)
+        do {
+            let entries = try await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max)
+            let records = entries.compactMap { SomeRecord(from: $0) }
+            return records
+        } catch {
+            throw DatabaseServiceError.couldNotGetChildrenFromDatabase
+        }
+    }
+    
     func fetchManyToManyRecords<Intermediary>(fromParent parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.FetchedSecondParent] where Intermediary: FetchedTwoParentsChild, Intermediary.Parent: Record, Intermediary.FetchedSecondParent: FetchedRecord {
         let query = ReferenceQuery(child: intermediary.self, parent: parent)
         guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {

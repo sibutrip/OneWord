@@ -10,6 +10,7 @@
 		741386022B7FC84000A1B424 /* MockCreatableRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386012B7FC84000A1B424 /* MockCreatableRecord.swift */; };
 		741386042B7FC92700A1B424 /* MockCreatableChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */; };
 		741386082B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */; };
+		742AC6B42B9F379C007ABFE3 /* LocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6B32B9F379C007ABFE3 /* LocalUser.swift */; };
 		7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3732B5968D7006357C8 /* OneWordApp.swift */; };
 		7454A3762B5968D7006357C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3752B5968D7006357C8 /* ContentView.swift */; };
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
@@ -63,6 +64,7 @@
 		741386012B7FC84000A1B424 /* MockCreatableRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableRecord.swift; sourceTree = "<group>"; };
 		741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableChildRecord.swift; sourceTree = "<group>"; };
 		741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableTwoParentChildRecord.swift; sourceTree = "<group>"; };
+		742AC6B32B9F379C007ABFE3 /* LocalUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUser.swift; sourceTree = "<group>"; };
 		7454A3702B5968D7006357C8 /* OneWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3732B5968D7006357C8 /* OneWordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordApp.swift; sourceTree = "<group>"; };
 		7454A3752B5968D7006357C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				74A8CBCA2B741B9D00EA9F5A /* Question.swift */,
+				742AC6B32B9F379C007ABFE3 /* LocalUser.swift */,
 				74A8CBE72B741BF100EA9F5A /* Entry.swift */,
 				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,
 				74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */,
@@ -409,6 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */,
+				742AC6B42B9F379C007ABFE3 /* LocalUser.swift in Sources */,
 				74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */,
 				7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */,
 				74A8CBF52B741CA700EA9F5A /* Record.swift in Sources */,

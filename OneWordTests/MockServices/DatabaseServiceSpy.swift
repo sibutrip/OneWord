@@ -62,6 +62,14 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
+    func childRecords<SomeRecord>(of parent: SomeRecord.SecondParent) async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedTwoParentsChild, SomeRecord.Parent : OneWord.CreatableRecord {
+        if didFetchChildRecordsSuccessfully {
+            receivedMessages.append(.fetchChildRecords)
+            return [SomeRecord(from: recordFromDatabase)!]
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 5)
+        }    }
+    
     func fetchManyToManyRecords<Intermediary>(fromSecondParent secondParent: Intermediary.SecondParent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.FetchedParent] where Intermediary : OneWord.FetchedTwoParentsChild {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchManyToMany)

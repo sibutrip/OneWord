@@ -12,16 +12,16 @@ class GameViewModel {
     }
     
     private let database: DatabaseServiceProtocol
-    var localUser: User
+    var localUser: LocalUser
     var users = [User]()
     var currentGame: Game?
     
     var previousRounds = [Round]()
     var currentRound: Round?
     
-    init(withUser user: User, database: DatabaseServiceProtocol) {
-        localUser = user
-        users.append(user)
+    init(withUser localUser: LocalUser, database: DatabaseServiceProtocol) {
+        self.localUser = localUser
+        users.append(localUser.user)
         self.database = database
     }
     
@@ -31,10 +31,10 @@ class GameViewModel {
     /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
     public func createGame(withGroupName groupName: String) async throws {
         let newGame = Game(groupName: groupName)
-        let userGameRelationship = UserGameRelationship(user: localUser, game: newGame)
+        let userGameRelationship = UserGameRelationship(user: localUser.user, game: newGame)
         do {
             try await database.save(newGame)
-            try await database.add(userGameRelationship, withParent: localUser, withSecondParent: newGame)
+            try await database.add(userGameRelationship, withParent: localUser.user, withSecondParent: newGame)
             self.currentGame = newGame
         } catch {
             throw GameViewModelError.couldNotCreateGame

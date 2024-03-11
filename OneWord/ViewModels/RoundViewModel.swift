@@ -30,7 +30,7 @@ class RoundViewModel {
             guard let user = users.first(where: { $0.id == fetchedWord.user.recordName }) else {
                 return nil
             }
-            return Word(id: fetchedWord.id, wordDescription: fetchedWord.description, rank: fetchedWord.rank, user: user, round: round)
+            return Word.played(id: fetchedWord.id, description: fetchedWord.description, withUser: user, inRound: round, rank: fetchedWord.rank)
         }
         self.words = words
     }
