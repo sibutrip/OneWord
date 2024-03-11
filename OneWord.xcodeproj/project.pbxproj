@@ -162,6 +162,24 @@
 			path = RecordModels;
 			sourceTree = "<group>";
 		};
+		742AC6B12B9F34E7007ABFE3 /* MockServices */ = {
+			isa = PBXGroup;
+			children = (
+				7475CC242B63390500B8E6A6 /* MockDatabase.swift */,
+				7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */,
+				7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */,
+			);
+			path = MockServices;
+			sourceTree = "<group>";
+		};
+		742AC6B22B9F34F5007ABFE3 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				7475CC2C2B633FE600B8E6A6 /* XCTestCase+Extension.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		7454A3672B5968D7006357C8 = {
 			isa = PBXGroup;
 			children = (
@@ -209,11 +227,9 @@
 				7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */,
 				7454A3842B5968D8006357C8 /* GameVMTests.swift */,
 				74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */,
-				7475CC242B63390500B8E6A6 /* MockDatabase.swift */,
-				7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */,
+				742AC6B12B9F34E7007ABFE3 /* MockServices */,
 				74F86A6E2B643EAC00CD7691 /* MockRecords */,
-				7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */,
-				7475CC2C2B633FE600B8E6A6 /* XCTestCase+Extension.swift */,
+				742AC6B22B9F34F5007ABFE3 /* Utilities */,
 			);
 			path = OneWordTests;
 			sourceTree = "<group>";
