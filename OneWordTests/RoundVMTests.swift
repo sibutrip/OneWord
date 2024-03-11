@@ -26,6 +26,15 @@ final class RoundViewModelTests: XCTestCase {
         }, throws: RoundViewModelError.noWordsFound)
     }
     
+    func test_playWord_updatesWordInDbAndRemovesFromLocalUser() async throws {
+        let sut = await makeSUT()
+        let wordToPlay = sut.localUser.words.first!
+        
+        try await sut.playWord(wordToPlay)
+        
+        XCTAssertTrue(!sut.localUser.words.contains(where: { $0.id == wordToPlay.id }))
+    }
+    
     // MARK: Helper Methods
     func makeSUT(didFetchChildRecordsSuccessfully: Bool = true) async -> RoundViewModel {
         let game = Game(groupName: "Test game")

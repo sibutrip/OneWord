@@ -7,10 +7,10 @@
 
 class RoundViewModel {
     enum RoundViewModelError: Error {
-        case noWordsFound
+        case noWordsFound, couldNotPlayWord
     }
     private let database: DatabaseServiceProtocol
-    let localUser: LocalUser
+    var localUser: LocalUser
     let round: Round
     let users: [User]
     var playedWords: [Word] = []
@@ -41,6 +41,11 @@ class RoundViewModel {
         }
         var word = word
         word.round = round
-        try await database.add(word, withSecondParent: round)
+        do {
+            try await database.add(word, withSecondParent: round)
+            localUser.words = localUser.words.filter { $0.id != word.id }
+        } catch {
+            throw RoundViewModelError.couldNotPlayWord
+        }
      }
 }

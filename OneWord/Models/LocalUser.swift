@@ -7,7 +7,7 @@
 
 struct LocalUser {
     let user: User
-    let words: [Word]
+    var words: [Word]
     
     var id: String { user.id }
     var name: String { user.name }
