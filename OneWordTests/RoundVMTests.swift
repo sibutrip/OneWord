@@ -15,7 +15,7 @@ final class RoundViewModelTests: XCTestCase {
         
         try await sut.fetchWords()
         
-        XCTAssertNotEqual(sut.words.count, 0)
+        XCTAssertNotEqual(sut.playedWords.count, 0)
     }
     
     func test_fetchWords_throwsIfCantFetchWordRecords() async {
@@ -32,11 +32,16 @@ final class RoundViewModelTests: XCTestCase {
         let database = DatabaseServiceSpy()
         // fetch one user this way so that a word's user can match one stored in the array
         let userReference: FetchedReference = await database.recordFromDatabase["user"] as! FetchedReference
-        let localUser = User(id: userReference.recordName, name: "Cory", systemID: UUID().uuidString)
+        let user = User(id: userReference.recordName, name: "Cory", systemID: UUID().uuidString)
+        let words = [
+            Word.new(description: "Tomothy Barbados", withUser: user),
+            Word.new(description: "Sea Shanty", withUser: user)
+        ]
+        let localUser = LocalUser(user: user, words: words)
         let question: Question = (try! await database.records(forType: Question.self)).first!
-        let round = Round(game: game, question: question, host: localUser)
+        let round = Round(localUser: localUser, game: game, question: question, host: localUser.user)
         let users = [
-            localUser,
+            localUser.user,
             User(name: "Zoe", systemID: UUID().uuidString),
             User(name: "Tariq", systemID: UUID().uuidString)
         ]

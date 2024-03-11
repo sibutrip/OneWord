@@ -92,7 +92,7 @@ class GameViewModel {
                 throw GameViewModelError.couldNotFetchRoundDetails
             }
             let host = User(id: fetchedUser.id, name: fetchedUser.name, systemID: fetchedUser.systemID)
-            previousRounds.append(Round(id: previousRound.id, game: currentGame, question: question, host: host))
+            previousRounds.append(Round(id: previousRound.id, localUser: localUser, game: currentGame, question: question, host: host))
         }
         self.previousRounds = previousRounds
     }
@@ -109,7 +109,7 @@ class GameViewModel {
         }
         let nextHost = try nextHost()
         do {
-            let newRound = Round(game: currentGame, question: randomQuestion, host: nextHost)
+            let newRound = Round(localUser: localUser, game: currentGame, question: randomQuestion, host: nextHost)
             try await database.add(newRound, withParent: currentGame)
             currentRound = newRound
             previousRounds.append(newRound)

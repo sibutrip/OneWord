@@ -12,11 +12,13 @@ struct Round: CreatableRecord, ChildRecord {
     enum RecordKeys: String, CaseIterable { case game, question, host }
     static let recordType = "Round"
     let id: String
+    let localUser: LocalUser
     let game: Game
     let question: Question
     let host: User
-    init(id: String = UUID().uuidString, game: Game, question: Question, host: User) {
+    init(id: String = UUID().uuidString, localUser: LocalUser, game: Game, question: Question, host: User) {
         self.id = id
+        self.localUser = localUser
         self.game = game
         self.question = question
         self.host = host
