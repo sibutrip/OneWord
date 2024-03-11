@@ -26,6 +26,14 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
+    func add<SomeRecord>(_ record: SomeRecord, withSecondParent parent: SomeRecord.SecondParent) async throws where SomeRecord : OneWord.CreatableRecord, SomeRecord : OneWord.TwoParentsChildRecord, SomeRecord.SecondParent : OneWord.CreatableRecord {
+        if didAddSuccessfully {
+            receivedMessages.append(.add)
+        } else {
+            throw NSError(domain: "MockDatabaseServiceError", code: 1)
+        }
+    }
+    
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : OneWord.CreatableRecord, SomeRecord : OneWord.TwoParentsChildRecord, SomeRecord.Parent : OneWord.CreatableRecord, SomeRecord.SecondParent : OneWord.CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)

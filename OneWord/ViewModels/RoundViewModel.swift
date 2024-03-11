@@ -35,7 +35,12 @@ class RoundViewModel {
         self.playedWords = playedWords
     }
     
-    func playWord(_ word: Word) {
-        
-    }
+    func playWord(_ word: Word) async throws {
+        guard localUser.words.contains(where: { $0.id == word.id }) else {
+            return
+        }
+        var word = word
+        word.round = round
+        try await database.add(word, withSecondParent: round)
+     }
 }

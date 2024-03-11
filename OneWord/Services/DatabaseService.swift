@@ -39,6 +39,20 @@ actor DatabaseService: DatabaseServiceProtocol {
         }
     }
     
+#warning("add tests to this")
+    func add<SomeRecord>(_ record: SomeRecord, withSecondParent parent: SomeRecord.SecondParent) async throws where SomeRecord : TwoParentsChildRecord, SomeRecord : CreatableRecord, SomeRecord.SecondParent : CreatableRecord {
+        do {
+            _ = try await self.database.modifyRecords(saving: [parent.entry], deleting: [])
+        } catch {
+            throw DatabaseServiceError.couldNotModifyRecord
+        }
+        do {
+            _ = try await database.save(record.entry)
+        } catch {
+            throw DatabaseServiceError.couldNotSaveRecord
+        }
+    }
+    
     func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : CreatableRecord, SomeRecord : TwoParentsChildRecord, SomeRecord.Parent : CreatableRecord, SomeRecord.SecondParent : CreatableRecord {
         let entry = record.entry
         do {

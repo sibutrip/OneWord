@@ -16,7 +16,7 @@ struct Word: CreatableRecord, TwoParentsChildRecord {
     let wordDescription: String
     let rank: Int?
     let user: User
-    let round: Round?
+    var round: Round?
     
     static func new(description: String, withUser user: User) -> Word {
         return Word(id: UUID().uuidString, wordDescription: description, rank: nil, user: user, round: nil)
