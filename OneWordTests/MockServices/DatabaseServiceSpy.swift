@@ -14,6 +14,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     }
     
     func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord where SomeRecord : OneWord.FetchedRecord {
+        receivedMessages.append(.recordForValue)
         return SomeRecord(from: Self.recordFromDatabase)!
     }
     
@@ -112,7 +113,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     }
     
     enum Message {
-        case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save, recordsForType
+        case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save, recordsForType, recordForValue
     }
     
     static let recordFromDatabase: Entry = {

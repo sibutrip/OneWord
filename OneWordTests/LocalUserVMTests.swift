@@ -17,6 +17,8 @@ final class LocalUserVMTests: XCTestCase {
         
         XCTAssertNotNil(sut.user)
         XCTAssertNotEqual(sut.words.count, 0)
+        let databaseMessages = await database.receivedMessages
+        XCTAssertEqual(databaseMessages, [.recordForValue, .fetchChildRecords])
     }
 }
     
