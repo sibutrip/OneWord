@@ -10,7 +10,7 @@ import XCTest
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
-    func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : OneWord.CreatableRecord {
+    func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.save)
         } else {
@@ -18,7 +18,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : OneWord.ChildRecord, SomeRecord : OneWord.CreatableRecord, SomeRecord.Parent : OneWord.CreatableRecord {
+    func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent) async throws where SomeRecord : ChildRecord, SomeRecord : CreatableRecord, SomeRecord.Parent : CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)
         } else {
@@ -26,7 +26,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func add<SomeRecord>(_ record: SomeRecord, withSecondParent parent: SomeRecord.SecondParent) async throws where SomeRecord : OneWord.CreatableRecord, SomeRecord : OneWord.TwoParentsChildRecord, SomeRecord.SecondParent : OneWord.CreatableRecord {
+    func add<SomeRecord>(_ record: SomeRecord, withSecondParent parent: SomeRecord.SecondParent) async throws where SomeRecord : CreatableRecord, SomeRecord : TwoParentsChildRecord, SomeRecord.SecondParent : CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)
         } else {
@@ -34,7 +34,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : OneWord.CreatableRecord, SomeRecord : OneWord.TwoParentsChildRecord, SomeRecord.Parent : OneWord.CreatableRecord, SomeRecord.SecondParent : OneWord.CreatableRecord {
+    func add<SomeRecord>(_ record: SomeRecord, withParent parent: SomeRecord.Parent, withSecondParent secondParent: SomeRecord.SecondParent) async throws where SomeRecord : CreatableRecord, SomeRecord : TwoParentsChildRecord, SomeRecord.Parent : CreatableRecord, SomeRecord.SecondParent : CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.add)
         } else {
@@ -42,7 +42,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : OneWord.ChildRecord {
+    func newestChildRecord<Child>(of parent: Child.Parent) async throws -> Child where Child : ChildRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.newestChildRecord)
             fatalError()
@@ -51,7 +51,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : OneWord.FetchedRecord {
+    func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : FetchedRecord {
         if didFetchSuccessfully {
             receivedMessages.append(.fetch)
             return SomeRecord(from: self.recordFromDatabase)!
@@ -60,7 +60,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : OneWord.ChildRecord, SomeRecord : OneWord.FetchedRecord, SomeRecord.Parent : OneWord.CreatableRecord {
+    func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : ChildRecord, SomeRecord : FetchedRecord, SomeRecord.Parent : CreatableRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)
             return [SomeRecord(from: self.recordFromDatabase)!]
@@ -69,7 +69,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func childRecords<SomeRecord>(of parent: SomeRecord.SecondParent) async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedTwoParentsChild, SomeRecord.Parent : OneWord.CreatableRecord {
+    func childRecords<SomeRecord>(of parent: SomeRecord.SecondParent) async throws -> [SomeRecord] where SomeRecord : FetchedTwoParentsChild, SomeRecord.Parent : CreatableRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)
             return [SomeRecord(from: self.recordFromDatabase)!]
@@ -77,7 +77,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
             throw NSError(domain: "MockDatabaseServiceError", code: 5)
         }    }
     
-    func fetchManyToManyRecords<Intermediary>(fromSecondParent secondParent: Intermediary.SecondParent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.FetchedParent] where Intermediary : OneWord.FetchedTwoParentsChild {
+    func fetchManyToManyRecords<Intermediary>(fromSecondParent secondParent: Intermediary.SecondParent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.FetchedParent] where Intermediary : FetchedTwoParentsChild {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchManyToMany)
             return [Intermediary.FetchedParent(from: self.recordFromDatabase)!]
@@ -95,7 +95,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func records<SomeRecord>() async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedRecord {
+    func records<SomeRecord>() async throws -> [SomeRecord] where SomeRecord : FetchedRecord {
         if didFetchSuccessfully {
             receivedMessages.append(.recordsForType)
             return [SomeRecord(from: self.recordFromDatabase)!]
@@ -110,7 +110,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         throw NSError(domain: "MockDatabaseServiceError", code: 8)
     }
     
-    func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? where SomeRecord : OneWord.FetchedRecord {
+    func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? where SomeRecord : FetchedRecord {
         if didFetchSuccessfully {
             receivedMessages.append(.recordForValue)
             return SomeRecord(from: self.recordFromDatabase)

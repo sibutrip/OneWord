@@ -10,7 +10,7 @@ import Foundation
 
 class MockDatabase: Database {
     
-    func record(matchingFieldQuery: OneWord.FieldQuery) async throws -> OneWord.Entry? {
+    func record(matchingFieldQuery: FieldQuery) async throws -> Entry? {
         if connectedToDatabase {
             messages.append(.record)
             if recordInDatabase {
@@ -22,7 +22,7 @@ class MockDatabase: Database {
         throw NSError(domain: "Could not connect to database", code: 0)
     }
     
-    func save(_ entry: OneWord.Entry) async throws {
+    func save(_ entry: Entry) async throws {
         if connectedToDatabase {
             messages.append(.save)
             if savedRecordToDatabase {
@@ -37,7 +37,7 @@ class MockDatabase: Database {
         return [recordFromDatabase]
     }
     
-    func record(for entryID: OneWord.Entry.ID) async throws -> OneWord.Entry {
+    func record(for entryID: Entry.ID) async throws -> Entry {
         if recordInDatabase && connectedToDatabase {
             messages.append(.record)
             if fetchedCorrectRecordType {
@@ -49,7 +49,7 @@ class MockDatabase: Database {
         throw NSError(domain: "Record not in database", code: 0)
     }
     
-    func records(matching query: OneWord.ReferenceQuery, desiredKeys: [OneWord.Entry.FieldKey]?, resultsLimit: Int) async throws -> [OneWord.Entry] {
+    func records(matching query: ReferenceQuery, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {
         if connectedToDatabase {
             messages.append(.records)
             if !fetchedCorrectRecordType {
@@ -64,7 +64,7 @@ class MockDatabase: Database {
         throw NSError(domain: "Records not in database", code: 0)
     }
     
-    func modifyRecords(saving recordsToSave: [OneWord.Entry], deleting recordIDsToDelete: [OneWord.Entry.ID]) async throws -> (saveResults: [OneWord.Entry], deleteResults: [OneWord.Entry.ID]) {
+    func modifyRecords(saving recordsToSave: [Entry], deleting recordIDsToDelete: [Entry.ID]) async throws -> (saveResults: [Entry], deleteResults: [Entry.ID]) {
         if connectedToDatabase {
             messages.append(.modify)
             if recordInDatabase {
@@ -74,7 +74,7 @@ class MockDatabase: Database {
         throw NSError(domain: "could not modify records in database", code: 0)
     }
     
-    func records(forRecordType type: String) async throws -> [OneWord.Entry] {
+    func records(forRecordType type: String) async throws -> [Entry] {
         if connectedToDatabase {
             messages.append(.records)
             return [recordFromDatabase]
