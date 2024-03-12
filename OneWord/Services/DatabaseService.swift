@@ -153,7 +153,7 @@ actor DatabaseService: DatabaseServiceProtocol {
         do {
             entry = try await database.record(matchingFieldQuery: fieldQuery)
         } catch {
-            fatalError()
+            throw DatabaseServiceError.couldNotGetRecords
         }
         guard let entry else {
             return nil

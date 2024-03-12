@@ -290,7 +290,7 @@ final class DatabaseServiceTests: XCTestCase {
     func test_recordForValueInField_returnsRecordIfInDatabase() async throws {
         let (sut, database) = makeSUT()
         
-        let record: MockFetchedRecord? = try await sut.record(forValue: "my real value", inField: .name)
+        let record: MockFetchedRecord? = try await sut.record(forValue: "my amazing name", inField: .name)
         
         XCTAssertNotNil(record)
         let databaseMessages = database.messages
@@ -300,11 +300,19 @@ final class DatabaseServiceTests: XCTestCase {
     func test_recordForValueInField_returnsNilIfRecordNotInDatabase() async throws {
         let (sut, database) = makeSUT(recordInDatabase: false)
         
-        let record: MockFetchedRecord? = try await sut.record(forValue: "my real value", inField: .name)
+        let record: MockFetchedRecord? = try await sut.record(forValue: "my amazing name", inField: .name)
         
         XCTAssertNil(record)
         let databaseMessages = database.messages
         XCTAssertEqual(databaseMessages, [.record])
+    }
+    
+    func test_recordForValueInField_throwsIfCouldNotConnectToDatabase() async {
+        let (sut, _) = makeSUT(connectedToDatabase: false)
+        
+        await assertDoesThrow(test: {
+            let _: MockFetchedRecord? = try await sut.record(forValue: "my amazing name", inField: .name)
+        }, throws: DatabaseServiceError.couldNotGetRecords)
     }
     
 //case available(User.ID), noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled

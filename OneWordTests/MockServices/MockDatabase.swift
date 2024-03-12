@@ -11,12 +11,15 @@ import Foundation
 class MockDatabase: Database {
     
     func record(matchingFieldQuery: OneWord.FieldQuery) async throws -> OneWord.Entry? {
-        messages.append(.record)
-        if recordInDatabase {
-            return recordFromDatabase
-        } else {
-            return nil
+        if connectedToDatabase {
+            messages.append(.record)
+            if recordInDatabase {
+                return recordFromDatabase
+            } else {
+                return nil
+            }
         }
+        throw NSError(domain: "Could not connect to database", code: 0)
     }
     
     func save(_ entry: OneWord.Entry) async throws {
