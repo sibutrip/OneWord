@@ -58,5 +58,14 @@ final class LocalUserVMTests: XCTestCase {
             try await sut.fetchUserInfo()
         }, throws: LocalUserViewModelError.couldNotFetchUser)
     }
+    
+    func test_fetchUserInfo_throwsIfCouldNotFetchUsersWords() async {
+        let database = DatabaseServiceSpy(didFetchChildRecordsSuccessfully: false)
+        let sut = LocalUserViewModel(database: database)
+        
+        await assertDoesThrow(test: {
+            try await sut.fetchUserInfo()
+        }, throws: LocalUserViewModelError.couldNotFetchUsersWords)
+    }
 }
     

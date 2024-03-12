@@ -57,6 +57,7 @@ class LocalUserViewModel {
             throw LocalUserViewModelError.couldNotAuthenticate
         }
         switch authenticationStatus {
+            #warning("add to tests")
         case .available(let userID):
             return userID
         case .noAccount:
