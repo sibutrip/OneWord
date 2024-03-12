@@ -180,6 +180,15 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseMessages, [.save])
     }
     
+    func test_save_throwsIfCannotSave() async {
+        let (sut, _) = makeSUT(savedRecordToDatabase: false)
+        let newRecord = MockCreatableRecord(name: "test")
+
+        await assertDoesThrow(test: {
+            try await sut.save(newRecord)
+        }, throws: DatabaseServiceError.couldNotSaveRecord)
+    }
+    
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
 //        let database = container.public as! MockDatabase
