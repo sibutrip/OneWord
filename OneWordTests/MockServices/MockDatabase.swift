@@ -62,6 +62,9 @@ class MockDatabase: Database {
         throw NSError(domain: "could not modify records in database", code: 0)
     }
     
+    func records(forField field: String) async throws -> [OneWord.Entry] {
+        return [recordFromDatabase]
+    }
     
     let recordInDatabase: Bool
     let fetchedCorrectRecordType: Bool

@@ -194,7 +194,7 @@ final class GameViewModelTests: XCTestCase {
         let (sut, database) = makeSUT()
         let game = Game(groupName: "Test Group")
         sut.currentGame = game
-        let previousQuestion = (try! await database.records(forType: Question.self)).first!
+        let previousQuestion: Question = (try! await database.records()).first!
         sut.previousRounds = [Round(localUser: sut.localUser, game: game, question: previousQuestion, host: sut.localUser.user)]
         
         await assertDoesThrow(test: {

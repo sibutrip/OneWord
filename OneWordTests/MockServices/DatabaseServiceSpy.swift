@@ -95,7 +95,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         }
     }
     
-    func records<SomeRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedRecord {
+    func records<SomeRecord>() async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedRecord {
         if didFetchSuccessfully {
             receivedMessages.append(.recordsForType)
             return [SomeRecord(from: self.recordFromDatabase)!]

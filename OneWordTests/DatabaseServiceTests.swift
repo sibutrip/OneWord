@@ -189,6 +189,14 @@ final class DatabaseServiceTests: XCTestCase {
         }, throws: DatabaseServiceError.couldNotSaveRecord)
     }
     
+    func test_records_returnsRecords() async throws {
+        let (sut, database) = makeSUT()
+        
+        let mockRecords: [MockFetchedRecord] = try await sut.records()
+        
+        XCTAssertNotEqual(mockRecords.count, 0)
+    }
+    
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
 //        let database = container.public as! MockDatabase

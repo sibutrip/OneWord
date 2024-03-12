@@ -27,7 +27,7 @@ protocol DatabaseServiceProtocol: Actor {
     
     func newestChildRecord<SomeRecord: ChildRecord>(of parent: SomeRecord.Parent) async throws -> SomeRecord
     
-    func records<SomeRecord: FetchedRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord]
+    func records<SomeRecord: FetchedRecord>() async throws -> [SomeRecord]
     
     func authenticate() async throws -> AuthenticationStatus
     

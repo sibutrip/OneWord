@@ -10,7 +10,7 @@ import CloudKit
 actor DatabaseService: DatabaseServiceProtocol {
     
     enum DatabaseServiceError: Error {
-        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase, couldNotGetRecordsFromReferences
+        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase, couldNotGetRecordsFromReferences, couldNotGetRecords
     }
     
     let container: CloudContainer
@@ -130,8 +130,12 @@ actor DatabaseService: DatabaseServiceProtocol {
         fatalError("not yet implemented")
     }
     
-    func records<SomeRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord] where SomeRecord : FetchedRecord {
-        fatalError("not yet implemented")
+    func records<SomeRecord>() async throws -> [SomeRecord] where SomeRecord : FetchedRecord {
+        guard let fetchedEntries = try? await database.records(forField: SomeRecord.recordType) else {
+            throw DatabaseServiceError.couldNotGetRecords
+        }
+        let records = fetchedEntries.compactMap { SomeRecord(from: $0) }
+        return records
     }
     
     func authenticate() async throws -> AuthenticationStatus {
