@@ -10,10 +10,6 @@ import XCTest
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
-    func authenticate() async throws -> AuthenticationStatus {
-        return .available("User ID")
-    }
-    
     func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? where SomeRecord : OneWord.FetchedRecord {
         receivedMessages.append(.recordForValue)
         return SomeRecord(from: self.recordFromDatabase)
@@ -112,6 +108,13 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         throw NSError(domain: "MockDatabaseServiceError", code: 7)
     }
     
+    func authenticate() async throws -> AuthenticationStatus {
+        if let authenticationStatus {
+            return authenticationStatus
+        }
+        throw NSError(domain: "MockDatabaseServiceError", code: 8)
+    }
+    
     enum Message {
         case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save, recordsForType, recordForValue
     }
@@ -140,6 +143,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     var didFetchSuccessfully: Bool
     var didUpdateSuccessfully: Bool
     var didFetchChildRecordsSuccessfully: Bool
+    var authenticationStatus: AuthenticationStatus?
     
     var receivedMessages: [Message] = []
     
@@ -151,10 +155,12 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         didAddSuccessfully: Bool = true,
         didFetchSuccessfully: Bool = true,
         didUpdateSuccessfully: Bool = true,
-        didFetchChildRecordsSuccessfully: Bool = true) {
+        didFetchChildRecordsSuccessfully: Bool = true,
+        authenticationStatus: AuthenticationStatus? = .available(UUID().uuidString)) {
             self.didAddSuccessfully = didAddSuccessfully
             self.didFetchSuccessfully = didFetchSuccessfully
             self.didUpdateSuccessfully = didUpdateSuccessfully
             self.didFetchChildRecordsSuccessfully = didFetchChildRecordsSuccessfully
+            self.authenticationStatus = authenticationStatus
         }
 }

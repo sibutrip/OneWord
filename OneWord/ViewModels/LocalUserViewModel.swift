@@ -7,8 +7,9 @@
 
 class LocalUserViewModel {
     enum LocalUserViewModelError: Error {
-        case couldNotFetchUser, couldNotFetchUsersWords, noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled
+        case couldNotFetchUser, couldNotFetchUsersWords, noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled, couldNotAuthenticate
     }
+    
     private let database: DatabaseServiceProtocol
     var user: User? = nil
     var words: [Word] = []
@@ -53,7 +54,7 @@ class LocalUserViewModel {
     
     private func getUserID() async throws -> User.ID {
         guard let authenticationStatus = try? await database.authenticate() else {
-            throw LocalUserViewModelError.couldNotFetchUser
+            throw LocalUserViewModelError.couldNotAuthenticate
         }
         switch authenticationStatus {
         case .available(let userID):

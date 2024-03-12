@@ -9,6 +9,7 @@ import XCTest
 @testable import OneWord
 
 final class LocalUserVMTests: XCTestCase {
+    typealias LocalUserViewModelError = LocalUserViewModel.LocalUserViewModelError
     func test_fetchUserInfo_fetchesUserAndAssignsWordsAndUserIfInDatabase() async throws {
         let database = DatabaseServiceSpy()
         let sut = LocalUserViewModel(database: database)
@@ -38,6 +39,15 @@ final class LocalUserVMTests: XCTestCase {
         XCTAssertNotEqual(fetchedUserID, sut.user?.id)
         let databaseMessages = await database.receivedMessages
         XCTAssertEqual(databaseMessages, [.recordForValue, .fetchChildRecords])
+    }
+    
+    func test_fetchUserInfo_throwsIfCouldNotConnectToAuthenticate() async {
+        let database = DatabaseServiceSpy(authenticationStatus: nil)
+        let sut = LocalUserViewModel(database: database)
+        
+        await assertDoesThrow(test: {
+            try await sut.fetchUserInfo()
+        }, throws: LocalUserViewModelError.couldNotAuthenticate)
     }
 }
     
