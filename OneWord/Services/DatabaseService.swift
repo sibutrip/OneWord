@@ -10,7 +10,7 @@ import CloudKit
 actor DatabaseService: DatabaseServiceProtocol {
     
     enum DatabaseServiceError: Error {
-        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase, couldNotGetRecordsFromReferences, couldNotGetRecords
+        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase, couldNotGetRecordsFromReferences, couldNotGetRecords, couldNotAuthenticate
     }
     
     let container: CloudContainer
@@ -139,7 +139,11 @@ actor DatabaseService: DatabaseServiceProtocol {
     }
     
     func authenticate() async throws -> AuthenticationStatus {
-        return try await database.authenticate()
+        do {
+            return try await database.authenticate()
+        } catch {
+            throw DatabaseServiceError.couldNotAuthenticate
+        }
     }
     
     /// returns nil if record does not exist. if any other error, throws instead

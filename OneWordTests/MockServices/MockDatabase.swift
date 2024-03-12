@@ -71,10 +71,14 @@ class MockDatabase: Database {
     }
     
     func authenticate() async throws -> AuthenticationStatus {
-        messages.append(.authenticate)
-        return .available(UUID().uuidString)
+        if connectedToDatabase {
+            messages.append(.authenticate)
+            return authenticationStatus
+        }
+        throw NSError(domain: "could not authenticate with database", code: 0)
     }
     
+    let authenticationStatus: AuthenticationStatus
     let recordInDatabase: Bool
     let fetchedCorrectRecordType: Bool
     let connectedToDatabase: Bool
@@ -109,10 +113,12 @@ class MockDatabase: Database {
     init(recordInDatabase: Bool = true,
          fetchedCorrectRecordType: Bool = true,
          connectedToDatabase: Bool = true,
-         savedRecordToDatabase: Bool = true) {
+         savedRecordToDatabase: Bool = true,
+         authenticationStatus: AuthenticationStatus) {
         self.recordInDatabase = recordInDatabase
         self.fetchedCorrectRecordType = fetchedCorrectRecordType
         self.connectedToDatabase = connectedToDatabase
         self.savedRecordToDatabase = savedRecordToDatabase
+        self.authenticationStatus = authenticationStatus
     }
 }

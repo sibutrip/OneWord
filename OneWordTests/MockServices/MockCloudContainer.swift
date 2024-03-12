@@ -21,12 +21,14 @@ class MockCloudContainer: CloudContainer {
     init(recordInDatabase: Bool = true,
          fetchedCorrectRecordType: Bool = true,
          connectedToDatabase: Bool = true,
-         savedRecordToDatabase: Bool = true) {
+         savedRecordToDatabase: Bool = true,
+         authenticationStatus: AuthenticationStatus) {
         self.public = MockDatabase(
             recordInDatabase: recordInDatabase,
             fetchedCorrectRecordType: fetchedCorrectRecordType,
             connectedToDatabase: connectedToDatabase,
-            savedRecordToDatabase: savedRecordToDatabase
+            savedRecordToDatabase: savedRecordToDatabase,
+            authenticationStatus: authenticationStatus
         )
     }
 }
