@@ -297,6 +297,16 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseMessages, [.record])
     }
     
+    func test_recordForValueInField_returnsNilIfRecordNotInDatabase() async throws {
+        let (sut, database) = makeSUT(recordInDatabase: false)
+        
+        let record: MockFetchedRecord? = try await sut.record(forValue: "my real value", inField: .name)
+        
+        XCTAssertNil(record)
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.record])
+    }
+    
 //case available(User.ID), noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled
     
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
