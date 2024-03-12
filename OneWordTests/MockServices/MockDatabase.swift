@@ -10,6 +10,15 @@ import Foundation
 
 class MockDatabase: Database {
     
+    func record(matchingFieldQuery: OneWord.FieldQuery) async throws -> OneWord.Entry? {
+        messages.append(.record)
+        if recordInDatabase {
+            return recordFromDatabase
+        } else {
+            return nil
+        }
+    }
+    
     func save(_ entry: OneWord.Entry) async throws {
         if connectedToDatabase {
             messages.append(.save)
@@ -62,7 +71,7 @@ class MockDatabase: Database {
         throw NSError(domain: "could not modify records in database", code: 0)
     }
     
-    func records(forField field: String) async throws -> [OneWord.Entry] {
+    func records(forRecordType type: String) async throws -> [OneWord.Entry] {
         if connectedToDatabase {
             messages.append(.records)
             return [recordFromDatabase]

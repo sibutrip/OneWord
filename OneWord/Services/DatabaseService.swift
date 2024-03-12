@@ -131,7 +131,7 @@ actor DatabaseService: DatabaseServiceProtocol {
     }
     
     func records<SomeRecord>() async throws -> [SomeRecord] where SomeRecord : FetchedRecord {
-        guard let fetchedEntries = try? await database.records(forField: SomeRecord.recordType) else {
+        guard let fetchedEntries = try? await database.records(forRecordType: SomeRecord.recordType) else {
             throw DatabaseServiceError.couldNotGetRecords
         }
         let records = fetchedEntries.compactMap { SomeRecord(from: $0) }
@@ -147,8 +147,21 @@ actor DatabaseService: DatabaseServiceProtocol {
     }
     
     /// returns nil if record does not exist. if any other error, throws instead
-    func record<SomeRecord: FetchedRecord>(forValue value: String, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? {
-        fatalError("not yet implemented")
+    func record<SomeRecord: FetchedRecord>(forValue value: String, inField field: SomeRecord.RecordKeys) async throws -> SomeRecord? {
+        let fieldQuery = FieldQuery(forValue: value, inField: field, forRecordType: SomeRecord.self)
+        var entry: Entry?
+        do {
+            entry = try await database.record(matchingFieldQuery: fieldQuery)
+        } catch {
+            fatalError()
+        }
+        guard let entry else {
+            return nil
+        }
+        guard let record = SomeRecord(from: entry) else {
+            fatalError()
+        }
+        return record
     }
 
     

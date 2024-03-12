@@ -14,6 +14,7 @@
 		742AC6B82B9F51CA007ABFE3 /* LocalUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6B72B9F51CA007ABFE3 /* LocalUserViewModel.swift */; };
 		742AC6BA2B9F51DE007ABFE3 /* LocalUserVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */; };
 		742AC6BC2BA09E4D007ABFE3 /* AuthenticationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */; };
+		742AC6C02BA0EBE6007ABFE3 /* FieldQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */; };
 		7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3732B5968D7006357C8 /* OneWordApp.swift */; };
 		7454A3762B5968D7006357C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3752B5968D7006357C8 /* ContentView.swift */; };
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 		742AC6B72B9F51CA007ABFE3 /* LocalUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserViewModel.swift; sourceTree = "<group>"; };
 		742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserVMTests.swift; sourceTree = "<group>"; };
 		742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationStatus.swift; sourceTree = "<group>"; };
+		742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldQuery.swift; sourceTree = "<group>"; };
 		7454A3702B5968D7006357C8 /* OneWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3732B5968D7006357C8 /* OneWordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordApp.swift; sourceTree = "<group>"; };
 		7454A3752B5968D7006357C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,
 				74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */,
 				74647F532B9BA72200491452 /* CKDatabase+Database.swift */,
+				742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */,
 				742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */,
 				7413860A2B7FF0D000A1B424 /* RecordModels */,
 				7454A3AC2B5F0998006357C8 /* Protocols */,
@@ -421,6 +424,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */,
+				742AC6C02BA0EBE6007ABFE3 /* FieldQuery.swift in Sources */,
 				742AC6B82B9F51CA007ABFE3 /* LocalUserViewModel.swift in Sources */,
 				742AC6B42B9F379C007ABFE3 /* LocalUser.swift in Sources */,
 				74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */,

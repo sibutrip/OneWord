@@ -7,7 +7,7 @@
 
 protocol Record {
     typealias ID = String
-    associatedtype RecordKeys: RawRepresentable, CaseIterable where RecordKeys.RawValue: StringProtocol
+    associatedtype RecordKeys: RawRepresentable, CaseIterable where RecordKeys.RawValue == String
     static var recordType: String { get }
     
     var id: String { get }

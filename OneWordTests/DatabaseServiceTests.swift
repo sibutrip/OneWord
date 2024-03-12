@@ -287,6 +287,15 @@ final class DatabaseServiceTests: XCTestCase {
         }, throws: DatabaseServiceError.couldNotAuthenticate)
     }
     
+    func test_recordForValueInField_returnsRecordIfInDatabase() async throws {
+        let (sut, database) = makeSUT()
+        
+        let record: MockFetchedRecord? = try await sut.record(forValue: "my real value", inField: .name)
+        
+        XCTAssertNotNil(record)
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.record])
+    }
     
 //case available(User.ID), noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled
     

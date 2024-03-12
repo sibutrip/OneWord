@@ -8,11 +8,16 @@
 import CloudKit
 
 extension CKDatabase: Database {
+    
+    func record(matchingFieldQuery: FieldQuery) async throws -> Entry? {
+        fatalError("not yet implemented")
+    }
+    
     func authenticate() -> AuthenticationStatus {
         fatalError("not yet implemented")
     }
     
-    func records(forField field: String) async throws -> [Entry] {
+    func records(forRecordType type: String) async throws -> [Entry] {
         fatalError("not yet implemented")
     }
     
