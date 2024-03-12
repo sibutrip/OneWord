@@ -195,6 +195,16 @@ final class DatabaseServiceTests: XCTestCase {
         let mockRecords: [MockFetchedRecord] = try await sut.records()
         
         XCTAssertNotEqual(mockRecords.count, 0)
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.records])
+    }
+    
+    func test_records_throwsIfCouldntGetRecords() async  {
+        let (sut, _) = makeSUT(connectedToDatabase: false)
+        
+        await assertDoesThrow(test: {
+            let _: [MockFetchedRecord] = try await sut.records()
+        }, throws: DatabaseServiceError.couldNotGetRecords)
     }
     
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {

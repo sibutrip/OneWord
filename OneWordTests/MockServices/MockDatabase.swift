@@ -63,7 +63,11 @@ class MockDatabase: Database {
     }
     
     func records(forField field: String) async throws -> [OneWord.Entry] {
-        return [recordFromDatabase]
+        if connectedToDatabase {
+            messages.append(.records)
+            return [recordFromDatabase]
+        }
+        throw NSError(domain: "could not fetch records in database", code: 0)
     }
     
     let recordInDatabase: Bool
