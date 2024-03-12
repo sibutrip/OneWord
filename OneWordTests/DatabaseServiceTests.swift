@@ -170,6 +170,16 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseRecordsFromReferencesCalls.count, 1)
     }
     
+    func test_save_savesToDatabase() async throws {
+        let (sut, database) = makeSUT()
+        let newRecord = MockCreatableRecord(name: "test")
+        
+        try await sut.save(newRecord)
+        
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.save])
+    }
+    
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
 //        let database = container.public as! MockDatabase
