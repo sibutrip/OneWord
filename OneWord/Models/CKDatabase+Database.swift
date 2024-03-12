@@ -13,8 +13,27 @@ extension CKDatabase: Database {
         fatalError("not yet implemented")
     }
     
-    func authenticate() -> AuthenticationStatus {
-        fatalError("not yet implemented")
+    func authenticate() async throws -> AuthenticationStatus {
+        let accountStatus = try await CKContainer.default().accountStatus()
+        switch accountStatus {
+        case .couldNotDetermine:
+            return.couldNotDetermineAccountStatus
+        case .available:
+            do {
+                let ckID = try await CKContainer.default().userRecordID()
+                return.available(ckID.recordName)
+            } catch {
+                return .couldNotDetermineAccountStatus
+            }
+        case .restricted:
+            return .accountRestricted
+        case .noAccount:
+            return .noAccount
+        case .temporarilyUnavailable:
+            return .accountTemporarilyUnavailable
+        @unknown default:
+            fatalError()
+        }
     }
     
     func records(forRecordType type: String) async throws -> [Entry] {
