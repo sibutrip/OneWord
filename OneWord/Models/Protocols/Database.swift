@@ -24,4 +24,6 @@ protocol Database {
     func modifyRecords(
         saving recordsToSave: [Entry],
         deleting recordIDsToDelete: [Entry.ID]) async throws -> (saveResults: [Entry], deleteResults: [Entry.ID])
+    
+    func authenticate() async throws -> AuthenticationStatus
 }

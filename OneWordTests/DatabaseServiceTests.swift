@@ -199,12 +199,24 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseMessages, [.records])
     }
     
-    func test_records_throwsIfCouldntGetRecords() async  {
+    func test_records_throwsIfCouldntGetRecords() async {
         let (sut, _) = makeSUT(connectedToDatabase: false)
         
         await assertDoesThrow(test: {
             let _: [MockFetchedRecord] = try await sut.records()
         }, throws: DatabaseServiceError.couldNotGetRecords)
+    }
+    
+    func test_authenticate_returnsAvailableAuthenticationStatusWithUserID() async throws {
+        let (sut, database) = makeSUT()
+        
+        let status = try await sut.authenticate()
+        switch status {
+        case .available(let userID):
+            XCTAssertEqual(database.messages, [.authenticate])
+        case .noAccount, .accountRestricted, .couldNotDetermineAccountStatus, .accountTemporarilyUnavailable, .iCloudDriveDisabled:
+            XCTFail()
+        }
     }
     
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {

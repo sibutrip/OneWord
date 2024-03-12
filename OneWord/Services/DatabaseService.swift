@@ -139,7 +139,7 @@ actor DatabaseService: DatabaseServiceProtocol {
     }
     
     func authenticate() async throws -> AuthenticationStatus {
-        fatalError("not yet implemented")
+        return try await database.authenticate()
     }
     
     /// returns nil if record does not exist. if any other error, throws instead

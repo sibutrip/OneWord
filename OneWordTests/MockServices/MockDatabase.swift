@@ -70,6 +70,11 @@ class MockDatabase: Database {
         throw NSError(domain: "could not fetch records in database", code: 0)
     }
     
+    func authenticate() async throws -> AuthenticationStatus {
+        messages.append(.authenticate)
+        return .available(UUID().uuidString)
+    }
+    
     let recordInDatabase: Bool
     let fetchedCorrectRecordType: Bool
     let connectedToDatabase: Bool
@@ -98,7 +103,7 @@ class MockDatabase: Database {
     }()
     
     enum Message {
-        case record, save, modify, records, recordsFromReferences
+        case record, save, modify, records, recordsFromReferences, authenticate
     }
     
     init(recordInDatabase: Bool = true,
