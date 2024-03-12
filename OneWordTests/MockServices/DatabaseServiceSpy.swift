@@ -10,11 +10,6 @@ import XCTest
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
     
-    func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? where SomeRecord : OneWord.FetchedRecord {
-        receivedMessages.append(.recordForValue)
-        return SomeRecord(from: self.recordFromDatabase)
-    }
-    
     func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : OneWord.CreatableRecord {
         if didAddSuccessfully {
             receivedMessages.append(.save)
@@ -113,6 +108,14 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
             return authenticationStatus
         }
         throw NSError(domain: "MockDatabaseServiceError", code: 8)
+    }
+    
+    func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? where SomeRecord : OneWord.FetchedRecord {
+        if didFetchSuccessfully {
+            receivedMessages.append(.recordForValue)
+            return SomeRecord(from: self.recordFromDatabase)
+        }
+        throw NSError(domain: "MockDatabaseServiceError", code: 9)
     }
     
     enum Message {
