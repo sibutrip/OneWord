@@ -22,7 +22,6 @@ struct User: CreatableRecord, Identifiable {
 
 struct FetchedUser: FetchedRecord {
     enum RecordKeys: String, CaseIterable { case name, systemID }
-//    typealias ID = String
     init?(from entry: Entry) {
         guard let name = entry["name"] as? String,
               let systemID = entry["systemID"] as? String else {

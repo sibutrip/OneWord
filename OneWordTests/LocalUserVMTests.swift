@@ -9,7 +9,7 @@ import XCTest
 @testable import OneWord
 
 final class LocalUserVMTests: XCTestCase {
-    func test_fetchUserInfo_assignsWordsAndUserToVMOnSuccess() async throws {
+    func test_fetchUserInfo_fetchesUserAndAssignsWordsAndUserIfInDatabase() async throws {
         let database = DatabaseServiceSpy()
         let sut = LocalUserViewModel(database: database)
         
@@ -17,6 +17,25 @@ final class LocalUserVMTests: XCTestCase {
         
         XCTAssertNotNil(sut.user)
         XCTAssertNotEqual(sut.words.count, 0)
+        let fetchedUserID = await database.recordFromDatabase.id
+        XCTAssertEqual(fetchedUserID, sut.user?.id)
+        let databaseMessages = await database.receivedMessages
+        XCTAssertEqual(databaseMessages, [.recordForValue, .fetchChildRecords])
+    }
+    
+    func test_fetchUserInfo_createsNewUserIfUserNotInDatabase() async throws {
+        let database = DatabaseServiceSpy()
+        var entryFromDb = await database.recordFromDatabase
+        entryFromDb["systemID"] = nil
+        await database.setRecordFromDatabase(entryFromDb)
+        let sut = LocalUserViewModel(database: database)
+        
+        try await sut.fetchUserInfo()
+        
+        XCTAssertNotNil(sut.user)
+        XCTAssertNotEqual(sut.words.count, 0)
+        let fetchedUserID = await database.recordFromDatabase.id
+        XCTAssertNotEqual(fetchedUserID, sut.user?.id)
         let databaseMessages = await database.receivedMessages
         XCTAssertEqual(databaseMessages, [.recordForValue, .fetchChildRecords])
     }

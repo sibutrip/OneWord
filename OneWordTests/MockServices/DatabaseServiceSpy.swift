@@ -9,15 +9,15 @@ import XCTest
 @testable import OneWord
 
 actor DatabaseServiceSpy: DatabaseServiceProtocol {
-    func authenticate() async throws -> OneWord.FetchedUser.ID {
-        return UUID().uuidString
+    
+    func authenticate() async throws -> AuthenticationStatus {
+        return .available("User ID")
     }
     
-    func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord where SomeRecord : OneWord.FetchedRecord {
+    func record<SomeRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? where SomeRecord : OneWord.FetchedRecord {
         receivedMessages.append(.recordForValue)
-        return SomeRecord(from: Self.recordFromDatabase)!
+        return SomeRecord(from: self.recordFromDatabase)
     }
-    
     
     func save<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : OneWord.CreatableRecord {
         if didAddSuccessfully {
@@ -63,7 +63,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func fetch<SomeRecord>(withID recordID: String) async throws -> SomeRecord where SomeRecord : OneWord.FetchedRecord {
         if didFetchSuccessfully {
             receivedMessages.append(.fetch)
-            return SomeRecord(from: Self.recordFromDatabase)!
+            return SomeRecord(from: self.recordFromDatabase)!
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 4)
         }
@@ -72,7 +72,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func childRecords<SomeRecord>(of parent: SomeRecord.Parent) async throws -> [SomeRecord] where SomeRecord : OneWord.ChildRecord, SomeRecord : OneWord.FetchedRecord, SomeRecord.Parent : OneWord.CreatableRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)
-            return [SomeRecord(from: Self.recordFromDatabase)!]
+            return [SomeRecord(from: self.recordFromDatabase)!]
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 5)
         }
@@ -81,7 +81,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func childRecords<SomeRecord>(of parent: SomeRecord.SecondParent) async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedTwoParentsChild, SomeRecord.Parent : OneWord.CreatableRecord {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchChildRecords)
-            return [SomeRecord(from: Self.recordFromDatabase)!]
+            return [SomeRecord(from: self.recordFromDatabase)!]
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 5)
         }    }
@@ -89,7 +89,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func fetchManyToManyRecords<Intermediary>(fromSecondParent secondParent: Intermediary.SecondParent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.FetchedParent] where Intermediary : OneWord.FetchedTwoParentsChild {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchManyToMany)
-            return [Intermediary.FetchedParent(from: Self.recordFromDatabase)!]
+            return [Intermediary.FetchedParent(from: self.recordFromDatabase)!]
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 6)
         }
@@ -98,7 +98,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func fetchManyToManyRecords<Intermediary>(fromParent parent: Intermediary.Parent, withIntermediary intermediary: Intermediary.Type) async throws -> [Intermediary.FetchedSecondParent] where Intermediary : FetchedTwoParentsChild {
         if didFetchChildRecordsSuccessfully {
             receivedMessages.append(.fetchManyToMany)
-            return [Intermediary.FetchedSecondParent(from: Self.recordFromDatabase)!]
+            return [Intermediary.FetchedSecondParent(from: self.recordFromDatabase)!]
         } else {
             throw NSError(domain: "MockDatabaseServiceError", code: 6)
         }
@@ -107,7 +107,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
     func records<SomeRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord] where SomeRecord : OneWord.FetchedRecord {
         if didFetchSuccessfully {
             receivedMessages.append(.recordsForType)
-            return [SomeRecord(from: Self.recordFromDatabase)!]
+            return [SomeRecord(from: self.recordFromDatabase)!]
         }
         throw NSError(domain: "MockDatabaseServiceError", code: 7)
     }
@@ -116,7 +116,7 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         case add, fetch, update, fetchChildRecords, fetchManyToMany, newestChildRecord, save, recordsForType, recordForValue
     }
     
-    static let recordFromDatabase: Entry = {
+    var recordFromDatabase: Entry = {
         var entry = Entry(withID: UUID().uuidString, recordType: "MockRecord")
         entry["systemID"] = "fetcher user id"
         entry["wordDescription"] = "my amazing word"
@@ -131,6 +131,10 @@ actor DatabaseServiceSpy: DatabaseServiceProtocol {
         entry["rank"] = 1
         return entry
     }()
+    
+    func setRecordFromDatabase(_ entry: Entry) {
+        self.recordFromDatabase = entry
+    }
     
     var didAddSuccessfully: Bool
     var didFetchSuccessfully: Bool

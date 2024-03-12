@@ -136,15 +136,12 @@ actor DatabaseService: DatabaseServiceProtocol {
         fatalError("not yet implemented")
     }
     
-    func authenticate() async throws -> FetchedUser.ID {
+    func authenticate() async throws -> AuthenticationStatus {
         fatalError("not yet implemented")
     }
     
-    func record<SomeRecord: FetchedRecord>(forValue value: String, inField: SomeRecord.RecordKeys) async throws -> SomeRecord {
-        fatalError("not yet implemented")
-    }
-    
-    nonisolated func record<SomeRecord>(withID: SomeRecord.ID) async throws -> SomeRecord where SomeRecord : FetchedRecord {
+    /// returns nil if record does not exist. if any other error, throws instead
+    func record<SomeRecord: FetchedRecord>(forValue value: String, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? {
         fatalError("not yet implemented")
     }
 

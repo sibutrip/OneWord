@@ -29,7 +29,7 @@ protocol DatabaseServiceProtocol: Actor {
     
     func records<SomeRecord: FetchedRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord]
     
-    func authenticate() async throws -> FetchedUser.ID
+    func authenticate() async throws -> AuthenticationStatus
     
-    func record<SomeRecord: FetchedRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord
+    func record<SomeRecord: FetchedRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord?
 }

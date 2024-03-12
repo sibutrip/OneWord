@@ -6,6 +6,9 @@
 //
 
 class LocalUserViewModel {
+    enum LocalUserViewModelError: Error {
+        case couldNotFetchUser, couldNotFetchUsersWords, noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled
+    }
     private let database: DatabaseServiceProtocol
     var user: User? = nil
     var words: [Word] = []
@@ -19,10 +22,23 @@ class LocalUserViewModel {
     }
     
     func fetchUserInfo() async throws {
-        let userID = try await database.authenticate()
-        let fetchedUser: FetchedUser = try await database.record(forValue: userID, inField: .systemID)
-        let user = User(id: fetchedUser.id, name: fetchedUser.name, systemID: fetchedUser.systemID)
-        let fetchedWords: [FetchedWord] = try await database.childRecords(of: user)
+        let userID = try await getUserID()
+        let fetchedUser: FetchedUser?
+        do {
+            fetchedUser = try await database.record(forValue: userID, inField: .systemID)
+        } catch {
+            throw LocalUserViewModelError.couldNotFetchUser
+        }
+        let user: User
+        if let fetchedUser {
+            user = User(id: fetchedUser.id, name: fetchedUser.name, systemID: fetchedUser.systemID)
+        } else {
+            user = User(name: "User inputted Name", systemID: userID)
+        }
+        
+        guard let fetchedWords: [FetchedWord] = try? await database.childRecords(of: user) else {
+            throw LocalUserViewModelError.couldNotFetchUsersWords
+        }
         let unplayedWords: [Word] = fetchedWords.compactMap { fetchedWord in
             if fetchedWord.round != nil {
                 return nil
@@ -31,5 +47,27 @@ class LocalUserViewModel {
         }
         self.words = unplayedWords
         self.user = user
+    }
+    
+    // MARK: Helper Methods
+    
+    private func getUserID() async throws -> User.ID {
+        guard let authenticationStatus = try? await database.authenticate() else {
+            throw LocalUserViewModelError.couldNotFetchUser
+        }
+        switch authenticationStatus {
+        case .available(let userID):
+            return userID
+        case .noAccount:
+            fatalError()
+        case .accountRestricted:
+            fatalError()
+        case .couldNotDetermineAccountStatus:
+            fatalError()
+        case .accountTemporarilyUnavailable:
+            fatalError()
+        case .iCloudDriveDisabled:
+            fatalError()
+        }
     }
 }
