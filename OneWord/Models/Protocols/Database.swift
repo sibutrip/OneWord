@@ -19,7 +19,13 @@ protocol Database {
    
     func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry]
     
+    func records(forRecordType type: String) async throws -> [Entry]
+    
     func modifyRecords(
         saving recordsToSave: [Entry],
         deleting recordIDsToDelete: [Entry.ID]) async throws -> (saveResults: [Entry], deleteResults: [Entry.ID])
+    
+    func authenticate() async throws -> AuthenticationStatus
+    
+    func record(matchingFieldQuery: FieldQuery) async throws -> Entry?
 }

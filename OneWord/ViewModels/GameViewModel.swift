@@ -101,7 +101,7 @@ class GameViewModel {
     /// - Throws `GameViewModelError.couldNotCreateRound` if `databaseService.add` throws.
     public func startRound() async throws {
         guard let currentGame else { throw GameViewModelError.noCurrentGame }
-        let allQuestions: [Question] = try await database.records(forType: Question.self)
+        let allQuestions: [Question] = try await database.records()
         let previousQuestions = Set(previousRounds.map { $0.question })
         let newQuestions: [Question] = allQuestions.filter { !previousQuestions.contains($0) }
         guard let randomQuestion = newQuestions.randomElement() else {

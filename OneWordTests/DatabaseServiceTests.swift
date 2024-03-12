@@ -170,6 +170,153 @@ final class DatabaseServiceTests: XCTestCase {
         XCTAssertEqual(databaseRecordsFromReferencesCalls.count, 1)
     }
     
+    func test_save_savesToDatabase() async throws {
+        let (sut, database) = makeSUT()
+        let newRecord = MockCreatableRecord(name: "test")
+        
+        try await sut.save(newRecord)
+        
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.save])
+    }
+    
+    func test_save_throwsIfCannotSave() async {
+        let (sut, _) = makeSUT(savedRecordToDatabase: false)
+        let newRecord = MockCreatableRecord(name: "test")
+
+        await assertDoesThrow(test: {
+            try await sut.save(newRecord)
+        }, throws: DatabaseServiceError.couldNotSaveRecord)
+    }
+    
+    func test_records_returnsRecords() async throws {
+        let (sut, database) = makeSUT()
+        
+        let mockRecords: [MockFetchedRecord] = try await sut.records()
+        
+        XCTAssertNotEqual(mockRecords.count, 0)
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.records])
+    }
+    
+    func test_records_throwsIfCouldntGetRecords() async {
+        let (sut, _) = makeSUT(connectedToDatabase: false)
+        
+        await assertDoesThrow(test: {
+            let _: [MockFetchedRecord] = try await sut.records()
+        }, throws: DatabaseServiceError.couldNotGetRecords)
+    }
+    
+    func test_authenticate_returnsAvailableAuthenticationStatusWithUserID() async throws {
+        let (sut, database) = makeSUT()
+        
+        let status = try await sut.authenticate()
+        switch status {
+        case .available(_):
+            XCTAssertEqual(database.messages, [.authenticate])
+        case .noAccount, .accountRestricted, .couldNotDetermineAccountStatus, .accountTemporarilyUnavailable, .iCloudDriveDisabled:
+            XCTFail()
+        }
+    }
+    
+    func test_authenticate_returnsNoAccountIfNoAccountFound() async throws {
+        let (sut, database) = makeSUT(authenticationStatus: .noAccount)
+        
+        let status = try await sut.authenticate()
+        switch status {
+        case .noAccount:
+            XCTAssertEqual(database.messages, [.authenticate])
+        case .available, .accountRestricted, .couldNotDetermineAccountStatus, .accountTemporarilyUnavailable, .iCloudDriveDisabled:
+            XCTFail()
+        }
+    }
+    
+    func test_authenticate_returnsAccountRestrictedIfAccountRestricted() async throws {
+        let (sut, database) = makeSUT(authenticationStatus: .accountRestricted)
+        
+        let status = try await sut.authenticate()
+        switch status {
+        case .accountRestricted:
+            XCTAssertEqual(database.messages, [.authenticate])
+        case .available, .noAccount, .couldNotDetermineAccountStatus, .accountTemporarilyUnavailable, .iCloudDriveDisabled:
+            XCTFail()
+        }
+    }
+    
+    func test_authenticate_returnsCouldNotDetermineAccountStatusIfCouldNotDetermineAccountStatus() async throws {
+        let (sut, database) = makeSUT(authenticationStatus: .couldNotDetermineAccountStatus)
+        
+        let status = try await sut.authenticate()
+        switch status {
+        case .couldNotDetermineAccountStatus:
+            XCTAssertEqual(database.messages, [.authenticate])
+        case .available, .noAccount, .accountRestricted, .accountTemporarilyUnavailable, .iCloudDriveDisabled:
+            XCTFail()
+        }
+    }
+    
+    func test_authenticate_returnsAccountTemporarilyUnavailableIfAccountTemporarilyUnavailable() async throws {
+        let (sut, database) = makeSUT(authenticationStatus: .accountTemporarilyUnavailable)
+        
+        let status = try await sut.authenticate()
+        switch status {
+        case .accountTemporarilyUnavailable:
+            XCTAssertEqual(database.messages, [.authenticate])
+        case .available, .noAccount, .accountRestricted, .couldNotDetermineAccountStatus, .iCloudDriveDisabled:
+            XCTFail()
+        }
+    }
+    
+    func test_authenticate_returnsiCloudDriveDisabledIfiCloudDriveDisabled() async throws {
+        let (sut, database) = makeSUT(authenticationStatus: .iCloudDriveDisabled)
+        
+        let status = try await sut.authenticate()
+        switch status {
+        case .iCloudDriveDisabled:
+            XCTAssertEqual(database.messages, [.authenticate])
+        case .available, .noAccount, .accountRestricted, .couldNotDetermineAccountStatus, .accountTemporarilyUnavailable:
+            XCTFail()
+        }
+    }
+    
+    func test_authenticate_throwsIfCannotConnectToDatabase() async throws {
+        let (sut, _) = makeSUT(connectedToDatabase: false)
+        
+        await assertDoesThrow(test: {
+            _ = try await sut.authenticate()
+        }, throws: DatabaseServiceError.couldNotAuthenticate)
+    }
+    
+    func test_recordForValueInField_returnsRecordIfInDatabase() async throws {
+        let (sut, database) = makeSUT()
+        
+        let record: MockFetchedRecord? = try await sut.record(forValue: "my amazing name", inField: .name)
+        
+        XCTAssertNotNil(record)
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.record])
+    }
+    
+    func test_recordForValueInField_returnsNilIfRecordNotInDatabase() async throws {
+        let (sut, database) = makeSUT(recordInDatabase: false)
+        
+        let record: MockFetchedRecord? = try await sut.record(forValue: "my amazing name", inField: .name)
+        
+        XCTAssertNil(record)
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.record])
+    }
+    
+    func test_recordForValueInField_throwsIfCouldNotConnectToDatabase() async {
+        let (sut, _) = makeSUT(connectedToDatabase: false)
+        
+        await assertDoesThrow(test: {
+            let _: MockFetchedRecord? = try await sut.record(forValue: "my amazing name", inField: .name)
+        }, throws: DatabaseServiceError.couldNotGetRecords)
+    }
+    
+//case available(User.ID), noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled
+    
 //    func test_newestChildRecord_returnsNewestChildRecordIfSuccessful() async throws {
 //        let container = MockCloudContainer()
 //        let database = container.public as! MockDatabase
@@ -215,11 +362,13 @@ final class DatabaseServiceTests: XCTestCase {
     private func makeSUT(recordInDatabase: Bool = true,
                          fetchedCorrectRecordType: Bool = true,
                          connectedToDatabase: Bool = true,
-                         savedRecordToDatabase: Bool = true) -> (DatabaseService, MockDatabase) {
+                         savedRecordToDatabase: Bool = true,
+                         authenticationStatus: AuthenticationStatus = .available(UUID().uuidString)) -> (DatabaseService, MockDatabase) {
         let container = MockCloudContainer(recordInDatabase: recordInDatabase,
                                            fetchedCorrectRecordType:fetchedCorrectRecordType,
                                            connectedToDatabase: connectedToDatabase,
-                                           savedRecordToDatabase: savedRecordToDatabase)
+                                           savedRecordToDatabase: savedRecordToDatabase,
+                                           authenticationStatus: authenticationStatus)
         let database = container.public as! MockDatabase
         let sut = DatabaseService(withContainer: container)
         return (sut, database)

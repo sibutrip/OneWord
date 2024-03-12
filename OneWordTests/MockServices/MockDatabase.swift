@@ -10,6 +10,18 @@ import Foundation
 
 class MockDatabase: Database {
     
+    func record(matchingFieldQuery: OneWord.FieldQuery) async throws -> OneWord.Entry? {
+        if connectedToDatabase {
+            messages.append(.record)
+            if recordInDatabase {
+                return recordFromDatabase
+            } else {
+                return nil
+            }
+        }
+        throw NSError(domain: "Could not connect to database", code: 0)
+    }
+    
     func save(_ entry: OneWord.Entry) async throws {
         if connectedToDatabase {
             messages.append(.save)
@@ -62,7 +74,23 @@ class MockDatabase: Database {
         throw NSError(domain: "could not modify records in database", code: 0)
     }
     
+    func records(forRecordType type: String) async throws -> [OneWord.Entry] {
+        if connectedToDatabase {
+            messages.append(.records)
+            return [recordFromDatabase]
+        }
+        throw NSError(domain: "could not fetch records in database", code: 0)
+    }
     
+    func authenticate() async throws -> AuthenticationStatus {
+        if connectedToDatabase {
+            messages.append(.authenticate)
+            return authenticationStatus
+        }
+        throw NSError(domain: "could not authenticate with database", code: 0)
+    }
+    
+    let authenticationStatus: AuthenticationStatus
     let recordInDatabase: Bool
     let fetchedCorrectRecordType: Bool
     let connectedToDatabase: Bool
@@ -91,16 +119,18 @@ class MockDatabase: Database {
     }()
     
     enum Message {
-        case record, save, modify, records, recordsFromReferences
+        case record, save, modify, records, recordsFromReferences, authenticate
     }
     
     init(recordInDatabase: Bool = true,
          fetchedCorrectRecordType: Bool = true,
          connectedToDatabase: Bool = true,
-         savedRecordToDatabase: Bool = true) {
+         savedRecordToDatabase: Bool = true,
+         authenticationStatus: AuthenticationStatus) {
         self.recordInDatabase = recordInDatabase
         self.fetchedCorrectRecordType = fetchedCorrectRecordType
         self.connectedToDatabase = connectedToDatabase
         self.savedRecordToDatabase = savedRecordToDatabase
+        self.authenticationStatus = authenticationStatus
     }
 }

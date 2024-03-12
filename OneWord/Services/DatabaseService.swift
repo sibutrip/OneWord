@@ -10,19 +10,17 @@ import CloudKit
 actor DatabaseService: DatabaseServiceProtocol {
     
     enum DatabaseServiceError: Error {
-        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase, couldNotGetRecordsFromReferences
+        case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase, couldNotGetRecordsFromReferences, couldNotGetRecords, couldNotAuthenticate
     }
     
     let container: CloudContainer
     lazy var database = container.public
     
-    
-#warning("add tests to this")
     func save<SomeRecord: CreatableRecord>(_ record: SomeRecord) async throws {
         do {
             _ = try await database.save(record.entry)
         } catch {
-            fatalError("error description not created")
+            throw DatabaseServiceError.couldNotSaveRecord
         }
     }
     
@@ -132,17 +130,38 @@ actor DatabaseService: DatabaseServiceProtocol {
         fatalError("not yet implemented")
     }
     
-    func records<SomeRecord>(forType recordType: SomeRecord.Type) async throws -> [SomeRecord] where SomeRecord : FetchedRecord {
-        fatalError("not yet implemented")
+    func records<SomeRecord>() async throws -> [SomeRecord] where SomeRecord : FetchedRecord {
+        guard let fetchedEntries = try? await database.records(forRecordType: SomeRecord.recordType) else {
+            throw DatabaseServiceError.couldNotGetRecords
+        }
+        let records = fetchedEntries.compactMap { SomeRecord(from: $0) }
+        return records
     }
     
     func authenticate() async throws -> AuthenticationStatus {
-        fatalError("not yet implemented")
+        do {
+            return try await database.authenticate()
+        } catch {
+            throw DatabaseServiceError.couldNotAuthenticate
+        }
     }
     
     /// returns nil if record does not exist. if any other error, throws instead
-    func record<SomeRecord: FetchedRecord>(forValue value: String, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? {
-        fatalError("not yet implemented")
+    func record<SomeRecord: FetchedRecord>(forValue value: String, inField field: SomeRecord.RecordKeys) async throws -> SomeRecord? {
+        let fieldQuery = FieldQuery(forValue: value, inField: field, forRecordType: SomeRecord.self)
+        var entry: Entry?
+        do {
+            entry = try await database.record(matchingFieldQuery: fieldQuery)
+        } catch {
+            throw DatabaseServiceError.couldNotGetRecords
+        }
+        guard let entry else {
+            return nil
+        }
+        guard let record = SomeRecord(from: entry) else {
+            fatalError()
+        }
+        return record
     }
 
     
