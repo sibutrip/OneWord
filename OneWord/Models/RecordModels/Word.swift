@@ -36,6 +36,7 @@ struct Word: CreatableRecord, TwoParentsChildRecord {
 }
 
 struct FetchedWord: FetchedTwoParentsChild {
+    enum RecordKeys: String, CaseIterable { case wordDescription, rank, user, round }
     typealias FetchedParent = FetchedUser
     typealias FetchedSecondParent = FetchedRound
     typealias Parent = User

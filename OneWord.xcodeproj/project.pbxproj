@@ -11,6 +11,9 @@
 		741386042B7FC92700A1B424 /* MockCreatableChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */; };
 		741386082B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */; };
 		742AC6B42B9F379C007ABFE3 /* LocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6B32B9F379C007ABFE3 /* LocalUser.swift */; };
+		742AC6B82B9F51CA007ABFE3 /* LocalUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6B72B9F51CA007ABFE3 /* LocalUserViewModel.swift */; };
+		742AC6BA2B9F51DE007ABFE3 /* LocalUserVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */; };
+		742AC6BC2BA09E4D007ABFE3 /* AuthenticationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */; };
 		7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3732B5968D7006357C8 /* OneWordApp.swift */; };
 		7454A3762B5968D7006357C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3752B5968D7006357C8 /* ContentView.swift */; };
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
@@ -65,6 +68,9 @@
 		741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableChildRecord.swift; sourceTree = "<group>"; };
 		741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableTwoParentChildRecord.swift; sourceTree = "<group>"; };
 		742AC6B32B9F379C007ABFE3 /* LocalUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUser.swift; sourceTree = "<group>"; };
+		742AC6B72B9F51CA007ABFE3 /* LocalUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserViewModel.swift; sourceTree = "<group>"; };
+		742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserVMTests.swift; sourceTree = "<group>"; };
+		742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationStatus.swift; sourceTree = "<group>"; };
 		7454A3702B5968D7006357C8 /* OneWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3732B5968D7006357C8 /* OneWordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordApp.swift; sourceTree = "<group>"; };
 		7454A3752B5968D7006357C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -229,6 +235,7 @@
 				7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */,
 				7454A3842B5968D8006357C8 /* GameVMTests.swift */,
 				74F0269A2B61AF6D00ED9B20 /* RoundVMTests.swift */,
+				742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */,
 				742AC6B12B9F34E7007ABFE3 /* MockServices */,
 				74F86A6E2B643EAC00CD7691 /* MockRecords */,
 				742AC6B22B9F34F5007ABFE3 /* Utilities */,
@@ -253,6 +260,7 @@
 				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,
 				74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */,
 				74647F532B9BA72200491452 /* CKDatabase+Database.swift */,
+				742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */,
 				7413860A2B7FF0D000A1B424 /* RecordModels */,
 				7454A3AC2B5F0998006357C8 /* Protocols */,
 			);
@@ -275,6 +283,7 @@
 			children = (
 				7454A39D2B5EF2DC006357C8 /* GameViewModel.swift */,
 				74F0269C2B61B0BC00ED9B20 /* RoundViewModel.swift */,
+				742AC6B72B9F51CA007ABFE3 /* LocalUserViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -412,6 +421,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */,
+				742AC6B82B9F51CA007ABFE3 /* LocalUserViewModel.swift in Sources */,
 				742AC6B42B9F379C007ABFE3 /* LocalUser.swift in Sources */,
 				74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */,
 				7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */,
@@ -435,6 +445,7 @@
 				74A8CBEC2B741BF100EA9F5A /* CreatableRecord.swift in Sources */,
 				74A8CBE32B741B9E00EA9F5A /* User.swift in Sources */,
 				74A8CBDC2B741B9E00EA9F5A /* Player.swift in Sources */,
+				742AC6BC2BA09E4D007ABFE3 /* AuthenticationStatus.swift in Sources */,
 				74A8CBED2B741BF100EA9F5A /* FetchedRecord.swift in Sources */,
 				74A8CBF82B742A9C00EA9F5A /* ReferenceQuery.swift in Sources */,
 				74F0269D2B61B0BC00ED9B20 /* RoundViewModel.swift in Sources */,
@@ -452,6 +463,7 @@
 				74F86A6D2B643EA800CD7691 /* MockFetchedChildRecord.swift in Sources */,
 				7475CC2B2B633CB400B8E6A6 /* MockCloudContainer.swift in Sources */,
 				741386042B7FC92700A1B424 /* MockCreatableChildRecord.swift in Sources */,
+				742AC6BA2B9F51DE007ABFE3 /* LocalUserVMTests.swift in Sources */,
 				7475CC2D2B633FE600B8E6A6 /* XCTestCase+Extension.swift in Sources */,
 				7454A3852B5968D8006357C8 /* GameVMTests.swift in Sources */,
 				7475CC212B6334B700B8E6A6 /* DatabaseServiceTests.swift in Sources */,

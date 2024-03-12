@@ -19,6 +19,7 @@ struct Game: CreatableRecord {
 }
 
 struct FetchedGame: FetchedRecord {
+    enum RecordKeys: String, CaseIterable { case groupName }
     init?(from entry: Entry) {
         guard let groupName = entry["groupName"] as? String else {
             return nil

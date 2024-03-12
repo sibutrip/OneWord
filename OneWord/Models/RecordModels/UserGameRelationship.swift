@@ -19,6 +19,7 @@ struct UserGameRelationship: CreatableRecord, TwoParentsChildRecord {
 }
 
 struct FetchedUserGameRelationship: FetchedTwoParentsChild {
+    enum RecordKeys: String, CaseIterable { case user, game }
     typealias FetchedParent = FetchedUser
     typealias FetchedSecondParent = FetchedGame
     typealias Parent = User

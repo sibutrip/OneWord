@@ -86,7 +86,7 @@ actor DatabaseService: DatabaseServiceProtocol {
         }
     }
     
-    #warning("add to tests")
+#warning("add to tests")
     func childRecords<SomeRecord>(of parent: SomeRecord.SecondParent) async throws -> [SomeRecord] where SomeRecord: FetchedTwoParentsChild, SomeRecord.Parent: CreatableRecord {
         let query = ReferenceQuery(child: SomeRecord.self, secondParent: parent)
         do {
@@ -136,6 +136,15 @@ actor DatabaseService: DatabaseServiceProtocol {
         fatalError("not yet implemented")
     }
     
+    func authenticate() async throws -> AuthenticationStatus {
+        fatalError("not yet implemented")
+    }
+    
+    /// returns nil if record does not exist. if any other error, throws instead
+    func record<SomeRecord: FetchedRecord>(forValue value: String, inField: SomeRecord.RecordKeys) async throws -> SomeRecord? {
+        fatalError("not yet implemented")
+    }
+
     
     // MARK: Initializer
     

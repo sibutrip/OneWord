@@ -5,9 +5,7 @@
 //  Created by Cory Tripathy on 1/31/24.
 //
 
-protocol CreatableRecord: Record {
-    associatedtype RecordKeys: RawRepresentable, CaseIterable where RecordKeys.RawValue: StringProtocol
-}
+protocol CreatableRecord: Record { }
 
 extension CreatableRecord {
     var entry: Entry {

@@ -18,7 +18,7 @@ struct MockFetchedChildRecord: FetchedRecord, ChildRecord {
     
     init?(from entry: OneWord.Entry) {
         guard let name = entry["name"] as? String,
-              let mockRecord = entry["mockRecord"] as? FetchedRecord else {
+              let mockRecord = entry["mockRecord"] as? FetchedReference else {
             return nil
         }
         self.name = name
@@ -26,7 +26,7 @@ struct MockFetchedChildRecord: FetchedRecord, ChildRecord {
         self.id = entry.id
     }
     
-    let mockRecord: FetchedRecord
+    let mockRecord: FetchedReference
     let id: String
     let name: String
 }
