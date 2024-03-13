@@ -360,13 +360,12 @@ final class DatabaseServiceTests: XCTestCase {
                          connectedToDatabase: Bool = true,
                          savedRecordToDatabase: Bool = true,
                          authenticationStatus: AuthenticationStatus = .available(UUID().uuidString)) -> (DatabaseService, MockDatabase) {
-        let container = MockCloudContainer(recordInDatabase: recordInDatabase,
-                                           fetchedCorrectRecordType:fetchedCorrectRecordType,
-                                           connectedToDatabase: connectedToDatabase,
-                                           savedRecordToDatabase: savedRecordToDatabase,
-                                           authenticationStatus: authenticationStatus)
-        let database = container.public as! MockDatabase
-        let sut = DatabaseService(withContainer: container)
+        let database = MockDatabase(recordInDatabase: recordInDatabase,
+                                    fetchedCorrectRecordType:fetchedCorrectRecordType,
+                                    connectedToDatabase: connectedToDatabase,
+                                    savedRecordToDatabase: savedRecordToDatabase,
+                                    authenticationStatus: authenticationStatus)
+        let sut = DatabaseService(withDatabase: database)
         return (sut, database)
     }
 }

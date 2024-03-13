@@ -5,16 +5,13 @@
 //  Created by Cory Tripathy on 1/22/24.
 //
 
-import CloudKit
-
 actor DatabaseService: DatabaseServiceProtocol {
     
     enum DatabaseServiceError: Error {
         case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase, couldNotGetRecordsFromReferences, couldNotGetRecords, couldNotAuthenticate
     }
     
-    let container: CloudContainer
-    lazy var database = container.public
+    let database: Database
     
     func save<SomeRecord: CreatableRecord>(_ record: SomeRecord) async throws {
         do {
@@ -147,7 +144,7 @@ actor DatabaseService: DatabaseServiceProtocol {
     }
     
     /// returns nil if record does not exist. if any other error, throws instead
-    func record<SomeRecord: FetchedRecord>(forValue value: String, inField field: SomeRecord.RecordKeys) async throws -> SomeRecord? {
+    func record<SomeRecord: FetchedRecord>(forValue value: SomeRecord.ID, inField field: SomeRecord.RecordKeys) async throws -> SomeRecord? where SomeRecord.ID == String {
         let fieldQuery = FieldQuery(forValue: value, inField: field, forRecordType: SomeRecord.self)
         var entry: Entry?
         do {
@@ -167,7 +164,7 @@ actor DatabaseService: DatabaseServiceProtocol {
     
     // MARK: Initializer
     
-    init(withContainer container: CloudContainer) {
-        self.container = container
+    init(withDatabase database: Database) {
+        self.database = database
     }
 }

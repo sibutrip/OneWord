@@ -33,3 +33,5 @@ struct FetchedGame: FetchedRecord {
     let id: String
     let groupName: String
 }
+
+extension Game: Hashable { }

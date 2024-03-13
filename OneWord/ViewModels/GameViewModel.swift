@@ -5,40 +5,29 @@
 //  Created by Cory Tripathy on 1/22/24.
 //
 
-class GameViewModel {
+import Foundation
+
+@MainActor
+class GameViewModel: ObservableObject {
     
-    enum GameViewModelError: Error {
+    enum GameViewModelError: String, Error {
         case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers, couldNotCreateRound, couldNotFetchRounds, noAvailableQuestions, couldNotFetchRoundDetails, noUsers
+        var errorTitle: String { self.rawValue }
     }
     
     private let database: DatabaseServiceProtocol
     var localUser: LocalUser
     var users = [User]()
-    var currentGame: Game?
+    var currentGame: Game
     
     var previousRounds = [Round]()
     var currentRound: Round?
     
-    init(withUser localUser: LocalUser, database: DatabaseServiceProtocol) {
+    init(withUser localUser: LocalUser, game: Game, database: DatabaseServiceProtocol) {
         self.localUser = localUser
+        self.currentGame = game
         users.append(localUser.user)
         self.database = database
-    }
-    
-    /// Creates new game and updates database with one-to-many relationship.
-    ///
-    /// Subsequent added users should also have `Game` as a child record of their `User` record.
-    /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
-    public func createGame(withGroupName groupName: String) async throws {
-        let newGame = Game(groupName: groupName)
-        let userGameRelationship = UserGameRelationship(user: localUser.user, game: newGame)
-        do {
-            try await database.save(newGame)
-            try await database.add(userGameRelationship, withParent: localUser.user, withSecondParent: newGame)
-            self.currentGame = newGame
-        } catch {
-            throw GameViewModelError.couldNotCreateGame
-        }
     }
     
     /// Adds a user to an existing game.
@@ -48,7 +37,6 @@ class GameViewModel {
     /// - Throws `GameViewModelError.userNotFound` if no user with that ID was found in the database.
     /// - Throws `GameViewModelError.couldNotAddUserToGame` if could not update `Game` and `User` records in the database.
     public func addUser(withId userID: String) async throws {
-        guard let currentGame else { throw GameViewModelError.noCurrentGame }
         guard let fetchedUser: FetchedUser = (try? await database.fetch(withID: userID)) else {
             throw GameViewModelError.userNotFound
         }
@@ -67,7 +55,6 @@ class GameViewModel {
     /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotFetchUsers` if could not fetch users from database.
     public func fetchUsersInGame() async throws {
-        guard let currentGame else { throw GameViewModelError.noCurrentGame }
         guard let fetchedUsers: [FetchedUser] = (try? await database.fetchManyToManyRecords(
             fromSecondParent: currentGame,
             withIntermediary: FetchedUserGameRelationship.self)) else {
@@ -80,7 +67,7 @@ class GameViewModel {
     /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotFetchRounds` if could not fetch rounds from database.
     public func fetchPreviousRounds() async throws {
-        guard let currentGame else { throw GameViewModelError.noCurrentGame }
+//        guard let currentGame else { throw GameViewModelError.noCurrentGame }
         guard let fetchedPreviousRounds: [FetchedRound] = (try? await database.childRecords(of: currentGame)) else {
             throw GameViewModelError.couldNotFetchRounds
         }
@@ -100,7 +87,6 @@ class GameViewModel {
     /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotCreateRound` if `databaseService.add` throws.
     public func startRound() async throws {
-        guard let currentGame else { throw GameViewModelError.noCurrentGame }
         let allQuestions: [Question] = try await database.records()
         let previousQuestions = Set(previousRounds.map { $0.question })
         let newQuestions: [Question] = allQuestions.filter { !previousQuestions.contains($0) }

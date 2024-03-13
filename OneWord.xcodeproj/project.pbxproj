@@ -15,6 +15,10 @@
 		742AC6BA2B9F51DE007ABFE3 /* LocalUserVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */; };
 		742AC6BC2BA09E4D007ABFE3 /* AuthenticationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */; };
 		742AC6C02BA0EBE6007ABFE3 /* FieldQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */; };
+		742AC6C22BA1DD22007ABFE3 /* ProductionDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C12BA1DD22007ABFE3 /* ProductionDatabase.swift */; };
+		742AC6C52BA223D8007ABFE3 /* GameOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C42BA223D8007ABFE3 /* GameOverview.swift */; };
+		742AC6C72BA22F32007ABFE3 /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C62BA22F32007ABFE3 /* NewGameView.swift */; };
+		742AC6C92BA232B5007ABFE3 /* GameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */; };
 		7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3732B5968D7006357C8 /* OneWordApp.swift */; };
 		7454A3762B5968D7006357C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3752B5968D7006357C8 /* ContentView.swift */; };
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
@@ -30,9 +34,7 @@
 		7475CC212B6334B700B8E6A6 /* DatabaseServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */; };
 		7475CC232B6338D800B8E6A6 /* MockFetchedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */; };
 		7475CC252B63390500B8E6A6 /* MockDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC242B63390500B8E6A6 /* MockDatabase.swift */; };
-		7475CC272B6339A800B8E6A6 /* CloudContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC262B6339A800B8E6A6 /* CloudContainer.swift */; };
 		7475CC292B633A1700B8E6A6 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC282B633A1700B8E6A6 /* Database.swift */; };
-		7475CC2B2B633CB400B8E6A6 /* MockCloudContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */; };
 		7475CC2D2B633FE600B8E6A6 /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC2C2B633FE600B8E6A6 /* XCTestCase+Extension.swift */; };
 		74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A6B1652B60162900ED0901 /* ChildRecord.swift */; };
 		74A8CBDA2B741B9E00EA9F5A /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8CBC62B741B9D00EA9F5A /* Round.swift */; };
@@ -73,6 +75,11 @@
 		742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserVMTests.swift; sourceTree = "<group>"; };
 		742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationStatus.swift; sourceTree = "<group>"; };
 		742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldQuery.swift; sourceTree = "<group>"; };
+		742AC6C12BA1DD22007ABFE3 /* ProductionDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionDatabase.swift; sourceTree = "<group>"; };
+		742AC6C32BA1E173007ABFE3 /* OneWord.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneWord.entitlements; sourceTree = "<group>"; };
+		742AC6C42BA223D8007ABFE3 /* GameOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverview.swift; sourceTree = "<group>"; };
+		742AC6C62BA22F32007ABFE3 /* NewGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameView.swift; sourceTree = "<group>"; };
+		742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailView.swift; sourceTree = "<group>"; };
 		7454A3702B5968D7006357C8 /* OneWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3732B5968D7006357C8 /* OneWordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordApp.swift; sourceTree = "<group>"; };
 		7454A3752B5968D7006357C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -91,9 +98,7 @@
 		7475CC202B6334B700B8E6A6 /* DatabaseServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceTests.swift; sourceTree = "<group>"; };
 		7475CC222B6338D800B8E6A6 /* MockFetchedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFetchedRecord.swift; sourceTree = "<group>"; };
 		7475CC242B63390500B8E6A6 /* MockDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabase.swift; sourceTree = "<group>"; };
-		7475CC262B6339A800B8E6A6 /* CloudContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudContainer.swift; sourceTree = "<group>"; };
 		7475CC282B633A1700B8E6A6 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
-		7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCloudContainer.swift; sourceTree = "<group>"; };
 		7475CC2C2B633FE600B8E6A6 /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
 		74A6B1652B60162900ED0901 /* ChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildRecord.swift; sourceTree = "<group>"; };
 		74A8CBC62B741B9D00EA9F5A /* Round.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
@@ -177,7 +182,6 @@
 			children = (
 				7475CC242B63390500B8E6A6 /* MockDatabase.swift */,
 				7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */,
-				7475CC2A2B633CB400B8E6A6 /* MockCloudContainer.swift */,
 			);
 			path = MockServices;
 			sourceTree = "<group>";
@@ -212,6 +216,7 @@
 		7454A3722B5968D7006357C8 /* OneWord */ = {
 			isa = PBXGroup;
 			children = (
+				742AC6C32BA1E173007ABFE3 /* OneWord.entitlements */,
 				7454A3732B5968D7006357C8 /* OneWordApp.swift */,
 				7454A3AA2B5F0973006357C8 /* Views */,
 				7454A3AB2B5F098B006357C8 /* Models */,
@@ -249,6 +254,9 @@
 			isa = PBXGroup;
 			children = (
 				7454A3752B5968D7006357C8 /* ContentView.swift */,
+				742AC6C42BA223D8007ABFE3 /* GameOverview.swift */,
+				742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */,
+				742AC6C62BA22F32007ABFE3 /* NewGameView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -263,6 +271,7 @@
 				74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */,
 				742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */,
 				742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */,
+				742AC6C12BA1DD22007ABFE3 /* ProductionDatabase.swift */,
 				7413860A2B7FF0D000A1B424 /* RecordModels */,
 				7454A3AC2B5F0998006357C8 /* Protocols */,
 			);
@@ -274,7 +283,6 @@
 			children = (
 				74A8CBF62B741DFC00EA9F5A /* RecordProtocols */,
 				7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */,
-				7475CC262B6339A800B8E6A6 /* CloudContainer.swift */,
 				7475CC282B633A1700B8E6A6 /* Database.swift */,
 			);
 			path = Protocols;
@@ -425,20 +433,23 @@
 			files = (
 				7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */,
 				742AC6C02BA0EBE6007ABFE3 /* FieldQuery.swift in Sources */,
+				742AC6C52BA223D8007ABFE3 /* GameOverview.swift in Sources */,
 				742AC6B82B9F51CA007ABFE3 /* LocalUserViewModel.swift in Sources */,
 				742AC6B42B9F379C007ABFE3 /* LocalUser.swift in Sources */,
 				74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */,
 				7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */,
 				74A8CBF52B741CA700EA9F5A /* Record.swift in Sources */,
 				74647F022B96754100491452 /* FetchedTwoParentChild.swift in Sources */,
+				742AC6C92BA232B5007ABFE3 /* GameDetailView.swift in Sources */,
 				74A8CBDD2B741B9E00EA9F5A /* Question.swift in Sources */,
-				7475CC272B6339A800B8E6A6 /* CloudContainer.swift in Sources */,
 				74A8CBEB2B741BF100EA9F5A /* Entry.swift in Sources */,
+				742AC6C72BA22F32007ABFE3 /* NewGameView.swift in Sources */,
 				7475CC292B633A1700B8E6A6 /* Database.swift in Sources */,
 				7454A3762B5968D7006357C8 /* ContentView.swift in Sources */,
 				7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */,
 				74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */,
 				7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */,
+				742AC6C22BA1DD22007ABFE3 /* ProductionDatabase.swift in Sources */,
 				7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */,
 				74A8CBF12B741C8800EA9F5A /* FetchedReference.swift in Sources */,
 				74A8CBDE2B741B9E00EA9F5A /* UserGameRelationship.swift in Sources */,
@@ -465,7 +476,6 @@
 				741386022B7FC84000A1B424 /* MockCreatableRecord.swift in Sources */,
 				7475CC232B6338D800B8E6A6 /* MockFetchedRecord.swift in Sources */,
 				74F86A6D2B643EA800CD7691 /* MockFetchedChildRecord.swift in Sources */,
-				7475CC2B2B633CB400B8E6A6 /* MockCloudContainer.swift in Sources */,
 				741386042B7FC92700A1B424 /* MockCreatableChildRecord.swift in Sources */,
 				742AC6BA2B9F51DE007ABFE3 /* LocalUserVMTests.swift in Sources */,
 				7475CC2D2B633FE600B8E6A6 /* XCTestCase+Extension.swift in Sources */,
@@ -611,6 +621,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OneWord/OneWord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OneWord/Preview Content\"";
@@ -640,6 +651,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OneWord/OneWord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OneWord/Preview Content\"";
