@@ -122,13 +122,4 @@ class GameViewModel: ObservableObject {
         }
         return nextHost
     }
-    
-    //    /// - Throws `GameViewModelError.couldNotFetchRounds` if unable to make `Round` with `databaseService`
-    //    public func fetchNewestRound() async throws {
-    //        guard let currentGame else { throw GameViewModelError.noCurrentGame }
-    //        guard let newestRound: Round = (try? await databaseService.newestChildRecord(of: currentGame)) else {
-    //            throw GameViewModelError.couldNotFetchRounds
-    //        }
-    //        self.currentRound = newestRound
-    //    }
 }
