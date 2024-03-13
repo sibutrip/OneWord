@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+//    @StateObject var localUserVm = LocalUserViewModel(database: <#T##DatabaseServiceProtocol#>)
     var body: some View {
         VStack {
             Image(systemName: "globe")

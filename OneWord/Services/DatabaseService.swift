@@ -13,8 +13,7 @@ actor DatabaseService: DatabaseServiceProtocol {
         case couldNotModifyRecord, couldNotSaveRecord, invalidDataFromDatabase, couldNotGetChildrenFromDatabase, couldNotGetRecordsFromReferences, couldNotGetRecords, couldNotAuthenticate
     }
     
-    let container: CloudContainer
-    lazy var database = container.public
+    let database: Database
     
     func save<SomeRecord: CreatableRecord>(_ record: SomeRecord) async throws {
         do {
@@ -167,7 +166,7 @@ actor DatabaseService: DatabaseServiceProtocol {
     
     // MARK: Initializer
     
-    init(withContainer container: CloudContainer) {
-        self.container = container
+    init(withDatabase database: Database) {
+        self.database = database
     }
 }
