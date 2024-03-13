@@ -101,11 +101,11 @@ actor DatabaseService: DatabaseServiceProtocol {
         guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {
             throw DatabaseServiceError.couldNotGetChildrenFromDatabase
         }
-        let intermediaryRecordReferences = entries
+        let fetchedSecondParentRecordIDs: [Entry.ID] = entries
             .compactMap { Intermediary(from: $0) }
-            .compactMap { $0.secondParentReference }
-        guard let fetchedSecondParentEntries = try? await database.records(fromReferences: intermediaryRecordReferences) else {
-            throw DatabaseServiceError.couldNotGetRecordsFromReferences
+            .compactMap { $0.secondParentReference?.recordName }
+        guard let fetchedSecondParentEntries = try? await database.records(withIDs: fetchedSecondParentRecordIDs) else {
+            throw DatabaseServiceError.couldNotGetRecords
         }
         let secondParents = fetchedSecondParentEntries.compactMap { Intermediary.FetchedSecondParent(from: $0) }
         return secondParents
@@ -116,11 +116,11 @@ actor DatabaseService: DatabaseServiceProtocol {
         guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {
             throw DatabaseServiceError.couldNotGetChildrenFromDatabase
         }
-        let intermediaryRecordReferences = entries
+        let fetchedParentRecordIDs: [Entry.ID] = entries
             .compactMap { Intermediary(from: $0) }
-            .compactMap { $0.parentReference }
-        guard let fetchedParentEntries = try? await database.records(fromReferences: intermediaryRecordReferences) else {
-            throw DatabaseServiceError.couldNotGetRecordsFromReferences
+            .compactMap { $0.parentReference?.recordName }
+        guard let fetchedParentEntries = try? await database.records(withIDs: fetchedParentRecordIDs) else {
+            throw DatabaseServiceError.couldNotGetRecords
         }
         let parents = fetchedParentEntries.compactMap { Intermediary.FetchedParent(from: $0) }
         return parents

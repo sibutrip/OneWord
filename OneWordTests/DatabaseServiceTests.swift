@@ -117,8 +117,8 @@ final class DatabaseServiceTests: XCTestCase {
         
         let childRecords: [MockFetchedChildRecord]? = try? await sut.childRecords(of: parent)
         
-        let databaseRecordsCalls = database.messages.filter { $0 == .records }
-        XCTAssertEqual(databaseRecordsCalls, [.records])
+        let databaseRecordsCalls = database.messages.filter { $0 == .recordsMatchingQuery }
+        XCTAssertEqual(databaseRecordsCalls, [.recordsMatchingQuery])
         XCTAssertNotNil(childRecords)
     }
     
@@ -129,8 +129,8 @@ final class DatabaseServiceTests: XCTestCase {
         let childRecords: [MockFetchedChildRecord] = try await sut.childRecords(of: parent)
         
         XCTAssertEqual(0, childRecords.count)
-        let databaseRecordsCalls = database.messages.filter { $0 == .records }
-        XCTAssertEqual(databaseRecordsCalls, [.records])
+        let databaseRecordsCalls = database.messages.filter { $0 == .recordsMatchingQuery }
+        XCTAssertEqual(databaseRecordsCalls, [.recordsMatchingQuery])
     }
     
     func test_childRecords_throwsIfNotConnectedToDatabase() async {
@@ -150,10 +150,8 @@ final class DatabaseServiceTests: XCTestCase {
         let records = try await sut.fetchManyToManyRecords(fromParent: manyToMany, withIntermediary: MockFetchedTwoParentChildRecord.self)
         
         XCTAssertNotEqual(records.count, 0)
-        let databaseRecordsCalls = database.messages.filter { $0 == .records }
-        let databaseRecordsFromReferencesCalls = database.messages.filter { $0 == .recordsFromReferences }
-        XCTAssertEqual(databaseRecordsCalls.count, 1)
-        XCTAssertEqual(databaseRecordsFromReferencesCalls.count, 1)
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.recordsMatchingQuery, .recordsWithID])
     }
     
 #warning("add sad paths")
@@ -164,10 +162,8 @@ final class DatabaseServiceTests: XCTestCase {
         let records = try await sut.fetchManyToManyRecords(fromSecondParent: manyToMany, withIntermediary: MockFetchedTwoParentChildRecord.self)
         
         XCTAssertNotEqual(records.count, 0)
-        let databaseRecordsCalls = database.messages.filter { $0 == .records }
-        let databaseRecordsFromReferencesCalls = database.messages.filter { $0 == .recordsFromReferences }
-        XCTAssertEqual(databaseRecordsCalls.count, 1)
-        XCTAssertEqual(databaseRecordsFromReferencesCalls.count, 1)
+        let databaseMessages = database.messages
+        XCTAssertEqual(databaseMessages, [.recordsMatchingQuery, .recordsWithID])
     }
     
     func test_save_savesToDatabase() async throws {
@@ -196,7 +192,7 @@ final class DatabaseServiceTests: XCTestCase {
         
         XCTAssertNotEqual(mockRecords.count, 0)
         let databaseMessages = database.messages
-        XCTAssertEqual(databaseMessages, [.records])
+        XCTAssertEqual(databaseMessages, [.recordsForType])
     }
     
     func test_records_throwsIfCouldntGetRecords() async {

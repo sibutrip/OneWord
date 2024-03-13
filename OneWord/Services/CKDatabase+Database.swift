@@ -67,11 +67,7 @@ extension CKDatabase: Database {
         }
         return entries
     }
-    
-    func records(fromReferences fetchedReference: [FetchedReference]) -> [Entry] {
-        fatalError("not yet implemented")
-    }
-    
+        
     func record(for entryID: Entry.ID) async throws -> Entry {
         let ckRecordID = CKRecord.ID(recordName: entryID)
         let ckRecord: CKRecord = try await self.record(for: ckRecordID)
@@ -96,6 +92,22 @@ extension CKDatabase: Database {
             }
         }
         try await self.save(ckRecord)
+    }
+    
+    func records(withIDs ids: [Entry.ID]) async throws -> [Entry] {
+        let ckIDs = ids.map { CKRecord.ID(recordName: $0) }
+        let results = try await self.records(for: ckIDs)
+        let ckRecords = results.values.compactMap { try? $0.get() }
+        let entries: [Entry] = ckRecords.map { ckRecord in
+            var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)
+            for key in ckRecord.allKeys() {
+                if let ckRecordValue = ckRecord[key] {
+                    entry[key] = ckRecordValue
+                }
+            }
+            return entry
+        }
+        return entries
     }
     
     func records(matching referenceQuery: ReferenceQuery, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {

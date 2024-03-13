@@ -9,6 +9,10 @@
 import Foundation
 
 class MockDatabase: Database {
+    func records(withIDs ids: [Entry.ID]) async throws -> [Entry] {
+        messages.append(.recordsWithID)
+        return [recordFromDatabase]
+    }
     
     func record(matchingFieldQuery: FieldQuery) async throws -> Entry? {
         if connectedToDatabase {
@@ -32,11 +36,6 @@ class MockDatabase: Database {
         throw NSError(domain: "Could not save record to database", code: 0)
     }
     
-    func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry] {
-        messages.append(.recordsFromReferences)
-        return [recordFromDatabase]
-    }
-    
     func record(for entryID: Entry.ID) async throws -> Entry {
         if recordInDatabase && connectedToDatabase {
             messages.append(.record)
@@ -51,7 +50,7 @@ class MockDatabase: Database {
     
     func records(matching query: ReferenceQuery, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {
         if connectedToDatabase {
-            messages.append(.records)
+            messages.append(.recordsMatchingQuery)
             if !fetchedCorrectRecordType {
                 return [incorrectRecordFromDatabase]
             }
@@ -76,7 +75,7 @@ class MockDatabase: Database {
     
     func records(forRecordType type: String) async throws -> [Entry] {
         if connectedToDatabase {
-            messages.append(.records)
+            messages.append(.recordsForType)
             return [recordFromDatabase]
         }
         throw NSError(domain: "could not fetch records in database", code: 0)
@@ -119,7 +118,7 @@ class MockDatabase: Database {
     }()
     
     enum Message {
-        case record, save, modify, records, recordsFromReferences, authenticate
+        case record, save, modify, recordsForType, authenticate, recordsMatchingQuery, recordsWithID
     }
     
     init(recordInDatabase: Bool = true,
