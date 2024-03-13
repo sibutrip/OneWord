@@ -27,5 +27,5 @@ protocol Database {
     
     func authenticate() async throws -> AuthenticationStatus
     
-    func record(matchingFieldQuery: FieldQuery) async throws -> Entry?
+    func record(matchingFieldQuery fieldQuery: FieldQuery) async throws -> Entry?
 }

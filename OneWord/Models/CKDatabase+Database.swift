@@ -9,8 +9,22 @@ import CloudKit
 
 extension CKDatabase: Database {
     
-    func record(matchingFieldQuery: FieldQuery) async throws -> Entry? {
-        fatalError("not yet implemented")
+    func record(matchingFieldQuery fieldQuery: FieldQuery) async throws -> Entry? {
+        let predicate = NSPredicate(format: "\(fieldQuery.recordType) == %@", fieldQuery.value)
+        let query = CKQuery(recordType: fieldQuery.recordType, predicate: predicate)
+        let (resultsById,_) = try await self.records(matching: query)
+        let results = resultsById.map { $0.1 }
+        let ckRecords = results.compactMap { try? $0.get() }
+        let entries: [Entry] = ckRecords.map { ckRecord in
+            var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)
+            for key in ckRecord.allKeys() {
+                if let ckRecordValue = ckRecord[key] {
+                    entry[key] = ckRecordValue
+                }
+            }
+            return entry
+        }
+        return entries.first
     }
     
     func authenticate() async throws -> AuthenticationStatus {
