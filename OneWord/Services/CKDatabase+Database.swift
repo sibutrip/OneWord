@@ -51,7 +51,21 @@ extension CKDatabase: Database {
     }
     
     func records(forRecordType type: String) async throws -> [Entry] {
-        fatalError("not yet implemented")
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: type, predicate: predicate)
+        let (resultsById,_) = try await self.records(matching: query)
+        let results = resultsById.map { $0.1 }
+        let ckRecords = results.compactMap { try? $0.get() }
+        let entries: [Entry] = ckRecords.map { ckRecord in
+            var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)
+            for key in ckRecord.allKeys() {
+                if let ckRecordValue = ckRecord[key] {
+                    entry[key] = ckRecordValue
+                }
+            }
+            return entry
+        }
+        return entries
     }
     
     func records(fromReferences fetchedReference: [FetchedReference]) -> [Entry] {
@@ -131,6 +145,5 @@ extension CKDatabase: Database {
         }
         return (saveResults: entriesSaved, deleteResults: entryIDsDeleted)
     }
-    
     
 }
