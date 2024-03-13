@@ -17,6 +17,7 @@ class LocalUserViewModel: ObservableObject {
     private let database: DatabaseServiceProtocol
     @Published var user: User? = nil
     @Published var words: [Word] = []
+    @Published var games: [Game] = []
     var userID: User.ID?
     var localUser: LocalUser? {
         guard let user else { return nil }
@@ -63,6 +64,32 @@ class LocalUserViewModel: ObservableObject {
             try await database.save(user)
             self.user = user
         } catch { throw LocalUserViewModelError.couldNotCreateAccount }
+    }
+    
+#warning("add to tests")
+    func fetchGames() async throws {
+        guard let user else { fatalError() }
+        let fetchedGames: [FetchedGame] = try await database.fetchManyToManyRecords(fromParent: user, withIntermediary: FetchedUserGameRelationship.self)
+        let games = fetchedGames.map { Game(id: $0.id, groupName: $0.groupName) }
+        self.games = games
+    }
+    
+    /// Creates new game and updates database with one-to-many relationship.
+    ///
+    /// Subsequent added users should also have `Game` as a child record of their `User` record.
+    /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
+    public func newGame(withGroupName groupName: String) async throws -> Game {
+        #warning("add to tests")
+        guard let user else { fatalError() }
+        let newGame = Game(groupName: groupName)
+        let userGameRelationship = UserGameRelationship(user: user, game: newGame)
+        do {
+            try await database.save(newGame)
+            try await database.add(userGameRelationship, withParent: user, withSecondParent: newGame)
+            return newGame
+        } catch {
+            fatalError()
+        }
     }
     
     // MARK: Helper Methods

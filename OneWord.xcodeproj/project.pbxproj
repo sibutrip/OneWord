@@ -16,6 +16,9 @@
 		742AC6BC2BA09E4D007ABFE3 /* AuthenticationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */; };
 		742AC6C02BA0EBE6007ABFE3 /* FieldQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */; };
 		742AC6C22BA1DD22007ABFE3 /* ProductionDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C12BA1DD22007ABFE3 /* ProductionDatabase.swift */; };
+		742AC6C52BA223D8007ABFE3 /* GameOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C42BA223D8007ABFE3 /* GameOverview.swift */; };
+		742AC6C72BA22F32007ABFE3 /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C62BA22F32007ABFE3 /* NewGameView.swift */; };
+		742AC6C92BA232B5007ABFE3 /* GameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */; };
 		7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3732B5968D7006357C8 /* OneWordApp.swift */; };
 		7454A3762B5968D7006357C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3752B5968D7006357C8 /* ContentView.swift */; };
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
@@ -74,6 +77,9 @@
 		742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldQuery.swift; sourceTree = "<group>"; };
 		742AC6C12BA1DD22007ABFE3 /* ProductionDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionDatabase.swift; sourceTree = "<group>"; };
 		742AC6C32BA1E173007ABFE3 /* OneWord.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneWord.entitlements; sourceTree = "<group>"; };
+		742AC6C42BA223D8007ABFE3 /* GameOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverview.swift; sourceTree = "<group>"; };
+		742AC6C62BA22F32007ABFE3 /* NewGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameView.swift; sourceTree = "<group>"; };
+		742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailView.swift; sourceTree = "<group>"; };
 		7454A3702B5968D7006357C8 /* OneWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3732B5968D7006357C8 /* OneWordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordApp.swift; sourceTree = "<group>"; };
 		7454A3752B5968D7006357C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -248,6 +254,9 @@
 			isa = PBXGroup;
 			children = (
 				7454A3752B5968D7006357C8 /* ContentView.swift */,
+				742AC6C42BA223D8007ABFE3 /* GameOverview.swift */,
+				742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */,
+				742AC6C62BA22F32007ABFE3 /* NewGameView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -424,14 +433,17 @@
 			files = (
 				7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */,
 				742AC6C02BA0EBE6007ABFE3 /* FieldQuery.swift in Sources */,
+				742AC6C52BA223D8007ABFE3 /* GameOverview.swift in Sources */,
 				742AC6B82B9F51CA007ABFE3 /* LocalUserViewModel.swift in Sources */,
 				742AC6B42B9F379C007ABFE3 /* LocalUser.swift in Sources */,
 				74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */,
 				7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */,
 				74A8CBF52B741CA700EA9F5A /* Record.swift in Sources */,
 				74647F022B96754100491452 /* FetchedTwoParentChild.swift in Sources */,
+				742AC6C92BA232B5007ABFE3 /* GameDetailView.swift in Sources */,
 				74A8CBDD2B741B9E00EA9F5A /* Question.swift in Sources */,
 				74A8CBEB2B741BF100EA9F5A /* Entry.swift in Sources */,
+				742AC6C72BA22F32007ABFE3 /* NewGameView.swift in Sources */,
 				7475CC292B633A1700B8E6A6 /* Database.swift in Sources */,
 				7454A3762B5968D7006357C8 /* ContentView.swift in Sources */,
 				7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */,

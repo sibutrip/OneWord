@@ -144,7 +144,7 @@ actor DatabaseService: DatabaseServiceProtocol {
     }
     
     /// returns nil if record does not exist. if any other error, throws instead
-    func record<SomeRecord: FetchedRecord>(forValue value: String, inField field: SomeRecord.RecordKeys) async throws -> SomeRecord? {
+    func record<SomeRecord: FetchedRecord>(forValue value: SomeRecord.ID, inField field: SomeRecord.RecordKeys) async throws -> SomeRecord? where SomeRecord.ID == String {
         let fieldQuery = FieldQuery(forValue: value, inField: field, forRecordType: SomeRecord.self)
         var entry: Entry?
         do {

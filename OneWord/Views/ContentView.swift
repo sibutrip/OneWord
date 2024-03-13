@@ -13,33 +13,21 @@ struct ContentView: View {
     @State private var localUserError: LocalUserViewModelError?
     @State private var isLoading = false
     @State private var userName = ""
-    
     private var showingError: Binding<Bool> {
-        Binding {
-            localUserError != nil
-        } set: { _ in localUserError = nil }
+        Binding { localUserError != nil }
+        set: { _ in localUserError = nil }
     }
+    
     var body: some View {
         Group {
             if isLoading {
                 ProgressView()
             } else {
-                if let user = localUserVm.user {
-                    Text("hello \(user.name)")
+                if let localUser = localUserVm.localUser {
+                    GameOverview(localUser: localUser)
+                        .environmentObject(localUserVm)
                 } else {
-                    VStack {
-                        Text("Welcome to OneWord!")
-                            .font(.title)
-                        Text("What should we call you?")
-                        TextField("Your Name", text: $userName)
-                            .textFieldStyle(.roundedBorder)
-                        Button("Join the OneWordCule") {
-                            createAccount()
-                        }
-                        .disabled(userName.isEmpty)
-                        .buttonStyle(.borderedProminent)
-                    }
-                    .padding()
+                    onboarding
                 }
             }
         }
@@ -73,6 +61,22 @@ struct ContentView: View {
             } catch { fatalError("unknown error") }
             isLoading = false
         }
+    }
+    
+    var onboarding: some View {
+        VStack {
+            Text("Welcome to OneWord!")
+                .font(.title)
+            Text("What should we call you?")
+            TextField("Your Name", text: $userName)
+                .textFieldStyle(.roundedBorder)
+            Button("Join the OneWordCule") {
+                createAccount()
+            }
+            .disabled(userName.isEmpty)
+            .buttonStyle(.borderedProminent)
+        }
+        .padding()
     }
 }
 
