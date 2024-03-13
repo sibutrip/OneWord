@@ -10,7 +10,7 @@ import CloudKit
 extension CKDatabase: Database {
     
     func record(matchingFieldQuery fieldQuery: FieldQuery) async throws -> Entry? {
-        let predicate = NSPredicate(format: "\(fieldQuery.recordType) == %@", fieldQuery.value)
+        let predicate = NSPredicate(format: "\(fieldQuery.field) == %@", fieldQuery.value)
         let query = CKQuery(recordType: fieldQuery.recordType, predicate: predicate)
         let (resultsById,_) = try await self.records(matching: query)
         let results = resultsById.map { $0.1 }
@@ -85,8 +85,8 @@ extension CKDatabase: Database {
             if let entryValue = entry[key] as? FetchedReference {
                 let reference = CKRecord.Reference(recordID: .init(recordName: entryValue.recordName), action: .none)
                 ckRecord[key] = reference
-            } else if let entryValue = entry[key] as? FetchedReference {
-                ckRecord[key] = CKRecord.Reference(recordID: CKRecord.ID(recordName: entryValue.recordName), action: .none)
+            } else if let entryValue = entry[key] as? __CKRecordObjCValue {
+                ckRecord[key] = entryValue
             } else {
                 fatalError("not able to turn entry into ckrecord")
             }
@@ -113,9 +113,12 @@ extension CKDatabase: Database {
     func records(matching referenceQuery: ReferenceQuery, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {
         let desiredKeys = desiredKeys as [CKRecord.FieldKey]?
         // reference made from parent record (searching child records for field with parent reference)
-        let reference = CKRecord.Reference(record: CKRecord(recordType: referenceQuery.parentRecordType, recordID: CKRecord.ID(recordName: referenceQuery.parentRecord.id)), action: .none)
+        #warning("do i need to refecth the parent ck record?")
+        guard let parentCkRecord = try? await self.record(for: CKRecord.ID(recordName: referenceQuery.parentRecord.id)) else { return [] }
+        let reference = CKRecord.Reference(record: CKRecord(recordType: referenceQuery.parentRecordType, recordID: parentCkRecord.recordID), action: .none)
         let predicate = NSPredicate(format: "\(referenceQuery.parentRecordType) == %@", reference)
-        let (matchResults,_) = try await records(matching: CKQuery(recordType: referenceQuery.childRecordType, predicate: predicate), inZoneWith: nil, desiredKeys: desiredKeys, resultsLimit: .max)
+#warning("does this throw because there are no matching records?")
+        guard let (matchResults,_) = try? await records(matching: CKQuery(recordType: referenceQuery.childRecordType, predicate: predicate), inZoneWith: nil, desiredKeys: desiredKeys, resultsLimit: .max) else { return [] }
         let entries: [Entry] = matchResults.compactMap { (ckID, ckResult) in
             guard let ckRecord = try? ckResult.get() else { return nil }
             var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)

@@ -15,6 +15,7 @@
 		742AC6BA2B9F51DE007ABFE3 /* LocalUserVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */; };
 		742AC6BC2BA09E4D007ABFE3 /* AuthenticationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */; };
 		742AC6C02BA0EBE6007ABFE3 /* FieldQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */; };
+		742AC6C22BA1DD22007ABFE3 /* ProductionDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742AC6C12BA1DD22007ABFE3 /* ProductionDatabase.swift */; };
 		7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3732B5968D7006357C8 /* OneWordApp.swift */; };
 		7454A3762B5968D7006357C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3752B5968D7006357C8 /* ContentView.swift */; };
 		7454A3782B5968D8006357C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7454A3772B5968D8006357C8 /* Assets.xcassets */; };
@@ -71,6 +72,8 @@
 		742AC6B92B9F51DE007ABFE3 /* LocalUserVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserVMTests.swift; sourceTree = "<group>"; };
 		742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationStatus.swift; sourceTree = "<group>"; };
 		742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldQuery.swift; sourceTree = "<group>"; };
+		742AC6C12BA1DD22007ABFE3 /* ProductionDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionDatabase.swift; sourceTree = "<group>"; };
+		742AC6C32BA1E173007ABFE3 /* OneWord.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneWord.entitlements; sourceTree = "<group>"; };
 		7454A3702B5968D7006357C8 /* OneWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7454A3732B5968D7006357C8 /* OneWordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWordApp.swift; sourceTree = "<group>"; };
 		7454A3752B5968D7006357C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -207,6 +210,7 @@
 		7454A3722B5968D7006357C8 /* OneWord */ = {
 			isa = PBXGroup;
 			children = (
+				742AC6C32BA1E173007ABFE3 /* OneWord.entitlements */,
 				7454A3732B5968D7006357C8 /* OneWordApp.swift */,
 				7454A3AA2B5F0973006357C8 /* Views */,
 				7454A3AB2B5F098B006357C8 /* Models */,
@@ -258,6 +262,7 @@
 				74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */,
 				742AC6BF2BA0EBE6007ABFE3 /* FieldQuery.swift */,
 				742AC6BB2BA09E4D007ABFE3 /* AuthenticationStatus.swift */,
+				742AC6C12BA1DD22007ABFE3 /* ProductionDatabase.swift */,
 				7413860A2B7FF0D000A1B424 /* RecordModels */,
 				7454A3AC2B5F0998006357C8 /* Protocols */,
 			);
@@ -432,6 +437,7 @@
 				7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */,
 				74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */,
 				7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */,
+				742AC6C22BA1DD22007ABFE3 /* ProductionDatabase.swift in Sources */,
 				7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */,
 				74A8CBF12B741C8800EA9F5A /* FetchedReference.swift in Sources */,
 				74A8CBDE2B741B9E00EA9F5A /* UserGameRelationship.swift in Sources */,
@@ -603,6 +609,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OneWord/OneWord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OneWord/Preview Content\"";
@@ -632,6 +639,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OneWord/OneWord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OneWord/Preview Content\"";
