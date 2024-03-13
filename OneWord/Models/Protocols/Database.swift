@@ -16,9 +16,9 @@ protocol Database {
         desiredKeys: [Entry.FieldKey]?,
         resultsLimit: Int
     ) async throws -> [Entry]
-   
-    func records(fromReferences fetchedReference: [FetchedReference]) async throws -> [Entry]
     
+    func records(withIDs ids: [Entry.ID]) async throws -> [Entry]
+       
     func records(forRecordType type: String) async throws -> [Entry]
     
     func modifyRecords(
@@ -27,5 +27,5 @@ protocol Database {
     
     func authenticate() async throws -> AuthenticationStatus
     
-    func record(matchingFieldQuery: FieldQuery) async throws -> Entry?
+    func record(matchingFieldQuery fieldQuery: FieldQuery) async throws -> Entry?
 }

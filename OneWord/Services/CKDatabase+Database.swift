@@ -9,22 +9,65 @@ import CloudKit
 
 extension CKDatabase: Database {
     
-    func record(matchingFieldQuery: FieldQuery) async throws -> Entry? {
-        fatalError("not yet implemented")
+    func record(matchingFieldQuery fieldQuery: FieldQuery) async throws -> Entry? {
+        let predicate = NSPredicate(format: "\(fieldQuery.recordType) == %@", fieldQuery.value)
+        let query = CKQuery(recordType: fieldQuery.recordType, predicate: predicate)
+        let (resultsById,_) = try await self.records(matching: query)
+        let results = resultsById.map { $0.1 }
+        let ckRecords = results.compactMap { try? $0.get() }
+        let entries: [Entry] = ckRecords.map { ckRecord in
+            var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)
+            for key in ckRecord.allKeys() {
+                if let ckRecordValue = ckRecord[key] {
+                    entry[key] = ckRecordValue
+                }
+            }
+            return entry
+        }
+        return entries.first
     }
     
-    func authenticate() -> AuthenticationStatus {
-        fatalError("not yet implemented")
+    func authenticate() async throws -> AuthenticationStatus {
+        let accountStatus = try await CKContainer.default().accountStatus()
+        switch accountStatus {
+        case .couldNotDetermine:
+            return.couldNotDetermineAccountStatus
+        case .available:
+            do {
+                let ckID = try await CKContainer.default().userRecordID()
+                return.available(ckID.recordName)
+            } catch {
+                return .couldNotDetermineAccountStatus
+            }
+        case .restricted:
+            return .accountRestricted
+        case .noAccount:
+            return .noAccount
+        case .temporarilyUnavailable:
+            return .accountTemporarilyUnavailable
+        @unknown default:
+            fatalError()
+        }
     }
     
     func records(forRecordType type: String) async throws -> [Entry] {
-        fatalError("not yet implemented")
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: type, predicate: predicate)
+        let (resultsById,_) = try await self.records(matching: query)
+        let results = resultsById.map { $0.1 }
+        let ckRecords = results.compactMap { try? $0.get() }
+        let entries: [Entry] = ckRecords.map { ckRecord in
+            var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)
+            for key in ckRecord.allKeys() {
+                if let ckRecordValue = ckRecord[key] {
+                    entry[key] = ckRecordValue
+                }
+            }
+            return entry
+        }
+        return entries
     }
-    
-    func records(fromReferences fetchedReference: [FetchedReference]) -> [Entry] {
-        fatalError("not yet implemented")
-    }
-    
+        
     func record(for entryID: Entry.ID) async throws -> Entry {
         let ckRecordID = CKRecord.ID(recordName: entryID)
         let ckRecord: CKRecord = try await self.record(for: ckRecordID)
@@ -36,7 +79,7 @@ extension CKDatabase: Database {
     }
     
     func save(_ entry: Entry) async throws {
-        // mapping logic. separate this. ckrecord to concrete as well.
+        // TODO: mapping logic. separate this. ckrecord to concrete as well.
         let ckRecord = CKRecord(recordType: entry.recordType)
         for key in entry.allKeys() {
             if let entryValue = entry[key] as? FetchedReference {
@@ -49,6 +92,22 @@ extension CKDatabase: Database {
             }
         }
         try await self.save(ckRecord)
+    }
+    
+    func records(withIDs ids: [Entry.ID]) async throws -> [Entry] {
+        let ckIDs = ids.map { CKRecord.ID(recordName: $0) }
+        let results = try await self.records(for: ckIDs)
+        let ckRecords = results.values.compactMap { try? $0.get() }
+        let entries: [Entry] = ckRecords.map { ckRecord in
+            var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)
+            for key in ckRecord.allKeys() {
+                if let ckRecordValue = ckRecord[key] {
+                    entry[key] = ckRecordValue
+                }
+            }
+            return entry
+        }
+        return entries
     }
     
     func records(matching referenceQuery: ReferenceQuery, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {
@@ -98,6 +157,5 @@ extension CKDatabase: Database {
         }
         return (saveResults: entriesSaved, deleteResults: entryIDsDeleted)
     }
-    
     
 }

@@ -16,7 +16,7 @@ struct MockFetchedChildRecord: FetchedRecord, ChildRecord {
         case name, mockRecord
     }
     
-    init?(from entry: OneWord.Entry) {
+    init?(from entry: Entry) {
         guard let name = entry["name"] as? String,
               let mockRecord = entry["mockRecord"] as? FetchedReference else {
             return nil

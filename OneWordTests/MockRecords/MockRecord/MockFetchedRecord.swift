@@ -26,7 +26,7 @@ struct MockFetchedRecord: FetchedRecord {
     
     // MARK: Initializers
     
-    init?(from entry: OneWord.Entry) {
+    init?(from entry: Entry) {
         guard let name = entry["name"] as? String else {
             return nil
         }
