@@ -30,22 +30,6 @@ class GameViewModel: ObservableObject {
         self.database = database
     }
     
-//    /// Creates new game and updates database with one-to-many relationship.
-//    ///
-//    /// Subsequent added users should also have `Game` as a child record of their `User` record.
-//    /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
-//    public func createGame(withGroupName groupName: String) async throws {
-//        let newGame = Game(groupName: groupName)
-//        let userGameRelationship = UserGameRelationship(user: localUser.user, game: newGame)
-//        do {
-//            try await database.save(newGame)
-//            try await database.add(userGameRelationship, withParent: localUser.user, withSecondParent: newGame)
-//            self.currentGame = newGame
-//        } catch {
-//            throw GameViewModelError.couldNotCreateGame
-//        }
-//    }
-    
     /// Adds a user to an existing game.
     /// - Parameter userID: The database-registed ID of a `User`. For CloudKit, this is is taken from the user's id in the `Users` CKRecord.
     ///
@@ -53,7 +37,6 @@ class GameViewModel: ObservableObject {
     /// - Throws `GameViewModelError.userNotFound` if no user with that ID was found in the database.
     /// - Throws `GameViewModelError.couldNotAddUserToGame` if could not update `Game` and `User` records in the database.
     public func addUser(withId userID: String) async throws {
-//        guard let currentGame else { throw GameViewModelError.noCurrentGame }
         guard let fetchedUser: FetchedUser = (try? await database.fetch(withID: userID)) else {
             throw GameViewModelError.userNotFound
         }
@@ -72,7 +55,6 @@ class GameViewModel: ObservableObject {
     /// - Throws `GameViewModelError.noCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotFetchUsers` if could not fetch users from database.
     public func fetchUsersInGame() async throws {
-//        guard let currentGame else { throw GameViewModelError.noCurrentGame }
         guard let fetchedUsers: [FetchedUser] = (try? await database.fetchManyToManyRecords(
             fromSecondParent: currentGame,
             withIntermediary: FetchedUserGameRelationship.self)) else {
@@ -105,7 +87,6 @@ class GameViewModel: ObservableObject {
     /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotCreateRound` if `databaseService.add` throws.
     public func startRound() async throws {
-//        guard let currentGame else { throw GameViewModelError.noCurrentGame }
         let allQuestions: [Question] = try await database.records()
         let previousQuestions = Set(previousRounds.map { $0.question })
         let newQuestions: [Question] = allQuestions.filter { !previousQuestions.contains($0) }

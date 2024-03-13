@@ -74,5 +74,38 @@ final class LocalUserVMTests: XCTestCase {
         XCTAssertNil(sut.user)
         XCTAssertNotNil(sut.userID)
     }
+    
+    
+    func test_createGame_addsNewGameToDatabaseWithUserAsParent() async throws {
+        let database = DatabaseServiceSpy()
+        let sut = LocalUserViewModel(database: database)
+        sut.user = User(name: "Cory", systemID: "My amazing system ID")
+        
+        let _ = try await sut.newGame(withGroupName: "Test Group")
+        
+        let receivedMessages = await database.receivedMessages
+        XCTAssertEqual(receivedMessages, [.save, .add])
+    }
+    
+    func test_createGame_throwsIfCannotAddGameToDatabase() async {
+        let database = DatabaseServiceSpy(didAddSuccessfully: false)
+        let sut = LocalUserViewModel(database: database)
+        sut.user = User(name: "Cory", systemID: "My amazing system ID")
+        
+        await assertDoesThrow(test: {
+            _ = try await sut.newGame(withGroupName: "Test Group")
+        }, throws: LocalUserViewModelError.couldNotCreateGame)
+    }
+    
+    func test_createGame_throwsIfNoUser() async {
+        let database = DatabaseServiceSpy()
+        let sut = LocalUserViewModel(database: database)
+        sut.user = nil
+        
+        await assertDoesThrow(test: {
+            _ = try await sut.newGame(withGroupName: "Test Group")
+        }, throws: LocalUserViewModelError.couldNotFetchUser)
+    }
+    
 }
     

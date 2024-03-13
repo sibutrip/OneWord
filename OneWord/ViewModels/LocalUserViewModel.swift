@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class LocalUserViewModel: ObservableObject {
     enum LocalUserViewModelError: String, Error {
-        case couldNotFetchUser, couldNotFetchUsersWords, noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled, couldNotAuthenticate, couldNotCreateAccount
+        case couldNotFetchUser, couldNotFetchUsersWords, noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled, couldNotAuthenticate, couldNotCreateAccount, couldNotCreateGame
         var errorTitle: String { return self.rawValue }
     }
     
@@ -80,7 +80,7 @@ class LocalUserViewModel: ObservableObject {
     /// - Throws `GameViewModelError.couldNotCreateGame` if `databaseService.add` throws.
     public func newGame(withGroupName groupName: String) async throws -> Game {
         #warning("add to tests")
-        guard let user else { fatalError() }
+        guard let user else { throw LocalUserViewModelError.couldNotFetchUser }
         let newGame = Game(groupName: groupName)
         let userGameRelationship = UserGameRelationship(user: user, game: newGame)
         do {
@@ -88,7 +88,7 @@ class LocalUserViewModel: ObservableObject {
             try await database.add(userGameRelationship, withParent: user, withSecondParent: newGame)
             return newGame
         } catch {
-            fatalError()
+            throw LocalUserViewModelError.couldNotCreateGame
         }
     }
     
