@@ -10,7 +10,7 @@ import Foundation
 struct Word: CreatableRecord, TwoParentsChildRecord {
     typealias Parent = User
     typealias SecondParent = Round
-    enum RecordKeys: String, CaseIterable { case wordDescription, rank, user, round }
+    enum RecordKeys: String, CaseIterable { case WordDescription, Rank, User, Round }
     static let recordType = "Word"
     let id: String
     let wordDescription: String
@@ -36,19 +36,19 @@ struct Word: CreatableRecord, TwoParentsChildRecord {
 }
 
 struct FetchedWord: FetchedTwoParentsChild {
-    enum RecordKeys: String, CaseIterable { case wordDescription, rank, user, round }
+    enum RecordKeys: String, CaseIterable { case WordDescription, Rank, User, Round }
     typealias FetchedParent = FetchedUser
     typealias FetchedSecondParent = FetchedRound
     typealias Parent = User
     typealias SecondParent = Round
     init?(from entry: Entry) {
-        guard let description = entry["wordDescription"] as? String,
-            let user = entry["user"] as? FetchedReference else {
+        guard let description = entry["WordDescription"] as? String,
+            let user = entry["User"] as? FetchedReference else {
             return nil
         }
-        let round = entry["round"] as? FetchedReference
+        let round = entry["Round"] as? FetchedReference
         
-        self.rank = entry["rank"] as? Int
+        self.rank = entry["Rank"] as? Int
         self.id = entry.id
         self.description = description
         self.user = user

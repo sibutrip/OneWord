@@ -9,7 +9,7 @@ import Foundation
 
 struct Round: CreatableRecord, ChildRecord {
     typealias Parent = Game
-    enum RecordKeys: String, CaseIterable { case game, question, host }
+    enum RecordKeys: String, CaseIterable { case Game, Question, Host }
     static let recordType = "Round"
     let id: String
     let localUser: LocalUser
@@ -27,11 +27,11 @@ struct Round: CreatableRecord, ChildRecord {
 
 struct FetchedRound: FetchedRecord, ChildRecord {
     typealias Parent = Game
-    enum RecordKeys: String, CaseIterable { case game, question, host }
+    enum RecordKeys: String, CaseIterable { case Game, Question, Host }
     init?(from entry: Entry) {
-        guard let game = entry["game"] as? FetchedReference,
-              let question = entry["question"] as? FetchedReference,
-              let host = entry["host"] as? FetchedReference else {
+        guard let game = entry["Game"] as? FetchedReference,
+              let question = entry["Question"] as? FetchedReference,
+              let host = entry["Host"] as? FetchedReference else {
             return nil
         }
         self.id = entry.id

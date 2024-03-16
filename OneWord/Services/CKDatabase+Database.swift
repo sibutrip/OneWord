@@ -118,13 +118,18 @@ extension CKDatabase: Database {
         let reference = CKRecord.Reference(record: CKRecord(recordType: referenceQuery.parentRecordType, recordID: parentCkRecord.recordID), action: .none)
         let predicate = NSPredicate(format: "\(referenceQuery.parentRecordType) == %@", reference)
 #warning("does this throw because there are no matching records?")
-        guard let (matchResults,_) = try? await records(matching: CKQuery(recordType: referenceQuery.childRecordType, predicate: predicate), inZoneWith: nil, desiredKeys: desiredKeys, resultsLimit: .max) else { return [] }
+        guard let (matchResults,_) = try? await records(matching: CKQuery(recordType: referenceQuery.childRecordType, predicate: predicate), inZoneWith: nil, desiredKeys: desiredKeys) else { print("no m2m records found!!"); return [] }
         let entries: [Entry] = matchResults.compactMap { (ckID, ckResult) in
             guard let ckRecord = try? ckResult.get() else { return nil }
             var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)
             for key in ckRecord.allKeys() {
                 if let ckRecordValue = ckRecord[key] {
-                    entry[key] = ckRecordValue
+                    if let ckReference = ckRecordValue as? CKRecord.Reference {
+                        let fetchedReference = FetchedReference(recordID: ckReference.recordID.recordName, recordType: key)
+                        entry[key] = fetchedReference
+                    } else {
+                        entry[key] = ckRecordValue
+                    }
                 }
             }
             return entry

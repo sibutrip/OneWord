@@ -165,6 +165,7 @@
 		7413860A2B7FF0D000A1B424 /* RecordModels */ = {
 			isa = PBXGroup;
 			children = (
+				74A8CBCA2B741B9D00EA9F5A /* Question.swift */,
 				74A8CBC62B741B9D00EA9F5A /* Round.swift */,
 				74A8CBD62B741B9E00EA9F5A /* Game.swift */,
 				74A8CBD32B741B9D00EA9F5A /* User.swift */,
@@ -261,7 +262,6 @@
 		7454A3AB2B5F098B006357C8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				74A8CBCA2B741B9D00EA9F5A /* Question.swift */,
 				742AC6B32B9F379C007ABFE3 /* LocalUser.swift */,
 				74A8CBE72B741BF100EA9F5A /* Entry.swift */,
 				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,

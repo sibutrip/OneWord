@@ -6,9 +6,9 @@
 //
 
 struct Question: FetchedRecord {
-    enum RecordKeys: String, CaseIterable { case questionInfo }
+    enum RecordKeys: String, CaseIterable { case QuestionInfo }
     init?(from entry: Entry) {
-        guard let description = entry["questionInfo"] as? String else {
+        guard let description = entry["QuestionInfo"] as? String else {
             return nil
         }
         self.id = entry.id

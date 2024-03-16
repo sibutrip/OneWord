@@ -33,7 +33,7 @@ class LocalUserViewModel: ObservableObject {
         self.userID = userID
         let fetchedUser: FetchedUser?
         do {
-            fetchedUser = try await database.record(forValue: userID, inField: .systemID)
+            fetchedUser = try await database.record(forValue: userID, inField: .SystemID)
         } catch {
             throw LocalUserViewModelError.couldNotFetchUser
         }

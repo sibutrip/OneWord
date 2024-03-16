@@ -8,7 +8,7 @@
 import Foundation
 
 struct User: CreatableRecord, Identifiable {
-    enum RecordKeys: String, CaseIterable { case name, systemID }
+    enum RecordKeys: String, CaseIterable { case Name, SystemID }
     static let recordType = "User"
     let id: String
     let name: String
@@ -21,10 +21,10 @@ struct User: CreatableRecord, Identifiable {
 }
 
 struct FetchedUser: FetchedRecord {
-    enum RecordKeys: String, CaseIterable { case name, systemID }
+    enum RecordKeys: String, CaseIterable { case Name, SystemID }
     init?(from entry: Entry) {
-        guard let name = entry["name"] as? String,
-              let systemID = entry["systemID"] as? String else {
+        guard let name = entry["Name"] as? String,
+              let systemID = entry["SystemID"] as? String else {
             return nil
         }
         self.id = entry.id

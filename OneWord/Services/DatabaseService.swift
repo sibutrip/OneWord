@@ -98,8 +98,9 @@ actor DatabaseService: DatabaseServiceProtocol {
         guard let entries = try? await database.records(matching: query, desiredKeys: nil, resultsLimit: Int.max) else {
             throw DatabaseServiceError.couldNotGetChildrenFromDatabase
         }
-        let fetchedSecondParentRecordIDs: [Entry.ID] = entries
+        let intermediaries = entries
             .compactMap { Intermediary(from: $0) }
+        let fetchedSecondParentRecordIDs: [Entry.ID] = intermediaries
             .compactMap { $0.secondParentReference?.recordName }
         guard let fetchedSecondParentEntries = try? await database.records(withIDs: fetchedSecondParentRecordIDs) else {
             throw DatabaseServiceError.couldNotGetRecords

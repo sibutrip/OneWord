@@ -8,7 +8,7 @@
 import Foundation
 
 struct Game: CreatableRecord {
-    enum RecordKeys: String, CaseIterable { case groupName }
+    enum RecordKeys: String, CaseIterable { case GroupName }
     static let recordType = "Game"
     let id: String
     let groupName: String
@@ -19,9 +19,9 @@ struct Game: CreatableRecord {
 }
 
 struct FetchedGame: FetchedRecord {
-    enum RecordKeys: String, CaseIterable { case groupName }
+    enum RecordKeys: String, CaseIterable { case GroupName }
     init?(from entry: Entry) {
-        guard let groupName = entry["groupName"] as? String else {
+        guard let groupName = entry["GroupName"] as? String else {
             return nil
         }
         self.id = entry.id
