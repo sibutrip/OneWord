@@ -8,30 +8,35 @@
 import Foundation
 
 struct Game: CreatableRecord {
-    enum RecordKeys: String, CaseIterable { case GroupName }
+    enum RecordKeys: String, CaseIterable { case GroupName, InviteCode }
     static let recordType = "Game"
     let id: String
     let groupName: String
+    let inviteCode: String
     init(id: String = UUID().uuidString, groupName: String) {
         self.id = id
         self.groupName = groupName
+        self.inviteCode = String((0..<6).map { _ in "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".randomElement()! })
     }
 }
 
 struct FetchedGame: FetchedRecord {
     enum RecordKeys: String, CaseIterable { case GroupName }
     init?(from entry: Entry) {
-        guard let groupName = entry["GroupName"] as? String else {
+        guard let groupName = entry["GroupName"] as? String,
+        let inviteCode = entry["InviteCode"] as? String else {
             return nil
         }
         self.id = entry.id
         self.groupName = groupName
+        self.inviteCode = inviteCode
     }
     
     static let recordType = "Game"
     
     let id: String
     let groupName: String
+    let inviteCode: String
 }
 
 extension Game: Hashable { }
