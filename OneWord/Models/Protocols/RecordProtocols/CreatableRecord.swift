@@ -9,19 +9,23 @@ protocol CreatableRecord: Record { }
 
 extension CreatableRecord {
     var entry: Entry {
-        var record = Entry(withID: self.id, recordType: Self.recordType)
+        var entry = Entry(withID: self.id, recordType: Self.recordType)
         let propertiesMirrored = Mirror(reflecting: self)
-        for recordKey in Self.RecordKeys.allCases.compactMap({ $0.rawValue as? String }) {
-            // TODO: encode creatable record properties as a fetched reference?
+        for recordKey in Self.RecordKeys.allCases.map({ $0.rawValue }) {
             if let propertyLabel = propertiesMirrored.children.first(where: { label, value in
                 guard let label else {
                     return false
                 }
                 return label == recordKey
             }) {
-                record[recordKey] = propertyLabel.value
+                if let record = propertyLabel.value as? any CreatableRecord {
+                    let fetchedReference = FetchedReference(recordID: record.id, recordType: type(of: record).recordType)
+                    entry[recordKey] = fetchedReference
+                } else {
+                    entry[recordKey] = propertyLabel.value
+                }
             }
         }
-        return record
+        return entry
     }
 }

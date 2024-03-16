@@ -27,7 +27,12 @@ struct ContentView: View {
                     GameOverview(localUser: localUser)
                         .environmentObject(localUserVm)
                 } else {
-                    onboarding
+                    if localUserVm.userID != nil {
+                        onboarding
+                    } else {
+                        Text("Connect to iCloud to get started!")
+                            .font(.title)
+                    }
                 }
             }
         }

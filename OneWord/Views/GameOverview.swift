@@ -25,7 +25,7 @@ struct GameOverview: View {
     var body: some View {
         NavigationStack(path: $presentedGames) {
             VStack {
-                Text("Hello \(localUser.name)")
+                Text("Hello \(localUser.name)!")
                     .font(.title)
                 ForEach(localUserVm.games) { game in
                     NavigationLink(game.groupName, value: game)

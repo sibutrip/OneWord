@@ -80,7 +80,7 @@ extension CKDatabase: Database {
     
     func save(_ entry: Entry) async throws {
         // TODO: mapping logic. separate this. ckrecord to concrete as well.
-        let ckRecord = CKRecord(recordType: entry.recordType)
+        let ckRecord = CKRecord(recordType: entry.recordType, recordID: .init(recordName: entry.id))
         for key in entry.allKeys() {
             if let entryValue = entry[key] as? FetchedReference {
                 let reference = CKRecord.Reference(recordID: .init(recordName: entryValue.recordName), action: .none)
@@ -88,7 +88,7 @@ extension CKDatabase: Database {
             } else if let entryValue = entry[key] as? __CKRecordObjCValue {
                 ckRecord[key] = entryValue
             } else {
-                fatalError("not able to turn entry into ckrecord")
+                fatalError("invalid record value. check that this record value is convertable to a ckRecord value.")
             }
         }
         try await self.save(ckRecord)
