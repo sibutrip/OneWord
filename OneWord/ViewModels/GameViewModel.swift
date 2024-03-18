@@ -86,7 +86,7 @@ class GameViewModel: ObservableObject {
     /// - Throws `GameViewModelError.NoCurrentGame` if `currentGame` is nil.
     /// - Throws `GameViewModelError.couldNotCreateRound` if `databaseService.add` throws.
     public func startRound() async throws {
-        let allQuestions: [Question] = try await database.records()
+        guard let allQuestions: [Question] = try? await database.records() else { fatalError() }
         let previousQuestions = Set(previousRounds.map { $0.question })
         let newQuestions: [Question] = allQuestions.filter { !previousQuestions.contains($0) }
         guard let randomQuestion = newQuestions.randomElement() else {

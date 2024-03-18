@@ -5,7 +5,7 @@
 //  Created by Cory Tripathy on 1/31/24.
 //
 
-struct Question: FetchedRecord {
+struct Question: FetchedRecord, CreatableRecord {
     enum RecordKeys: String, CaseIterable { case QuestionInfo }
     init?(from entry: Entry) {
         guard let description = entry["QuestionInfo"] as? String else {

@@ -7,9 +7,12 @@
 
 import SwiftUI
 
-struct GameDetailView: View {
+struct GameDetailView: View, Alertable {
+    typealias GameViewModelError = GameViewModel.GameViewModelError
     @StateObject var gameVm: GameViewModel
     @State private var showingPreviousRounds = false
+    @State var alertError: GameViewModelError?
+    @State var isLoading = false
     let game: Game
     var body: some View {
         VStack {
@@ -30,7 +33,9 @@ struct GameDetailView: View {
         .safeAreaInset(edge: .bottom) {
             Button("New Round") {
                 Task {
-                    try await gameVm.startRound()
+                    displayAlertIfFails {
+                        try await gameVm.startRound()
+                    }
                 }
             }
         }
