@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7402000B2BA61D750022B220 /* PreviousRounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7402000A2BA61D750022B220 /* PreviousRounds.swift */; };
 		741386022B7FC84000A1B424 /* MockCreatableRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386012B7FC84000A1B424 /* MockCreatableRecord.swift */; };
 		741386042B7FC92700A1B424 /* MockCreatableChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */; };
 		741386082B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */; };
@@ -28,6 +29,8 @@
 		7454A3A32B5F0802006357C8 /* DatabaseServiceSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */; };
 		7454A3A72B5F089E006357C8 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A62B5F089E006357C8 /* DatabaseService.swift */; };
 		7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */; };
+		745D31112BA867A80040AC15 /* GameVMAlertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D31102BA867A80040AC15 /* GameVMAlertable.swift */; };
+		745D31142BA875080040AC15 /* DescribableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D31132BA875080040AC15 /* DescribableError.swift */; };
 		74647F022B96754100491452 /* FetchedTwoParentChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74647F012B96754100491452 /* FetchedTwoParentChild.swift */; };
 		74647F542B9BA72200491452 /* CKDatabase+Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74647F532B9BA72200491452 /* CKDatabase+Database.swift */; };
 		7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */; };
@@ -66,6 +69,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7402000A2BA61D750022B220 /* PreviousRounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviousRounds.swift; sourceTree = "<group>"; };
 		741386012B7FC84000A1B424 /* MockCreatableRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableRecord.swift; sourceTree = "<group>"; };
 		741386032B7FC92700A1B424 /* MockCreatableChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableChildRecord.swift; sourceTree = "<group>"; };
 		741386072B7FEA7B00A1B424 /* MockCreatableTwoParentChildRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreatableTwoParentChildRecord.swift; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 		7454A3A22B5F0802006357C8 /* DatabaseServiceSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceSpy.swift; sourceTree = "<group>"; };
 		7454A3A62B5F089E006357C8 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
+		745D31102BA867A80040AC15 /* GameVMAlertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameVMAlertable.swift; sourceTree = "<group>"; };
+		745D31132BA875080040AC15 /* DescribableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescribableError.swift; sourceTree = "<group>"; };
 		74647F012B96754100491452 /* FetchedTwoParentChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedTwoParentChild.swift; sourceTree = "<group>"; };
 		74647F532B9BA72200491452 /* CKDatabase+Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKDatabase+Database.swift"; sourceTree = "<group>"; };
 		7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyToManyRecord.swift; sourceTree = "<group>"; };
@@ -254,7 +260,9 @@
 				7454A3752B5968D7006357C8 /* ContentView.swift */,
 				742AC6C42BA223D8007ABFE3 /* GameOverview.swift */,
 				742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */,
+				7402000A2BA61D750022B220 /* PreviousRounds.swift */,
 				742AC6C62BA22F32007ABFE3 /* NewGameView.swift */,
+				745D31102BA867A80040AC15 /* GameVMAlertable.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -263,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				742AC6B32B9F379C007ABFE3 /* LocalUser.swift */,
+				745D31132BA875080040AC15 /* DescribableError.swift */,
 				74A8CBE72B741BF100EA9F5A /* Entry.swift */,
 				74A8CBF02B741C8800EA9F5A /* FetchedReference.swift */,
 				74A8CBF72B742A9C00EA9F5A /* ReferenceQuery.swift */,
@@ -442,9 +451,12 @@
 				74A8CBEB2B741BF100EA9F5A /* Entry.swift in Sources */,
 				742AC6C72BA22F32007ABFE3 /* NewGameView.swift in Sources */,
 				7475CC292B633A1700B8E6A6 /* Database.swift in Sources */,
+				745D31142BA875080040AC15 /* DescribableError.swift in Sources */,
 				7454A3762B5968D7006357C8 /* ContentView.swift in Sources */,
+				745D31112BA867A80040AC15 /* GameVMAlertable.swift in Sources */,
 				7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */,
 				74A6B1662B60162900ED0901 /* ChildRecord.swift in Sources */,
+				7402000B2BA61D750022B220 /* PreviousRounds.swift in Sources */,
 				7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */,
 				742AC6C22BA1DD22007ABFE3 /* ProductionDatabase.swift in Sources */,
 				7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */,

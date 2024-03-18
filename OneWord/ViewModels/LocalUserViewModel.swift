@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 class LocalUserViewModel: ObservableObject {
-    enum LocalUserViewModelError: String, Error {
+    enum LocalUserViewModelError: String, DescribableError {
         case couldNotFetchUser, couldNotFetchUsersWords, noAccount, accountRestricted, couldNotDetermineAccountStatus, accountTemporarilyUnavailable, iCloudDriveDisabled, couldNotAuthenticate, couldNotCreateAccount, couldNotCreateGame
         var errorTitle: String { return self.rawValue }
     }

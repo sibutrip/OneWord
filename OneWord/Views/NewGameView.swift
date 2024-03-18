@@ -7,30 +7,26 @@
 
 import SwiftUI
 
-struct NewGameView: View {
+struct NewGameView: View, Alertable {
     typealias LocalUserViewModelError = LocalUserViewModel.LocalUserViewModelError
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var localUserVm: LocalUserViewModel
     @Binding var presentedGames: [Game]
     @State private var groupName = ""
-    @State private var errorTitle: LocalUserViewModelError?
-    @State private var isLoading = false
+    @State var alertError: LocalUserViewModelError?
+    @State var isLoading = false
     var body: some View {
         VStack {
             Text("What should we call this group?")
             TextField("Group name", text: $groupName)
                 .textFieldStyle(.roundedBorder)
             Button {
-                isLoading = true
                 Task {
-                    do {
+                    displayAlertIfFails {
                         let newGroup = try await localUserVm.newGame(withGroupName: groupName)
                         self.localUserVm.games.append(newGroup)
                         presentedGames.append(newGroup)
-                    } catch let error as LocalUserViewModelError {
-                        errorTitle = error
-                    } catch { fatalError("Unexpected error") }
-                    isLoading = false
+                    }
                     dismiss()
                 }
             } label: {

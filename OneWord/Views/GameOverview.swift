@@ -7,20 +7,16 @@
 
 import SwiftUI
 
-struct GameOverview: View {
+struct GameOverview: View, Alertable {
     typealias GameViewModelError = GameViewModel.GameViewModelError
     @EnvironmentObject var localUserVm: LocalUserViewModel
     
     let localUser: LocalUser
     
-    @State private var isLoading = false
-    @State private var gameVmError: GameViewModelError?
+    @State var isLoading = false
+    @State var alertError: GameViewModelError?
     @State private var addingGame = false
     @State private var presentedGames: [Game] = []
-    private var showingError: Binding<Bool> {
-        Binding { gameVmError != nil }
-        set: { _ in gameVmError = nil }
-    }
     
     var body: some View {
         NavigationStack(path: $presentedGames) {
@@ -31,7 +27,7 @@ struct GameOverview: View {
                     NavigationLink(game.groupName, value: game)
                 }
                 .navigationDestination(for: Game.self) { game in
-                    GameDetailView(game: game)
+                    GameDetailView(localUser: localUser, game: game)
                 }
             }
             .toolbar {
@@ -46,16 +42,10 @@ struct GameOverview: View {
         
         .onAppear {
             Task {
-                do {
+                displayAlertIfFails {
                     try await localUserVm.fetchGames()
-                } catch let error as GameViewModelError {
-                    gameVmError = error
-                } catch { fatalError() }
+                }
             }
-        }
-        
-        .alert(gameVmError?.errorTitle ?? "Error", isPresented: showingError) {
-            Button("OK") { }
         }
     }
 }

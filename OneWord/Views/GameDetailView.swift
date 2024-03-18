@@ -8,12 +8,53 @@
 import SwiftUI
 
 struct GameDetailView: View {
+    @StateObject var gameVm: GameViewModel
+    @State private var showingPreviousRounds = false
     let game: Game
     var body: some View {
-        Text(game.groupName)
+        VStack {
+            HStack {
+                Spacer()
+                Text("Invite Code:")
+                    .font(.title2)
+                Text(game.inviteCode)
+                    .foregroundStyle(.secondary)
+            }
+            if let currentRound = gameVm.currentRound {
+                Text("Current Round")
+                HStack { Text("Host:") + Text(currentRound.host.name) }
+                HStack { Text("Question:") + Text(currentRound.question.description) }
+            }
+            Spacer()
+        }
+        .safeAreaInset(edge: .bottom) {
+            Button("New Round") {
+                Task {
+                    try await gameVm.startRound()
+                }
+            }
+        }
+        .toolbar {
+            Button("Previous Round", systemImage: "clock.arrow.circlepath") {
+                showingPreviousRounds = true
+            }
+        }
+        .sheet(isPresented: $showingPreviousRounds) {
+            PreviousRounds(with: gameVm.previousRounds)
+        }
+        .navigationTitle(game.groupName)
+        .navigationBarTitleDisplayMode(.large)
+        .padding()
+    }
+    init(localUser: LocalUser, game: Game) {
+        self.game = game
+        _gameVm = .init(wrappedValue: GameViewModel(
+            withUser: localUser,
+            game: game,
+            database: ProductionDatabase.database))
     }
 }
 
 #Preview {
-    GameDetailView(game: Game(groupName: "fake group"))
+    GameDetailView(localUser: LocalUser(user: User(name: "Cory", systemID: "123"), words: []), game: Game(groupName: "fake group"))
 }

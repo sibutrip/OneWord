@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class GameViewModel: ObservableObject {
     
-    enum GameViewModelError: String, Error {
+    enum GameViewModelError: String, DescribableError {
         case couldNotCreateGame, noCurrentGame, userNotFound, couldNotAddUserToGame, couldNotFetchUsers, couldNotCreateRound, couldNotFetchRounds, noAvailableQuestions, couldNotFetchRoundDetails, noUsers
         var errorTitle: String { self.rawValue }
     }
