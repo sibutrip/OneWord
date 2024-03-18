@@ -31,6 +31,7 @@
 		7454A3A92B5F08AB006357C8 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */; };
 		745D31112BA867A80040AC15 /* GameVMAlertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D31102BA867A80040AC15 /* GameVMAlertable.swift */; };
 		745D31142BA875080040AC15 /* DescribableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D31132BA875080040AC15 /* DescribableError.swift */; };
+		745D31162BA882AC0040AC15 /* CurrentRoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D31152BA882AC0040AC15 /* CurrentRoundView.swift */; };
 		74647F022B96754100491452 /* FetchedTwoParentChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74647F012B96754100491452 /* FetchedTwoParentChild.swift */; };
 		74647F542B9BA72200491452 /* CKDatabase+Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74647F532B9BA72200491452 /* CKDatabase+Database.swift */; };
 		7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */; };
@@ -97,6 +98,7 @@
 		7454A3A82B5F08AB006357C8 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
 		745D31102BA867A80040AC15 /* GameVMAlertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameVMAlertable.swift; sourceTree = "<group>"; };
 		745D31132BA875080040AC15 /* DescribableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescribableError.swift; sourceTree = "<group>"; };
+		745D31152BA882AC0040AC15 /* CurrentRoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRoundView.swift; sourceTree = "<group>"; };
 		74647F012B96754100491452 /* FetchedTwoParentChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedTwoParentChild.swift; sourceTree = "<group>"; };
 		74647F532B9BA72200491452 /* CKDatabase+Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKDatabase+Database.swift"; sourceTree = "<group>"; };
 		7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyToManyRecord.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				7454A3752B5968D7006357C8 /* ContentView.swift */,
 				742AC6C42BA223D8007ABFE3 /* GameOverview.swift */,
 				742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */,
+				745D31152BA882AC0040AC15 /* CurrentRoundView.swift */,
 				7402000A2BA61D750022B220 /* PreviousRounds.swift */,
 				742AC6C62BA22F32007ABFE3 /* NewGameView.swift */,
 				745D31102BA867A80040AC15 /* GameVMAlertable.swift */,
@@ -460,6 +463,7 @@
 				7454A39E2B5EF2DC006357C8 /* GameViewModel.swift in Sources */,
 				742AC6C22BA1DD22007ABFE3 /* ProductionDatabase.swift in Sources */,
 				7454A3742B5968D7006357C8 /* OneWordApp.swift in Sources */,
+				745D31162BA882AC0040AC15 /* CurrentRoundView.swift in Sources */,
 				74A8CBF12B741C8800EA9F5A /* FetchedReference.swift in Sources */,
 				74A8CBDE2B741B9E00EA9F5A /* UserGameRelationship.swift in Sources */,
 				74F026A12B6200E100ED9B20 /* TwoParentsChildRecord.swift in Sources */,

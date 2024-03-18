@@ -79,6 +79,7 @@ class GameViewModel: ObservableObject {
             let host = User(id: fetchedUser.id, name: fetchedUser.name, systemID: fetchedUser.systemID)
             previousRounds.append(Round(id: previousRound.id, localUser: localUser, game: currentGame, question: question, host: host))
         }
+        self.currentRound = previousRounds.first
         self.previousRounds = previousRounds
     }
     

@@ -10,25 +10,25 @@ import Foundation
 struct Word: CreatableRecord, TwoParentsChildRecord {
     typealias Parent = User
     typealias SecondParent = Round
-    enum RecordKeys: String, CaseIterable { case WordDescription, Rank, User, Round }
+    enum RecordKeys: String, CaseIterable { case Description, Rank, User, Round }
     static let recordType = "Word"
     let id: String
-    let wordDescription: String
+    var description: String
     let rank: Int?
     let user: User
     var round: Round?
     
     static func new(description: String, withUser user: User) -> Word {
-        return Word(id: UUID().uuidString, wordDescription: description, rank: nil, user: user, round: nil)
+        return Word(id: UUID().uuidString, description: description, rank: nil, user: user, round: nil)
     }
     
     static func played(id: String, description: String, withUser user: User, inRound round: Round, rank: Int?) -> Word {
-        return Word(id: id, wordDescription: description, rank: rank, user: user, round: round)
+        return Word(id: id, description: description, rank: rank, user: user, round: round)
     }
     
-    private init(id: String, wordDescription: String, rank: Int?, user: User, round: Round?) {
+    private init(id: String, description: String, rank: Int?, user: User, round: Round?) {
         self.id = id
-        self.wordDescription = wordDescription
+        self.description = description
         self.rank = rank
         self.user = user
         self.round = round
@@ -42,7 +42,7 @@ struct FetchedWord: FetchedTwoParentsChild {
     typealias Parent = User
     typealias SecondParent = Round
     init?(from entry: Entry) {
-        guard let description = entry["WordDescription"] as? String,
+        guard let description = entry["Description"] as? String,
             let user = entry["User"] as? FetchedReference else {
             return nil
         }

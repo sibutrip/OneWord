@@ -11,9 +11,11 @@ struct PreviousRounds: View {
     let rounds: [Round]
     var body: some View {
         ForEach(rounds) { round in
-            Text(round.host.name)
-            Spacer()
-            Text(round.question.description)
+            HStack {
+                Text(round.host.name)
+                Spacer()
+                Text(round.question.description)
+            }
         }
         .navigationTitle("Previous Rounds")
     }

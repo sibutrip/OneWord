@@ -24,24 +24,25 @@ struct GameDetailView: View, Alertable {
                     .foregroundStyle(.secondary)
             }
             if let currentRound = gameVm.currentRound {
-                Text("Current Round")
-                HStack { Text("Host:") + Text(currentRound.host.name) }
-                HStack { Text("Question:") + Text(currentRound.question.description) }
-            }
+                CurrentRoundView(localUser: gameVm.localUser, round: currentRound, users: gameVm.users)
+            } else { ProgressView() }
             Spacer()
         }
-        .safeAreaInset(edge: .bottom) {
-            Button("New Round") {
-                Task {
-                    displayAlertIfFails {
-                        try await gameVm.startRound()
-                    }
-                }
+        .onAppear {
+            displayAlertIfFails {
+                try await gameVm.fetchPreviousRounds()
             }
         }
         .toolbar {
             Button("Previous Round", systemImage: "clock.arrow.circlepath") {
                 showingPreviousRounds = true
+            }
+            Button("+round") {
+                Task {
+                    displayAlertIfFails {
+                        try await gameVm.startRound()
+                    }
+                }
             }
         }
         .sheet(isPresented: $showingPreviousRounds) {

@@ -32,4 +32,6 @@ protocol DatabaseServiceProtocol: Actor {
     func authenticate() async throws -> AuthenticationStatus
     
     func record<SomeRecord: FetchedRecord>(forValue value: SomeRecord.ID, inField: SomeRecord.RecordKeys) async throws -> SomeRecord?
+    
+    func update<SomeRecord: CreatableRecord>(_ record: SomeRecord) async throws
 }

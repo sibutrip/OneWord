@@ -87,6 +87,9 @@ extension CKDatabase: Database {
                 ckRecord[key] = reference
             } else if let entryValue = entry[key] as? __CKRecordObjCValue {
                 ckRecord[key] = entryValue
+            } else if let _ = entry[key] {
+                // dont throw if entry has a value of nil (word.rank can be nil)
+                continue
             } else {
                 fatalError("invalid record value. check that this record value is convertable to a ckRecord value.")
             }
@@ -113,12 +116,16 @@ extension CKDatabase: Database {
     func records(matching referenceQuery: ReferenceQuery, desiredKeys: [Entry.FieldKey]?, resultsLimit: Int) async throws -> [Entry] {
         let desiredKeys = desiredKeys as [CKRecord.FieldKey]?
         // reference made from parent record (searching child records for field with parent reference)
-        #warning("do i need to refecth the parent ck record?")
+#warning("do i need to refecth the parent ck record?")
         guard let parentCkRecord = try? await self.record(for: CKRecord.ID(recordName: referenceQuery.parentRecord.id)) else { return [] }
         let reference = CKRecord.Reference(record: CKRecord(recordType: referenceQuery.parentRecordType, recordID: parentCkRecord.recordID), action: .none)
         let predicate = NSPredicate(format: "\(referenceQuery.parentRecordType) == %@", reference)
 #warning("does this throw because there are no matching records?")
-        guard let (matchResults,_) = try? await records(matching: CKQuery(recordType: referenceQuery.childRecordType, predicate: predicate), inZoneWith: nil, desiredKeys: desiredKeys) else { print("no m2m records found!!"); return [] }
+        let query = CKQuery(recordType: referenceQuery.childRecordType, predicate: predicate)
+        if referenceQuery.childRecordType == "Round" {
+            query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        }
+        guard let (matchResults,_) = try? await records(matching: query, inZoneWith: nil, desiredKeys: desiredKeys) else { print("no m2m records found!!"); return [] }
         let entries: [Entry] = matchResults.compactMap { (ckID, ckResult) in
             guard let ckRecord = try? ckResult.get() else { return nil }
             var entry = Entry(withID: ckRecord.recordID.recordName, recordType: ckRecord.recordType)
@@ -138,19 +145,23 @@ extension CKDatabase: Database {
     }
     
     func modifyRecords(saving recordsToSave: [Entry], deleting recordIDsToDelete: [Entry.ID]) async throws -> (saveResults: [Entry], deleteResults: [Entry.ID]) {
-        let ckRecordsToSave = recordsToSave.map { entry in
-            let ckRecord = CKRecord(recordType: entry.recordType, recordID: CKRecord.ID(recordName: entry.id))
+        var ckRecordsToSave = [CKRecord]()
+        for entry in recordsToSave {
+            guard let ckRecord: CKRecord = try? await self.record(for: .init(recordName: entry.id)) else { fatalError("record not in db") }
             for key in entry.allKeys() {
                 if let entryValue = entry[key] as? __CKRecordObjCValue {
                     ckRecord[key] = entryValue
                 } else if let entryValue = entry[key] as? FetchedReference {
                     let reference = CKRecord.Reference(recordID: CKRecord.ID(recordName: entryValue.recordName), action: .none)
                     ckRecord[key] = reference
+                }  else if let _ = entry[key] {
+                    // dont throw if entry has a value of nil (word.rank can be nil)
+                    continue
                 } else {
                     fatalError("not able to turn entry into ckrecord")
                 }
             }
-            return ckRecord
+            ckRecordsToSave.append(ckRecord)
         }
         let ckIDsToDelete = recordIDsToDelete.map {
             return CKRecord.ID(recordName: $0)

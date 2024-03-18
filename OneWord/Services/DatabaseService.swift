@@ -162,6 +162,15 @@ actor DatabaseService: DatabaseServiceProtocol {
         }
         return record
     }
+    
+    #warning("add to tests")
+    func update<SomeRecord>(_ record: SomeRecord) async throws where SomeRecord : CreatableRecord {
+        do {
+            _ = try await self.database.modifyRecords(saving: [record.entry], deleting: [])
+        } catch {
+            throw DatabaseServiceError.couldNotModifyRecord
+        }
+    }
 
     
     // MARK: Initializer
