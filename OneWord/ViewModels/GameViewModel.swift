@@ -16,18 +16,17 @@ class GameViewModel: ObservableObject {
     }
     
     private let database: DatabaseServiceProtocol
-    var localUser: LocalUser
-    var users = [User]()
-    var currentGame: Game
-    
-    var previousRounds = [Round]()
-    var currentRound: Round?
+    let localUser: LocalUser
+    let currentGame: Game
+    @Published var users = [User]()
+    @Published var previousRounds = [Round]()
+    @Published var currentRound: Round?
     
     init(withUser localUser: LocalUser, game: Game, database: DatabaseServiceProtocol) {
         self.localUser = localUser
         self.currentGame = game
-        users.append(localUser.user)
         self.database = database
+        users.append(localUser.user)
     }
     
     /// Adds a user to an existing game.
