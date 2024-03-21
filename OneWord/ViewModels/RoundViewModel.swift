@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class RoundViewModel: ObservableObject {
     enum RoundViewModelError: String, DescribableError {
-        case noWordsFound, couldNotPlayWord
+        case noWordsFound, couldNotPlayWord, wordsNotScored
         var errorTitle: String { self.rawValue }
     }
     private let database: DatabaseServiceProtocol
@@ -39,23 +39,32 @@ class RoundViewModel: ObservableObject {
         self.playedWords = playedWords
     }
     
+    #warning("update tests")
     func playWord(_ word: Word) async throws {
-        guard localUser.words.contains(where: { $0.id == word.id }) else {
-            return
-        }
         var word = word
         word.round = round
+        objectWillChange.send()
         do {
-            #warning("update test for if/else logic")
+
+            // if player had already played a word in the round
             if var previousWord = playedWords.first(where: {$0.user.id == localUser.id} ) {
-                previousWord.description = word.description
-                try await database.update(previousWord)
-                localUser.words = localUser.words.filter { $0.id != word.id }
-                playedWords = playedWords.map { $0.id == previousWord.id ? previousWord : $0}
+                
+                // if player typed in a new word, update it in database
+                if localUser.words.count == 0 {
+                    previousWord.description = word.description
+                    playedWords = playedWords.map { $0.id == previousWord.id ? previousWord : $0 }
+                    try await database.update(previousWord)
+                } else {
+                    previousWord.round = nil
+                    localUser.words = localUser.words.map { $0.id == word.id ? previousWord : $0 }
+                    playedWords = playedWords.map { $0.id == previousWord.id ? word : $0 }
+                    try await database.update(previousWord)
+                    try await database.update(word)
+                }
             } else {
-                try await database.add(word, withSecondParent: round)
                 localUser.words = localUser.words.filter { $0.id != word.id }
                 playedWords.append(word)
+                try await database.add(word, withSecondParent: round)
             }
         } catch {
             throw RoundViewModelError.couldNotPlayWord
@@ -63,10 +72,23 @@ class RoundViewModel: ObservableObject {
      }
     
     #warning("add to tests")
-    func addWord(_ wordString: String) async throws {
+    func submitWordScores() async throws {
+        guard !playedWords
+            .map({$0.rank})
+            .contains(where: {$0 == nil}) else { throw RoundViewModelError.wordsNotScored }
+        try await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for word in playedWords {
+                taskGroup.addTask {
+                    try await self.database.update(word)
+                }
+            }
+            for try await _ in taskGroup { }
+        }
+    }
+    
+    #warning("add to tests")
+    func playNewWord(_ wordString: String) async throws {
         let newWord = Word.new(description: wordString, withUser: localUser.user)
-        localUser.addWord(newWord)
         try await playWord(newWord)
-//        objectWillChange.send()
     }
 }

@@ -25,11 +25,16 @@ struct GameDetailView: View, Alertable {
             }
             if let currentRound = gameVm.currentRound {
                 CurrentRoundView(localUser: gameVm.localUser, round: currentRound, users: gameVm.users)
-            } else { ProgressView() }
+            } else {
+                Spacer()
+                ProgressView()
+            }
             Spacer()
         }
+        .environmentObject(gameVm)
         .onAppear {
             displayAlertIfFails {
+                try await gameVm.fetchUsersInGame()
                 try await gameVm.fetchPreviousRounds()
             }
         }

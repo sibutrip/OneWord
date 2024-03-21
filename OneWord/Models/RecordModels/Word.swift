@@ -14,7 +14,7 @@ struct Word: CreatableRecord, TwoParentsChildRecord {
     static let recordType = "Word"
     let id: String
     var description: String
-    let rank: Int?
+    var rank: Int?
     let user: User
     var round: Round?
     
@@ -24,6 +24,10 @@ struct Word: CreatableRecord, TwoParentsChildRecord {
     
     static func played(id: String, description: String, withUser user: User, inRound round: Round, rank: Int?) -> Word {
         return Word(id: id, description: description, rank: rank, user: user, round: round)
+    }
+    
+    static func unplayed(id: String, description: String, withUser user: User) -> Word {
+        return Word(id: id, description: description, rank: nil, user: user, round: nil)
     }
     
     private init(id: String, description: String, rank: Int?, user: User, round: Round?) {

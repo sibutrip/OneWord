@@ -16,6 +16,9 @@ struct GameOverview: View, Alertable {
     @State var isLoading = false
     @State var alertError: GameViewModelError?
     @State private var addingGame = false
+    @State private var joiningGame = false
+    @State private var creatingOrJoining = false
+    @State private var inviteCode = ""
     @State private var presentedGames: [Game] = []
     
     var body: some View {
@@ -23,16 +26,39 @@ struct GameOverview: View, Alertable {
             VStack {
                 Text("Hello \(localUser.name)!")
                     .font(.title)
+                Divider()
+                Text("Your groups")
                 ForEach(localUserVm.games) { game in
                     NavigationLink(game.groupName, value: game)
                 }
                 .navigationDestination(for: Game.self) { game in
                     GameDetailView(localUser: localUser, game: game)
                 }
+                Spacer()
             }
             .toolbar {
-                Button("New Game", systemImage: "plus") {
-                    addingGame = true
+                Button("Create or join game", systemImage: "plus") {
+                    creatingOrJoining = true
+                }
+            }
+        }
+        .alert("Create new game or join existing game?", isPresented: $creatingOrJoining) {
+            VStack {
+                Button("Create") { addingGame = true }
+                Button("Join") { joiningGame = true }
+                Button("Cancel", role: .cancel) { }
+            }
+        }
+        .alert("Enter your invite code here!", isPresented: $joiningGame){
+            VStack {
+                TextField("Invite Code", text: $inviteCode)
+                HStack {
+                    Button("Join") {
+                        displayAlertIfFails {
+                            try await localUserVm.joinGame(withInviteCode: inviteCode.uppercased())
+                        }
+                    }
+                    Button("Cancel", role: .cancel) { }
                 }
             }
         }

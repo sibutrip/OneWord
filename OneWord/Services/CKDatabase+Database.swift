@@ -123,7 +123,7 @@ extension CKDatabase: Database {
 #warning("does this throw because there are no matching records?")
         let query = CKQuery(recordType: referenceQuery.childRecordType, predicate: predicate)
         if referenceQuery.childRecordType == "Round" {
-            query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+            query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         }
         guard let (matchResults,_) = try? await records(matching: query, inZoneWith: nil, desiredKeys: desiredKeys) else { print("no m2m records found!!"); return [] }
         let entries: [Entry] = matchResults.compactMap { (ckID, ckResult) in
@@ -155,8 +155,7 @@ extension CKDatabase: Database {
                     let reference = CKRecord.Reference(recordID: CKRecord.ID(recordName: entryValue.recordName), action: .none)
                     ckRecord[key] = reference
                 }  else if let _ = entry[key] {
-                    // dont throw if entry has a value of nil (word.rank can be nil)
-                    continue
+                    ckRecord[key] = nil
                 } else {
                     fatalError("not able to turn entry into ckrecord")
                 }

@@ -89,7 +89,8 @@ class GameViewModel: ObservableObject {
         guard let allQuestions: [Question] = try? await database.records() else { fatalError() }
         let previousQuestions = Set(previousRounds.map { $0.question })
         let newQuestions: [Question] = allQuestions.filter { !previousQuestions.contains($0) }
-        guard let randomQuestion = newQuestions.randomElement() else {
+        guard let randomQuestion = newQuestions.randomElement() ?? allQuestions.randomElement() else {
+#warning("change tests. originally threw `noAvailableQuestions` error instead of going to all questions.")
             throw GameViewModelError.noAvailableQuestions
         }
         let nextHost = try nextHost()
