@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct PreviousRounds: View {
+    @EnvironmentObject var roundVm: RoundViewModel
     let rounds: [Round]
     var body: some View {
         ForEach(rounds) { round in
-            HStack {
-                Text(round.host.name)
-                Spacer()
-                Text(round.question.description)
-            }
+            PreviousRoundsDetail(localUser: roundVm.localUser, round: roundVm.round, users: roundVm.users)
         }
         .navigationTitle("Previous Rounds")
     }

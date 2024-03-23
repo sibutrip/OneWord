@@ -34,6 +34,7 @@
 		745D31162BA882AC0040AC15 /* CurrentRoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D31152BA882AC0040AC15 /* CurrentRoundView.swift */; };
 		745D312D2BAC81380040AC15 /* HostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D312C2BAC81380040AC15 /* HostView.swift */; };
 		745D312F2BAC813D0040AC15 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D312E2BAC813D0040AC15 /* PlayerView.swift */; };
+		745D31312BADAA3A0040AC15 /* PreviousRoundsDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745D31302BADAA3A0040AC15 /* PreviousRoundsDetail.swift */; };
 		74647F022B96754100491452 /* FetchedTwoParentChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74647F012B96754100491452 /* FetchedTwoParentChild.swift */; };
 		74647F542B9BA72200491452 /* CKDatabase+Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74647F532B9BA72200491452 /* CKDatabase+Database.swift */; };
 		7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */; };
@@ -103,6 +104,7 @@
 		745D31152BA882AC0040AC15 /* CurrentRoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRoundView.swift; sourceTree = "<group>"; };
 		745D312C2BAC81380040AC15 /* HostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostView.swift; sourceTree = "<group>"; };
 		745D312E2BAC813D0040AC15 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		745D31302BADAA3A0040AC15 /* PreviousRoundsDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviousRoundsDetail.swift; sourceTree = "<group>"; };
 		74647F012B96754100491452 /* FetchedTwoParentChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedTwoParentChild.swift; sourceTree = "<group>"; };
 		74647F532B9BA72200491452 /* CKDatabase+Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKDatabase+Database.swift"; sourceTree = "<group>"; };
 		7475CC1A2B62C3FF00B8E6A6 /* ManyToManyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyToManyRecord.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				742AC6C82BA232B5007ABFE3 /* GameDetailView.swift */,
 				745D312B2BAC812E0040AC15 /* CurrentRound */,
 				7402000A2BA61D750022B220 /* PreviousRounds.swift */,
+				745D31302BADAA3A0040AC15 /* PreviousRoundsDetail.swift */,
 				742AC6C62BA22F32007ABFE3 /* NewGameView.swift */,
 				745D31102BA867A80040AC15 /* GameVMAlertable.swift */,
 			);
@@ -463,6 +466,7 @@
 				74A8CBE52B741B9E00EA9F5A /* Game.swift in Sources */,
 				7475CC1B2B62C3FF00B8E6A6 /* ManyToManyRecord.swift in Sources */,
 				74A8CBF52B741CA700EA9F5A /* Record.swift in Sources */,
+				745D31312BADAA3A0040AC15 /* PreviousRoundsDetail.swift in Sources */,
 				74647F022B96754100491452 /* FetchedTwoParentChild.swift in Sources */,
 				742AC6C92BA232B5007ABFE3 /* GameDetailView.swift in Sources */,
 				74A8CBDD2B741B9E00EA9F5A /* Question.swift in Sources */,

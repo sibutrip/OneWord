@@ -15,7 +15,7 @@ struct Word: CreatableRecord, TwoParentsChildRecord {
     let id: String
     var description: String
     var rank: Int?
-    let user: User
+    var user: User
     var round: Round?
     
     static func new(description: String, withUser user: User) -> Word {
@@ -36,6 +36,10 @@ struct Word: CreatableRecord, TwoParentsChildRecord {
         self.rank = rank
         self.user = user
         self.round = round
+    }
+    
+    mutating func transferUser(to user: User) {
+        self.user = user
     }
 }
 
